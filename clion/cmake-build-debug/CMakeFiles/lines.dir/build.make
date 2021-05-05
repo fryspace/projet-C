@@ -88,6 +88,7 @@ lines_EXTERNAL_OBJECTS =
 
 lines.exe: CMakeFiles\lines.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\lines.c.obj
 lines.exe: CMakeFiles\lines.dir\build.make
+lines.exe: ei.lib
 lines.exe: C:\Users\bossu\OneDrive\Documents\projetc\_win\eibase64.lib
 lines.exe: C:\projetc\SDL2_windows\lib\x64\SDL2.lib
 lines.exe: C:\projetc\SDL2_windows\lib\x64\SDL2_gfx.lib

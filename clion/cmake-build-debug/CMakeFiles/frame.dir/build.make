@@ -88,6 +88,7 @@ frame_EXTERNAL_OBJECTS =
 
 frame.exe: CMakeFiles\frame.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\frame.c.obj
 frame.exe: CMakeFiles\frame.dir\build.make
+frame.exe: ei.lib
 frame.exe: C:\Users\bossu\OneDrive\Documents\projetc\_win\eibase64.lib
 frame.exe: C:\projetc\SDL2_windows\lib\x64\SDL2.lib
 frame.exe: C:\projetc\SDL2_windows\lib\x64\SDL2_gfx.lib

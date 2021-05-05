@@ -88,6 +88,7 @@ button_EXTERNAL_OBJECTS =
 
 button.exe: CMakeFiles\button.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\button.c.obj
 button.exe: CMakeFiles\button.dir\build.make
+button.exe: ei.lib
 button.exe: C:\Users\bossu\OneDrive\Documents\projetc\_win\eibase64.lib
 button.exe: C:\projetc\SDL2_windows\lib\x64\SDL2.lib
 button.exe: C:\projetc\SDL2_windows\lib\x64\SDL2_gfx.lib

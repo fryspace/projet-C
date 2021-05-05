@@ -114,6 +114,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named ei
+
+# Build rule for target.
+ei: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 /nologo -$(MAKEFLAGS) ei
+.PHONY : ei
+
+# fast build rule for target.
+ei\fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ei.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\ei.dir\build
+.PHONY : ei\fast
+
+#=============================================================================
 # Target rules for targets named hello_world
 
 # Build rule for target.
@@ -179,19 +192,6 @@ button\fast:
 .PHONY : button\fast
 
 #=============================================================================
-# Target rules for targets named doc
-
-# Build rule for target.
-doc: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 /nologo -$(MAKEFLAGS) doc
-.PHONY : doc
-
-# fast build rule for target.
-doc\fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\doc.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\doc.dir\build
-.PHONY : doc\fast
-
-#=============================================================================
 # Target rules for targets named puzzle
 
 # Build rule for target.
@@ -216,6 +216,46 @@ two048: cmake_check_build_system
 two048\fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\two048.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\two048.dir\build
 .PHONY : two048\fast
+
+#=============================================================================
+# Target rules for targets named doc
+
+# Build rule for target.
+doc: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 /nologo -$(MAKEFLAGS) doc
+.PHONY : doc
+
+# fast build rule for target.
+doc\fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\doc.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\doc.dir\build
+.PHONY : doc\fast
+
+C_\Users\bossu\OneDrive\Documents\projetc\src\ei_draw.obj: C_\Users\bossu\OneDrive\Documents\projetc\src\ei_draw.c.obj
+
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\src\ei_draw.obj
+
+# target to build an object file
+C_\Users\bossu\OneDrive\Documents\projetc\src\ei_draw.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ei.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\ei.dir\C_\Users\bossu\OneDrive\Documents\projetc\src\ei_draw.c.obj
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\src\ei_draw.c.obj
+
+C_\Users\bossu\OneDrive\Documents\projetc\src\ei_draw.i: C_\Users\bossu\OneDrive\Documents\projetc\src\ei_draw.c.i
+
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\src\ei_draw.i
+
+# target to preprocess a source file
+C_\Users\bossu\OneDrive\Documents\projetc\src\ei_draw.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ei.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\ei.dir\C_\Users\bossu\OneDrive\Documents\projetc\src\ei_draw.c.i
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\src\ei_draw.c.i
+
+C_\Users\bossu\OneDrive\Documents\projetc\src\ei_draw.s: C_\Users\bossu\OneDrive\Documents\projetc\src\ei_draw.c.s
+
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\src\ei_draw.s
+
+# target to generate assembly for a file
+C_\Users\bossu\OneDrive\Documents\projetc\src\ei_draw.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ei.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\ei.dir\C_\Users\bossu\OneDrive\Documents\projetc\src\ei_draw.c.s
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\src\ei_draw.c.s
 
 C_\Users\bossu\OneDrive\Documents\projetc\tests\button.obj: C_\Users\bossu\OneDrive\Documents\projetc\tests\button.c.obj
 
@@ -416,12 +456,16 @@ help:
 	@echo ... rebuild_cache
 	@echo ... doc
 	@echo ... button
+	@echo ... ei
 	@echo ... frame
 	@echo ... hello_world
 	@echo ... lines
 	@echo ... minimal
 	@echo ... puzzle
 	@echo ... two048
+	@echo ... C_/Users/bossu/OneDrive/Documents/projetc/src/ei_draw.obj
+	@echo ... C_/Users/bossu/OneDrive/Documents/projetc/src/ei_draw.i
+	@echo ... C_/Users/bossu/OneDrive/Documents/projetc/src/ei_draw.s
 	@echo ... C_/Users/bossu/OneDrive/Documents/projetc/tests/button.obj
 	@echo ... C_/Users/bossu/OneDrive/Documents/projetc/tests/button.i
 	@echo ... C_/Users/bossu/OneDrive/Documents/projetc/tests/button.s

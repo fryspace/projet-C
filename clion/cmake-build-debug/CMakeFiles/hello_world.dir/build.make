@@ -88,6 +88,7 @@ hello_world_EXTERNAL_OBJECTS =
 
 hello_world.exe: CMakeFiles\hello_world.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\hello_world.c.obj
 hello_world.exe: CMakeFiles\hello_world.dir\build.make
+hello_world.exe: ei.lib
 hello_world.exe: C:\Users\bossu\OneDrive\Documents\projetc\_win\eibase64.lib
 hello_world.exe: C:\projetc\SDL2_windows\lib\x64\SDL2.lib
 hello_world.exe: C:\projetc\SDL2_windows\lib\x64\SDL2_gfx.lib

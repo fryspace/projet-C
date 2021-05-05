@@ -17,6 +17,60 @@
 					<DistClean command="nmake /NOLOGO /f C:\Users\bossu\OneDrive\Documents\projetc\clion\cmake-build-debug\Makefile VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
+			<Target title="ei">
+				<Option output="C:/Users/bossu/OneDrive/Documents/projetc/clion/cmake-build-debug/ei.lib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/bossu/OneDrive/Documents/projetc/clion/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="msvc8"/>
+				<Compiler>
+					<Add option="-D__WIN__=1"/>
+					<Add option="-D_CRT_SECURE_NO_WARNINGS=1"/>
+					<Add option="-D_AMD64_=1"/>
+					<Add directory="C:/Users/bossu/OneDrive/Documents/projetc/include"/>
+					<Add directory="C:/projetc/SDL2_windows/include"/>
+					<Add directory="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29910\ATLMFC\include"/>
+					<Add directory="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29910\include"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\ucrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\shared"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\um"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\winrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\cppwinrt"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f C:\Users\bossu\OneDrive\Documents\projetc\clion\cmake-build-debug\Makefile VERBOSE=1 ei"/>
+					<CompileFile command="nmake /NOLOGO /f C:\Users\bossu\OneDrive\Documents\projetc\clion\cmake-build-debug\Makefile VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f C:\Users\bossu\OneDrive\Documents\projetc\clion\cmake-build-debug\Makefile VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f C:\Users\bossu\OneDrive\Documents\projetc\clion\cmake-build-debug\Makefile VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ei/fast">
+				<Option output="C:/Users/bossu/OneDrive/Documents/projetc/clion/cmake-build-debug/ei.lib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/bossu/OneDrive/Documents/projetc/clion/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="msvc8"/>
+				<Compiler>
+					<Add option="-D__WIN__=1"/>
+					<Add option="-D_CRT_SECURE_NO_WARNINGS=1"/>
+					<Add option="-D_AMD64_=1"/>
+					<Add directory="C:/Users/bossu/OneDrive/Documents/projetc/include"/>
+					<Add directory="C:/projetc/SDL2_windows/include"/>
+					<Add directory="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29910\ATLMFC\include"/>
+					<Add directory="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29910\include"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\ucrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\shared"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\um"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\winrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\cppwinrt"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f C:\Users\bossu\OneDrive\Documents\projetc\clion\cmake-build-debug\Makefile VERBOSE=1 ei/fast"/>
+					<CompileFile command="nmake /NOLOGO /f C:\Users\bossu\OneDrive\Documents\projetc\clion\cmake-build-debug\Makefile VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f C:\Users\bossu\OneDrive\Documents\projetc\clion\cmake-build-debug\Makefile VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f C:\Users\bossu\OneDrive\Documents\projetc\clion\cmake-build-debug\Makefile VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
 			<Target title="hello_world">
 				<Option output="C:/Users/bossu/OneDrive/Documents/projetc/clion/cmake-build-debug/hello_world.exe" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="C:/Users/bossu/OneDrive/Documents/projetc/clion/cmake-build-debug"/>
@@ -287,16 +341,6 @@
 					<DistClean command="nmake /NOLOGO /f C:\Users\bossu\OneDrive\Documents\projetc\clion\cmake-build-debug\Makefile VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="doc">
-				<Option working_dir="C:/Users/bossu/OneDrive/Documents/projetc/clion/cmake-build-debug"/>
-				<Option type="4"/>
-				<MakeCommands>
-					<Build command="nmake /NOLOGO /f C:\Users\bossu\OneDrive\Documents\projetc\clion\cmake-build-debug\Makefile VERBOSE=1 doc"/>
-					<CompileFile command="nmake /NOLOGO /f C:\Users\bossu\OneDrive\Documents\projetc\clion\cmake-build-debug\Makefile VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="nmake /NOLOGO /f C:\Users\bossu\OneDrive\Documents\projetc\clion\cmake-build-debug\Makefile VERBOSE=1 clean"/>
-					<DistClean command="nmake /NOLOGO /f C:\Users\bossu\OneDrive\Documents\projetc\clion\cmake-build-debug\Makefile VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
 			<Target title="puzzle">
 				<Option output="C:/Users/bossu/OneDrive/Documents/projetc/clion/cmake-build-debug/puzzle.exe" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="C:/Users/bossu/OneDrive/Documents/projetc/clion/cmake-build-debug"/>
@@ -405,6 +449,16 @@
 					<DistClean command="nmake /NOLOGO /f C:\Users\bossu\OneDrive\Documents\projetc\clion\cmake-build-debug\Makefile VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
+			<Target title="doc">
+				<Option working_dir="C:/Users/bossu/OneDrive/Documents/projetc/clion/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f C:\Users\bossu\OneDrive\Documents\projetc\clion\cmake-build-debug\Makefile VERBOSE=1 doc"/>
+					<CompileFile command="nmake /NOLOGO /f C:\Users\bossu\OneDrive\Documents\projetc\clion\cmake-build-debug\Makefile VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f C:\Users\bossu\OneDrive\Documents\projetc\clion\cmake-build-debug\Makefile VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f C:\Users\bossu\OneDrive\Documents\projetc\clion\cmake-build-debug\Makefile VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
 			<Target title="edit_cache">
 				<Option working_dir="C:/Users/bossu/OneDrive/Documents/projetc/clion/cmake-build-debug"/>
 				<Option type="4"/>
@@ -426,6 +480,9 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="C:/Users/bossu/OneDrive/Documents/projetc/src/ei_draw.c">
+			<Option target="ei"/>
+		</Unit>
 		<Unit filename="C:/Users/bossu/OneDrive/Documents/projetc/tests/button.c">
 			<Option target="button"/>
 		</Unit>

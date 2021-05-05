@@ -88,6 +88,7 @@ puzzle_EXTERNAL_OBJECTS =
 
 puzzle.exe: CMakeFiles\puzzle.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\puzzle.c.obj
 puzzle.exe: CMakeFiles\puzzle.dir\build.make
+puzzle.exe: ei.lib
 puzzle.exe: C:\Users\bossu\OneDrive\Documents\projetc\_win\eibase64.lib
 puzzle.exe: C:\projetc\SDL2_windows\lib\x64\SDL2.lib
 puzzle.exe: C:\projetc\SDL2_windows\lib\x64\SDL2_gfx.lib

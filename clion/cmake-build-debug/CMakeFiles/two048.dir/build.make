@@ -88,6 +88,7 @@ two048_EXTERNAL_OBJECTS =
 
 two048.exe: CMakeFiles\two048.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\two048.c.obj
 two048.exe: CMakeFiles\two048.dir\build.make
+two048.exe: ei.lib
 two048.exe: C:\Users\bossu\OneDrive\Documents\projetc\_win\eibase64.lib
 two048.exe: C:\projetc\SDL2_windows\lib\x64\SDL2.lib
 two048.exe: C:\projetc\SDL2_windows\lib\x64\SDL2_gfx.lib
