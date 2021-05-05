@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/minimal.dir/C_/Users/Cassim/Documents/projet_c/tests/minimal.c.obj"
+  "CMakeFiles/minimal.dir/C_/Users/Utilisateur/Desktop/projetc/tests/minimal.c.obj"
   "minimal.exe"
   "minimal.exe.manifest"
   "minimal.lib"

@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/button.dir/C_/Users/Cassim/Documents/projet_c/tests/button.c.obj"
+  "CMakeFiles/button.dir/C_/Users/Utilisateur/Desktop/projetc/tests/button.c.obj"
   "button.exe"
   "button.exe.manifest"
   "button.lib"
