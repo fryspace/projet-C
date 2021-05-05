@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "C:/Users/Cassim/Documents/projet_c/tests/hello_world.c" "C:/Users/Cassim/Documents/projet_c/clion/cmake-build-debug/CMakeFiles/hello_world.dir/C_/Users/Cassim/Documents/projet_c/tests/hello_world.c.obj"
+  "C:/Users/bossu/OneDrive/Documents/projetc/tests/hello_world.c" "C:/Users/bossu/OneDrive/Documents/projetc/clion/cmake-build-debug/CMakeFiles/hello_world.dir/C_/Users/bossu/OneDrive/Documents/projetc/tests/hello_world.c.obj"
   )
 set(CMAKE_C_COMPILER_ID "MSVC")
 
@@ -17,7 +17,7 @@ set(CMAKE_TARGET_DEFINITIONS_C
 
 # The include file search paths:
 set(CMAKE_C_TARGET_INCLUDE_PATH
-  "C:/Users/Cassim/Documents/projet_c/include"
+  "C:/Users/bossu/OneDrive/Documents/projetc/include"
   "C:/projetc/SDL2_windows/include"
   )
 

@@ -51,10 +51,10 @@ RM = "C:\Program Files\JetBrains\CLion 2021.1.1\bin\cmake\win\bin\cmake.exe" -E 
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Users\Cassim\Documents\projet_c\clion
+CMAKE_SOURCE_DIR = C:\Users\bossu\OneDrive\Documents\projetc\clion
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\Cassim\Documents\projet_c\clion\cmake-build-debug
+CMAKE_BINARY_DIR = C:\Users\bossu\OneDrive\Documents\projetc\clion\cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -83,9 +83,9 @@ rebuild_cache\fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Cassim\Documents\projet_c\clion\cmake-build-debug\CMakeFiles C:\Users\Cassim\Documents\projet_c\clion\cmake-build-debug\\CMakeFiles\progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\bossu\OneDrive\Documents\projetc\clion\cmake-build-debug\CMakeFiles C:\Users\bossu\OneDrive\Documents\projetc\clion\cmake-build-debug\\CMakeFiles\progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 /nologo -$(MAKEFLAGS) all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Cassim\Documents\projet_c\clion\cmake-build-debug\CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\bossu\OneDrive\Documents\projetc\clion\cmake-build-debug\CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -217,194 +217,194 @@ two048\fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\two048.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\two048.dir\build
 .PHONY : two048\fast
 
-C_\Users\Cassim\Documents\projet_c\tests\button.obj: C_\Users\Cassim\Documents\projet_c\tests\button.c.obj
+C_\Users\bossu\OneDrive\Documents\projetc\tests\button.obj: C_\Users\bossu\OneDrive\Documents\projetc\tests\button.c.obj
 
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\button.obj
-
-# target to build an object file
-C_\Users\Cassim\Documents\projet_c\tests\button.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\button.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\button.dir\C_\Users\Cassim\Documents\projet_c\tests\button.c.obj
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\button.c.obj
-
-C_\Users\Cassim\Documents\projet_c\tests\button.i: C_\Users\Cassim\Documents\projet_c\tests\button.c.i
-
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\button.i
-
-# target to preprocess a source file
-C_\Users\Cassim\Documents\projet_c\tests\button.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\button.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\button.dir\C_\Users\Cassim\Documents\projet_c\tests\button.c.i
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\button.c.i
-
-C_\Users\Cassim\Documents\projet_c\tests\button.s: C_\Users\Cassim\Documents\projet_c\tests\button.c.s
-
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\button.s
-
-# target to generate assembly for a file
-C_\Users\Cassim\Documents\projet_c\tests\button.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\button.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\button.dir\C_\Users\Cassim\Documents\projet_c\tests\button.c.s
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\button.c.s
-
-C_\Users\Cassim\Documents\projet_c\tests\frame.obj: C_\Users\Cassim\Documents\projet_c\tests\frame.c.obj
-
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\frame.obj
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\button.obj
 
 # target to build an object file
-C_\Users\Cassim\Documents\projet_c\tests\frame.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\frame.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\frame.dir\C_\Users\Cassim\Documents\projet_c\tests\frame.c.obj
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\frame.c.obj
+C_\Users\bossu\OneDrive\Documents\projetc\tests\button.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\button.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\button.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\button.c.obj
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\button.c.obj
 
-C_\Users\Cassim\Documents\projet_c\tests\frame.i: C_\Users\Cassim\Documents\projet_c\tests\frame.c.i
+C_\Users\bossu\OneDrive\Documents\projetc\tests\button.i: C_\Users\bossu\OneDrive\Documents\projetc\tests\button.c.i
 
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\frame.i
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\button.i
 
 # target to preprocess a source file
-C_\Users\Cassim\Documents\projet_c\tests\frame.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\frame.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\frame.dir\C_\Users\Cassim\Documents\projet_c\tests\frame.c.i
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\frame.c.i
+C_\Users\bossu\OneDrive\Documents\projetc\tests\button.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\button.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\button.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\button.c.i
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\button.c.i
 
-C_\Users\Cassim\Documents\projet_c\tests\frame.s: C_\Users\Cassim\Documents\projet_c\tests\frame.c.s
+C_\Users\bossu\OneDrive\Documents\projetc\tests\button.s: C_\Users\bossu\OneDrive\Documents\projetc\tests\button.c.s
 
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\frame.s
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\button.s
 
 # target to generate assembly for a file
-C_\Users\Cassim\Documents\projet_c\tests\frame.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\frame.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\frame.dir\C_\Users\Cassim\Documents\projet_c\tests\frame.c.s
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\frame.c.s
+C_\Users\bossu\OneDrive\Documents\projetc\tests\button.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\button.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\button.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\button.c.s
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\button.c.s
 
-C_\Users\Cassim\Documents\projet_c\tests\hello_world.obj: C_\Users\Cassim\Documents\projet_c\tests\hello_world.c.obj
+C_\Users\bossu\OneDrive\Documents\projetc\tests\frame.obj: C_\Users\bossu\OneDrive\Documents\projetc\tests\frame.c.obj
 
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\hello_world.obj
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\frame.obj
 
 # target to build an object file
-C_\Users\Cassim\Documents\projet_c\tests\hello_world.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\hello_world.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\hello_world.dir\C_\Users\Cassim\Documents\projet_c\tests\hello_world.c.obj
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\hello_world.c.obj
+C_\Users\bossu\OneDrive\Documents\projetc\tests\frame.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\frame.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\frame.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\frame.c.obj
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\frame.c.obj
 
-C_\Users\Cassim\Documents\projet_c\tests\hello_world.i: C_\Users\Cassim\Documents\projet_c\tests\hello_world.c.i
+C_\Users\bossu\OneDrive\Documents\projetc\tests\frame.i: C_\Users\bossu\OneDrive\Documents\projetc\tests\frame.c.i
 
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\hello_world.i
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\frame.i
 
 # target to preprocess a source file
-C_\Users\Cassim\Documents\projet_c\tests\hello_world.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\hello_world.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\hello_world.dir\C_\Users\Cassim\Documents\projet_c\tests\hello_world.c.i
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\hello_world.c.i
+C_\Users\bossu\OneDrive\Documents\projetc\tests\frame.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\frame.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\frame.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\frame.c.i
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\frame.c.i
 
-C_\Users\Cassim\Documents\projet_c\tests\hello_world.s: C_\Users\Cassim\Documents\projet_c\tests\hello_world.c.s
+C_\Users\bossu\OneDrive\Documents\projetc\tests\frame.s: C_\Users\bossu\OneDrive\Documents\projetc\tests\frame.c.s
 
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\hello_world.s
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\frame.s
 
 # target to generate assembly for a file
-C_\Users\Cassim\Documents\projet_c\tests\hello_world.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\hello_world.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\hello_world.dir\C_\Users\Cassim\Documents\projet_c\tests\hello_world.c.s
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\hello_world.c.s
+C_\Users\bossu\OneDrive\Documents\projetc\tests\frame.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\frame.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\frame.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\frame.c.s
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\frame.c.s
 
-C_\Users\Cassim\Documents\projet_c\tests\lines.obj: C_\Users\Cassim\Documents\projet_c\tests\lines.c.obj
+C_\Users\bossu\OneDrive\Documents\projetc\tests\hello_world.obj: C_\Users\bossu\OneDrive\Documents\projetc\tests\hello_world.c.obj
 
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\lines.obj
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\hello_world.obj
 
 # target to build an object file
-C_\Users\Cassim\Documents\projet_c\tests\lines.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\lines.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\lines.dir\C_\Users\Cassim\Documents\projet_c\tests\lines.c.obj
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\lines.c.obj
+C_\Users\bossu\OneDrive\Documents\projetc\tests\hello_world.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hello_world.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\hello_world.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\hello_world.c.obj
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\hello_world.c.obj
 
-C_\Users\Cassim\Documents\projet_c\tests\lines.i: C_\Users\Cassim\Documents\projet_c\tests\lines.c.i
+C_\Users\bossu\OneDrive\Documents\projetc\tests\hello_world.i: C_\Users\bossu\OneDrive\Documents\projetc\tests\hello_world.c.i
 
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\lines.i
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\hello_world.i
 
 # target to preprocess a source file
-C_\Users\Cassim\Documents\projet_c\tests\lines.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\lines.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\lines.dir\C_\Users\Cassim\Documents\projet_c\tests\lines.c.i
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\lines.c.i
+C_\Users\bossu\OneDrive\Documents\projetc\tests\hello_world.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hello_world.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\hello_world.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\hello_world.c.i
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\hello_world.c.i
 
-C_\Users\Cassim\Documents\projet_c\tests\lines.s: C_\Users\Cassim\Documents\projet_c\tests\lines.c.s
+C_\Users\bossu\OneDrive\Documents\projetc\tests\hello_world.s: C_\Users\bossu\OneDrive\Documents\projetc\tests\hello_world.c.s
 
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\lines.s
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\hello_world.s
 
 # target to generate assembly for a file
-C_\Users\Cassim\Documents\projet_c\tests\lines.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\lines.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\lines.dir\C_\Users\Cassim\Documents\projet_c\tests\lines.c.s
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\lines.c.s
+C_\Users\bossu\OneDrive\Documents\projetc\tests\hello_world.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hello_world.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\hello_world.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\hello_world.c.s
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\hello_world.c.s
 
-C_\Users\Cassim\Documents\projet_c\tests\minimal.obj: C_\Users\Cassim\Documents\projet_c\tests\minimal.c.obj
+C_\Users\bossu\OneDrive\Documents\projetc\tests\lines.obj: C_\Users\bossu\OneDrive\Documents\projetc\tests\lines.c.obj
 
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\minimal.obj
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\lines.obj
 
 # target to build an object file
-C_\Users\Cassim\Documents\projet_c\tests\minimal.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minimal.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\minimal.dir\C_\Users\Cassim\Documents\projet_c\tests\minimal.c.obj
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\minimal.c.obj
+C_\Users\bossu\OneDrive\Documents\projetc\tests\lines.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\lines.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\lines.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\lines.c.obj
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\lines.c.obj
 
-C_\Users\Cassim\Documents\projet_c\tests\minimal.i: C_\Users\Cassim\Documents\projet_c\tests\minimal.c.i
+C_\Users\bossu\OneDrive\Documents\projetc\tests\lines.i: C_\Users\bossu\OneDrive\Documents\projetc\tests\lines.c.i
 
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\minimal.i
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\lines.i
 
 # target to preprocess a source file
-C_\Users\Cassim\Documents\projet_c\tests\minimal.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minimal.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\minimal.dir\C_\Users\Cassim\Documents\projet_c\tests\minimal.c.i
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\minimal.c.i
+C_\Users\bossu\OneDrive\Documents\projetc\tests\lines.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\lines.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\lines.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\lines.c.i
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\lines.c.i
 
-C_\Users\Cassim\Documents\projet_c\tests\minimal.s: C_\Users\Cassim\Documents\projet_c\tests\minimal.c.s
+C_\Users\bossu\OneDrive\Documents\projetc\tests\lines.s: C_\Users\bossu\OneDrive\Documents\projetc\tests\lines.c.s
 
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\minimal.s
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\lines.s
 
 # target to generate assembly for a file
-C_\Users\Cassim\Documents\projet_c\tests\minimal.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minimal.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\minimal.dir\C_\Users\Cassim\Documents\projet_c\tests\minimal.c.s
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\minimal.c.s
+C_\Users\bossu\OneDrive\Documents\projetc\tests\lines.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\lines.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\lines.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\lines.c.s
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\lines.c.s
 
-C_\Users\Cassim\Documents\projet_c\tests\puzzle.obj: C_\Users\Cassim\Documents\projet_c\tests\puzzle.c.obj
+C_\Users\bossu\OneDrive\Documents\projetc\tests\minimal.obj: C_\Users\bossu\OneDrive\Documents\projetc\tests\minimal.c.obj
 
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\puzzle.obj
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\minimal.obj
 
 # target to build an object file
-C_\Users\Cassim\Documents\projet_c\tests\puzzle.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\puzzle.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\puzzle.dir\C_\Users\Cassim\Documents\projet_c\tests\puzzle.c.obj
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\puzzle.c.obj
+C_\Users\bossu\OneDrive\Documents\projetc\tests\minimal.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minimal.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\minimal.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\minimal.c.obj
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\minimal.c.obj
 
-C_\Users\Cassim\Documents\projet_c\tests\puzzle.i: C_\Users\Cassim\Documents\projet_c\tests\puzzle.c.i
+C_\Users\bossu\OneDrive\Documents\projetc\tests\minimal.i: C_\Users\bossu\OneDrive\Documents\projetc\tests\minimal.c.i
 
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\puzzle.i
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\minimal.i
 
 # target to preprocess a source file
-C_\Users\Cassim\Documents\projet_c\tests\puzzle.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\puzzle.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\puzzle.dir\C_\Users\Cassim\Documents\projet_c\tests\puzzle.c.i
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\puzzle.c.i
+C_\Users\bossu\OneDrive\Documents\projetc\tests\minimal.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minimal.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\minimal.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\minimal.c.i
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\minimal.c.i
 
-C_\Users\Cassim\Documents\projet_c\tests\puzzle.s: C_\Users\Cassim\Documents\projet_c\tests\puzzle.c.s
+C_\Users\bossu\OneDrive\Documents\projetc\tests\minimal.s: C_\Users\bossu\OneDrive\Documents\projetc\tests\minimal.c.s
 
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\puzzle.s
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\minimal.s
 
 # target to generate assembly for a file
-C_\Users\Cassim\Documents\projet_c\tests\puzzle.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\puzzle.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\puzzle.dir\C_\Users\Cassim\Documents\projet_c\tests\puzzle.c.s
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\puzzle.c.s
+C_\Users\bossu\OneDrive\Documents\projetc\tests\minimal.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minimal.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\minimal.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\minimal.c.s
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\minimal.c.s
 
-C_\Users\Cassim\Documents\projet_c\tests\two048.obj: C_\Users\Cassim\Documents\projet_c\tests\two048.c.obj
+C_\Users\bossu\OneDrive\Documents\projetc\tests\puzzle.obj: C_\Users\bossu\OneDrive\Documents\projetc\tests\puzzle.c.obj
 
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\two048.obj
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\puzzle.obj
 
 # target to build an object file
-C_\Users\Cassim\Documents\projet_c\tests\two048.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\two048.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\two048.dir\C_\Users\Cassim\Documents\projet_c\tests\two048.c.obj
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\two048.c.obj
+C_\Users\bossu\OneDrive\Documents\projetc\tests\puzzle.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\puzzle.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\puzzle.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\puzzle.c.obj
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\puzzle.c.obj
 
-C_\Users\Cassim\Documents\projet_c\tests\two048.i: C_\Users\Cassim\Documents\projet_c\tests\two048.c.i
+C_\Users\bossu\OneDrive\Documents\projetc\tests\puzzle.i: C_\Users\bossu\OneDrive\Documents\projetc\tests\puzzle.c.i
 
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\two048.i
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\puzzle.i
 
 # target to preprocess a source file
-C_\Users\Cassim\Documents\projet_c\tests\two048.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\two048.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\two048.dir\C_\Users\Cassim\Documents\projet_c\tests\two048.c.i
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\two048.c.i
+C_\Users\bossu\OneDrive\Documents\projetc\tests\puzzle.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\puzzle.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\puzzle.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\puzzle.c.i
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\puzzle.c.i
 
-C_\Users\Cassim\Documents\projet_c\tests\two048.s: C_\Users\Cassim\Documents\projet_c\tests\two048.c.s
+C_\Users\bossu\OneDrive\Documents\projetc\tests\puzzle.s: C_\Users\bossu\OneDrive\Documents\projetc\tests\puzzle.c.s
 
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\two048.s
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\puzzle.s
 
 # target to generate assembly for a file
-C_\Users\Cassim\Documents\projet_c\tests\two048.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\two048.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\two048.dir\C_\Users\Cassim\Documents\projet_c\tests\two048.c.s
-.PHONY : C_\Users\Cassim\Documents\projet_c\tests\two048.c.s
+C_\Users\bossu\OneDrive\Documents\projetc\tests\puzzle.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\puzzle.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\puzzle.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\puzzle.c.s
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\puzzle.c.s
+
+C_\Users\bossu\OneDrive\Documents\projetc\tests\two048.obj: C_\Users\bossu\OneDrive\Documents\projetc\tests\two048.c.obj
+
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\two048.obj
+
+# target to build an object file
+C_\Users\bossu\OneDrive\Documents\projetc\tests\two048.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\two048.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\two048.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\two048.c.obj
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\two048.c.obj
+
+C_\Users\bossu\OneDrive\Documents\projetc\tests\two048.i: C_\Users\bossu\OneDrive\Documents\projetc\tests\two048.c.i
+
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\two048.i
+
+# target to preprocess a source file
+C_\Users\bossu\OneDrive\Documents\projetc\tests\two048.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\two048.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\two048.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\two048.c.i
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\two048.c.i
+
+C_\Users\bossu\OneDrive\Documents\projetc\tests\two048.s: C_\Users\bossu\OneDrive\Documents\projetc\tests\two048.c.s
+
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\two048.s
+
+# target to generate assembly for a file
+C_\Users\bossu\OneDrive\Documents\projetc\tests\two048.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\two048.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\two048.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\two048.c.s
+.PHONY : C_\Users\bossu\OneDrive\Documents\projetc\tests\two048.c.s
 
 # Help Target
 help:
@@ -422,27 +422,27 @@ help:
 	@echo ... minimal
 	@echo ... puzzle
 	@echo ... two048
-	@echo ... C_/Users/Cassim/Documents/projet_c/tests/button.obj
-	@echo ... C_/Users/Cassim/Documents/projet_c/tests/button.i
-	@echo ... C_/Users/Cassim/Documents/projet_c/tests/button.s
-	@echo ... C_/Users/Cassim/Documents/projet_c/tests/frame.obj
-	@echo ... C_/Users/Cassim/Documents/projet_c/tests/frame.i
-	@echo ... C_/Users/Cassim/Documents/projet_c/tests/frame.s
-	@echo ... C_/Users/Cassim/Documents/projet_c/tests/hello_world.obj
-	@echo ... C_/Users/Cassim/Documents/projet_c/tests/hello_world.i
-	@echo ... C_/Users/Cassim/Documents/projet_c/tests/hello_world.s
-	@echo ... C_/Users/Cassim/Documents/projet_c/tests/lines.obj
-	@echo ... C_/Users/Cassim/Documents/projet_c/tests/lines.i
-	@echo ... C_/Users/Cassim/Documents/projet_c/tests/lines.s
-	@echo ... C_/Users/Cassim/Documents/projet_c/tests/minimal.obj
-	@echo ... C_/Users/Cassim/Documents/projet_c/tests/minimal.i
-	@echo ... C_/Users/Cassim/Documents/projet_c/tests/minimal.s
-	@echo ... C_/Users/Cassim/Documents/projet_c/tests/puzzle.obj
-	@echo ... C_/Users/Cassim/Documents/projet_c/tests/puzzle.i
-	@echo ... C_/Users/Cassim/Documents/projet_c/tests/puzzle.s
-	@echo ... C_/Users/Cassim/Documents/projet_c/tests/two048.obj
-	@echo ... C_/Users/Cassim/Documents/projet_c/tests/two048.i
-	@echo ... C_/Users/Cassim/Documents/projet_c/tests/two048.s
+	@echo ... C_/Users/bossu/OneDrive/Documents/projetc/tests/button.obj
+	@echo ... C_/Users/bossu/OneDrive/Documents/projetc/tests/button.i
+	@echo ... C_/Users/bossu/OneDrive/Documents/projetc/tests/button.s
+	@echo ... C_/Users/bossu/OneDrive/Documents/projetc/tests/frame.obj
+	@echo ... C_/Users/bossu/OneDrive/Documents/projetc/tests/frame.i
+	@echo ... C_/Users/bossu/OneDrive/Documents/projetc/tests/frame.s
+	@echo ... C_/Users/bossu/OneDrive/Documents/projetc/tests/hello_world.obj
+	@echo ... C_/Users/bossu/OneDrive/Documents/projetc/tests/hello_world.i
+	@echo ... C_/Users/bossu/OneDrive/Documents/projetc/tests/hello_world.s
+	@echo ... C_/Users/bossu/OneDrive/Documents/projetc/tests/lines.obj
+	@echo ... C_/Users/bossu/OneDrive/Documents/projetc/tests/lines.i
+	@echo ... C_/Users/bossu/OneDrive/Documents/projetc/tests/lines.s
+	@echo ... C_/Users/bossu/OneDrive/Documents/projetc/tests/minimal.obj
+	@echo ... C_/Users/bossu/OneDrive/Documents/projetc/tests/minimal.i
+	@echo ... C_/Users/bossu/OneDrive/Documents/projetc/tests/minimal.s
+	@echo ... C_/Users/bossu/OneDrive/Documents/projetc/tests/puzzle.obj
+	@echo ... C_/Users/bossu/OneDrive/Documents/projetc/tests/puzzle.i
+	@echo ... C_/Users/bossu/OneDrive/Documents/projetc/tests/puzzle.s
+	@echo ... C_/Users/bossu/OneDrive/Documents/projetc/tests/two048.obj
+	@echo ... C_/Users/bossu/OneDrive/Documents/projetc/tests/two048.i
+	@echo ... C_/Users/bossu/OneDrive/Documents/projetc/tests/two048.s
 .PHONY : help
 
 
