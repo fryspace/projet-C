@@ -10,7 +10,7 @@ int main(int argc, char* argv[])
 	ei_surface_t			main_window		= NULL;
 	ei_size_t			main_window_size	= ei_size(640, 480);
 	ei_event_t			event;
-	uint32_t			white			= 0xffffffff;
+	uint32_t			white			= 0x696969ff;
 	uint32_t*			pixel_ptr;
 	int				i;
 
