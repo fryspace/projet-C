@@ -10,7 +10,7 @@ int main(int argc, char* argv[])
 	ei_surface_t			main_window		= NULL;
 	ei_size_t			main_window_size	= ei_size(640, 480);
 	ei_event_t			event;
-	uint32_t			white			= 0xff0000ff;
+	uint32_t			white			= 0x696969ff;
 	uint32_t*			pixel_ptr;
 	int				i;
 
@@ -22,6 +22,8 @@ int main(int argc, char* argv[])
 
 	// Lock the surface for drawing, fill in white, unlock, update screen.
 	hw_surface_lock(main_window);
+
+
 	
 	pixel_ptr = (uint32_t*)hw_surface_get_buffer(main_window);
 	for (i = 0; i < (main_window_size.width * main_window_size.height); i++)
