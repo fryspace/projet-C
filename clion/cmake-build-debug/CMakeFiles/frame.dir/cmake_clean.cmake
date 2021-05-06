@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/frame.dir/C_/Users/bossu/OneDrive/Documents/projetc/tests/frame.c.obj"
+  "CMakeFiles/frame.dir/C_/Users/Cassim/Documents/projet_c/tests/frame.c.obj"
   "frame.exe"
   "frame.exe.manifest"
   "frame.lib"

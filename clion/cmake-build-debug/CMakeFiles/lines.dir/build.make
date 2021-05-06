@@ -46,10 +46,10 @@ RM = "C:\Program Files\JetBrains\CLion 2021.1.1\bin\cmake\win\bin\cmake.exe" -E 
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Users\bossu\OneDrive\Documents\projetc\clion
+CMAKE_SOURCE_DIR = C:\Users\Cassim\Documents\projet_c\clion
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\bossu\OneDrive\Documents\projetc\clion\cmake-build-debug
+CMAKE_BINARY_DIR = C:\Users\Cassim\Documents\projet_c\clion\cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles\lines.dir\depend.make
@@ -60,44 +60,44 @@ include CMakeFiles\lines.dir\progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles\lines.dir\flags.make
 
-CMakeFiles\lines.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\lines.c.obj: CMakeFiles\lines.dir\flags.make
-CMakeFiles\lines.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\lines.c.obj: C:\Users\bossu\OneDrive\Documents\projetc\tests\lines.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\bossu\OneDrive\Documents\projetc\clion\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/lines.dir/C_/Users/bossu/OneDrive/Documents/projetc/tests/lines.c.obj"
-	C:\PROGRA~2\MICROS~4\2019\COMMUN~1\VC\Tools\MSVC\1428~1.299\bin\Hostx64\x64\cl.exe @<<
- /nologo $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) /FoCMakeFiles\lines.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\lines.c.obj /FdCMakeFiles\lines.dir\ /FS -c C:\Users\bossu\OneDrive\Documents\projetc\tests\lines.c
+CMakeFiles\lines.dir\C_\Users\Cassim\Documents\projet_c\tests\lines.c.obj: CMakeFiles\lines.dir\flags.make
+CMakeFiles\lines.dir\C_\Users\Cassim\Documents\projet_c\tests\lines.c.obj: C:\Users\Cassim\Documents\projet_c\tests\lines.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Cassim\Documents\projet_c\clion\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/lines.dir/C_/Users/Cassim/Documents/projet_c/tests/lines.c.obj"
+	C:\PROGRA~2\MICROS~3\2017\BUILDT~1\VC\Tools\MSVC\1416~1.270\bin\Hostx64\x64\cl.exe @<<
+ /nologo $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) /FoCMakeFiles\lines.dir\C_\Users\Cassim\Documents\projet_c\tests\lines.c.obj /FdCMakeFiles\lines.dir\ /FS -c C:\Users\Cassim\Documents\projet_c\tests\lines.c
 <<
 
-CMakeFiles\lines.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\lines.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/lines.dir/C_/Users/bossu/OneDrive/Documents/projetc/tests/lines.c.i"
-	C:\PROGRA~2\MICROS~4\2019\COMMUN~1\VC\Tools\MSVC\1428~1.299\bin\Hostx64\x64\cl.exe > CMakeFiles\lines.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\lines.c.i @<<
- /nologo $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\bossu\OneDrive\Documents\projetc\tests\lines.c
+CMakeFiles\lines.dir\C_\Users\Cassim\Documents\projet_c\tests\lines.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/lines.dir/C_/Users/Cassim/Documents/projet_c/tests/lines.c.i"
+	C:\PROGRA~2\MICROS~3\2017\BUILDT~1\VC\Tools\MSVC\1416~1.270\bin\Hostx64\x64\cl.exe > CMakeFiles\lines.dir\C_\Users\Cassim\Documents\projet_c\tests\lines.c.i @<<
+ /nologo $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\Cassim\Documents\projet_c\tests\lines.c
 <<
 
-CMakeFiles\lines.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\lines.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/lines.dir/C_/Users/bossu/OneDrive/Documents/projetc/tests/lines.c.s"
-	C:\PROGRA~2\MICROS~4\2019\COMMUN~1\VC\Tools\MSVC\1428~1.299\bin\Hostx64\x64\cl.exe @<<
- /nologo $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) /FoNUL /FAs /FaCMakeFiles\lines.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\lines.c.s /c C:\Users\bossu\OneDrive\Documents\projetc\tests\lines.c
+CMakeFiles\lines.dir\C_\Users\Cassim\Documents\projet_c\tests\lines.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/lines.dir/C_/Users/Cassim/Documents/projet_c/tests/lines.c.s"
+	C:\PROGRA~2\MICROS~3\2017\BUILDT~1\VC\Tools\MSVC\1416~1.270\bin\Hostx64\x64\cl.exe @<<
+ /nologo $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) /FoNUL /FAs /FaCMakeFiles\lines.dir\C_\Users\Cassim\Documents\projet_c\tests\lines.c.s /c C:\Users\Cassim\Documents\projet_c\tests\lines.c
 <<
 
 # Object files for target lines
 lines_OBJECTS = \
-"CMakeFiles\lines.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\lines.c.obj"
+"CMakeFiles\lines.dir\C_\Users\Cassim\Documents\projet_c\tests\lines.c.obj"
 
 # External object files for target lines
 lines_EXTERNAL_OBJECTS =
 
-lines.exe: CMakeFiles\lines.dir\C_\Users\bossu\OneDrive\Documents\projetc\tests\lines.c.obj
+lines.exe: CMakeFiles\lines.dir\C_\Users\Cassim\Documents\projet_c\tests\lines.c.obj
 lines.exe: CMakeFiles\lines.dir\build.make
 lines.exe: ei.lib
-lines.exe: C:\Users\bossu\OneDrive\Documents\projetc\_win\eibase64.lib
+lines.exe: C:\Users\Cassim\Documents\projet_c\_win\eibase64.lib
 lines.exe: C:\projetc\SDL2_windows\lib\x64\SDL2.lib
 lines.exe: C:\projetc\SDL2_windows\lib\x64\SDL2_gfx.lib
 lines.exe: C:\projetc\SDL2_windows\lib\x64\SDL2_ttf.lib
 lines.exe: C:\projetc\SDL2_windows\lib\x64\FreeImage.lib
 lines.exe: CMakeFiles\lines.dir\objects1.rsp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\bossu\OneDrive\Documents\projetc\clion\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable lines.exe"
-	"C:\Program Files\JetBrains\CLion 2021.1.1\bin\cmake\win\bin\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\lines.dir --rc=C:\PROGRA~2\WI3CF2~1\10\bin\100190~1.0\x64\rc.exe --mt=C:\PROGRA~2\WI3CF2~1\10\bin\100190~1.0\x64\mt.exe --manifests -- C:\PROGRA~2\MICROS~4\2019\COMMUN~1\VC\Tools\MSVC\1428~1.299\bin\Hostx64\x64\link.exe /nologo @CMakeFiles\lines.dir\objects1.rsp @<<
- /out:lines.exe /implib:lines.lib /pdb:C:\Users\bossu\OneDrive\Documents\projetc\clion\cmake-build-debug\lines.pdb /version:0.0 /machine:x64 /debug /INCREMENTAL /subsystem:console  ei.lib C:\Users\bossu\OneDrive\Documents\projetc\_win\eibase64.lib C:\projetc\SDL2_windows\lib\x64\SDL2.lib C:\projetc\SDL2_windows\lib\x64\SDL2_gfx.lib C:\projetc\SDL2_windows\lib\x64\SDL2_ttf.lib C:\projetc\SDL2_windows\lib\x64\FreeImage.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib 
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\Cassim\Documents\projet_c\clion\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable lines.exe"
+	"C:\Program Files\JetBrains\CLion 2021.1.1\bin\cmake\win\bin\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\lines.dir --rc=C:\PROGRA~2\WI3CF2~1\10\bin\100177~1.0\x64\rc.exe --mt=C:\PROGRA~2\WI3CF2~1\10\bin\100177~1.0\x64\mt.exe --manifests -- C:\PROGRA~2\MICROS~3\2017\BUILDT~1\VC\Tools\MSVC\1416~1.270\bin\Hostx64\x64\link.exe /nologo @CMakeFiles\lines.dir\objects1.rsp @<<
+ /out:lines.exe /implib:lines.lib /pdb:C:\Users\Cassim\Documents\projet_c\clion\cmake-build-debug\lines.pdb /version:0.0 /machine:x64 /debug /INCREMENTAL /subsystem:console  ei.lib C:\Users\Cassim\Documents\projet_c\_win\eibase64.lib C:\projetc\SDL2_windows\lib\x64\SDL2.lib C:\projetc\SDL2_windows\lib\x64\SDL2_gfx.lib C:\projetc\SDL2_windows\lib\x64\SDL2_ttf.lib C:\projetc\SDL2_windows\lib\x64\FreeImage.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib 
 <<
 
 # Rule to build all files generated by this target.
@@ -110,6 +110,6 @@ CMakeFiles\lines.dir\clean:
 .PHONY : CMakeFiles\lines.dir\clean
 
 CMakeFiles\lines.dir\depend:
-	$(CMAKE_COMMAND) -E cmake_depends "NMake Makefiles" C:\Users\bossu\OneDrive\Documents\projetc\clion C:\Users\bossu\OneDrive\Documents\projetc\clion C:\Users\bossu\OneDrive\Documents\projetc\clion\cmake-build-debug C:\Users\bossu\OneDrive\Documents\projetc\clion\cmake-build-debug C:\Users\bossu\OneDrive\Documents\projetc\clion\cmake-build-debug\CMakeFiles\lines.dir\DependInfo.cmake --color=$(COLOR)
+	$(CMAKE_COMMAND) -E cmake_depends "NMake Makefiles" C:\Users\Cassim\Documents\projet_c\clion C:\Users\Cassim\Documents\projet_c\clion C:\Users\Cassim\Documents\projet_c\clion\cmake-build-debug C:\Users\Cassim\Documents\projet_c\clion\cmake-build-debug C:\Users\Cassim\Documents\projet_c\clion\cmake-build-debug\CMakeFiles\lines.dir\DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles\lines.dir\depend
 
