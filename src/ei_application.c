@@ -2,26 +2,39 @@
 // Created by bossu on 06/05/2021.
 //
 
+#include <stdio.h>
 #include "ei_application.h"
 #include "ei_types.h"
 #include "ei_widget.h"
 #include "ei_widgetclass.h"
+#include <stdio.h>
+
+ei_surface_t main_window;
+ei_surface_t surface_offscreen;
 
 void ei_app_create(ei_size_t main_window_size, ei_bool_t fullscreen){
     hw_init();
-    if (fullscreen== EI_FALSE){
-        ei_widget_t root={"root", NULL, NULL, NULL, NULL, NULL, NULL,
-                          NULL, NULL, NULL, main_window_size, 0, 0, main_window_size, NULL};
-        ei_widgetclass_register("root")
-        main_window = hw_create_window(main_window_size, fullscreen)
-    }
+
+    main_window = hw_create_window(main_window_size, fullscreen);
+
+    surface_offscreen = hw_surface_create(main_window, main_window_size, EI_FALSE);
+
+    ei_widget_t* root = ei_widget_create("frame", NULL, NULL, NULL);
+    root->requested_size = main_window_size;
+    root->screen_location.size.width = main_window_size.width;
+    root->screen_location.size.height = main_window_size.height;
+
 }
 
 void ei_app_run(){
-    getchar()
+    getchar();
 }
 
 void ei_app_free(){
+
+}
+
+ei_widget_t*  ei_app_root_widget(){
 
 }
 
