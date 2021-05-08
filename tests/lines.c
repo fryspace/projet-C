@@ -102,7 +102,7 @@ void test_square(ei_surface_t surface, ei_rect_t* clipper)
 	pts[i-1].next = NULL;
 
 	/* Draw the form with polylines */
-	ei_draw_polyline(surface, pts, color, clipper);
+	ei_draw_polygon(surface, pts, color, clipper);
 }
 
 
