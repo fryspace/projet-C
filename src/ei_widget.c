@@ -6,13 +6,65 @@
 #include <malloc.h>
 #include "ei_draw.h"
 #include "ei_application.h"
+#include "ei_frame.h"
+#include "ei_types.h"
+#include <assert.h>
 
 
 
 
 void ei_frame_configure	(ei_widget_t* widget, ei_size_t*	requested_size, const ei_color_t* color,int* border_width, ei_relief_t* relief,
                             char** text, ei_font_t* text_font, ei_color_t*	text_color, ei_anchor_t* text_anchor, ei_surface_t* img, ei_rect_t** img_rect, ei_anchor_t*	img_anchor){
+    ei_frame_t* frame=(ei_frame_t*)widget; //voir page22
+    if(color!=NULL){
+        frame->color=color;
+    }
+    else{
+        frame->color=&ei_default_background_color;
+    }
 
+    if(border_width!=NULL){
+        frame->border_width=border_width;
+    }
+    else{
+        frame->border_width=0;
+    }
+    if(relief!=NULL && border_width!=0){
+        frame->relief=relief;
+    }
+    else{
+        frame->relief=ei_relief_none;
+    }
+    assert(text!=NULL && img!=NULL);
+    frame->text=text;
+
+    if(text_font!=NULL){
+        frame->text_font=text_font;
+    }
+    else{
+        frame->text_font=ei_default_font;
+    }
+    if(text_color!=NULL){
+        frame->text_color=text_color;
+    }
+    else{
+        frame->text_color=&ei_font_default_color;
+    }
+    if(text_anchor!=NULL){
+        frame->text_anchor=text_anchor;
+    }
+    else{
+        frame->text_anchor= ei_anc_center;
+    }
+    frame->img=img;
+
+    if(img_anchor!=NULL){
+        frame->img_anchor=img_anchor;
+    }
+    else{
+        frame->img_anchor=ei_anc_center;
+    }
+    frame->img_rect=img_rect;
 
 }
 
