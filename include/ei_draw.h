@@ -65,8 +65,8 @@ void			ei_draw_polyline	(ei_surface_t			surface,
  */
 void			ei_draw_polygon		(ei_surface_t			surface,
 						 const ei_linked_point_t*	first_point,
-						 ei_color_t			color,
-						 const ei_rect_t*		clipper);
+                                        ei_color_t			color,
+                                        const ei_rect_t*		clipper);
 
 /**
  * \brief	Draws text by calling \ref hw_text_create_surface.
@@ -99,7 +99,7 @@ void			ei_draw_text		(ei_surface_t		surface,
  */
 void			ei_fill			(ei_surface_t		surface,
 						 const ei_color_t*	color,
-						 const ei_rect_t*	clipper);
+                                    const ei_rect_t*	clipper);
 
 
 /**

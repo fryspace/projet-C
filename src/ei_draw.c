@@ -409,18 +409,14 @@ void ei_draw_polygon (ei_surface_t  surface, const ei_linked_point_t*   first_po
         struct TC *my_tc = initialisation_TC(first_point, limit);
         //TCA construction
         struct side *real_TCA = NULL;
-        while (my_tc != NULL){
+        for (int i = limit.y_min; i<= limit.y_max; i++){
             add_TC(&my_tc->side, &real_TCA);
             suppression_TCA(my_tc->state,&real_TCA);
             trier_TCA(&real_TCA);
-            int my_state = my_tc->state;
-            filled(my_state, &real_TCA, color, surface, clipper);
+            filled(i, &real_TCA, color, surface, clipper);
             my_tc=my_tc->next;
             increment(&real_TCA);
         }
-
     }
-
-
 }
 
