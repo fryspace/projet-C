@@ -63,7 +63,8 @@ void test_octogone(ei_surface_t surface, ei_rect_t* clipper)
 	pts[i-1].next = NULL;
 
 	/* Draw the form with polylines */
-	ei_draw_polyline(surface, pts, color, clipper);
+    ei_draw_polygon(surface, pts, color, clipper);
+	//ei_draw_polyline(surface, pts, color, clipper);
 }
 
 
@@ -77,7 +78,7 @@ void test_octogone(ei_surface_t surface, ei_rect_t* clipper)
 void test_square(ei_surface_t surface, ei_rect_t* clipper)
 {
 	ei_color_t		color		= { 255, 0, 0, 255 };
-	ei_linked_point_t	pts[5];
+	ei_linked_point_t	pts[6];
 	int			i, xdiff, ydiff;
 
 	/* Initialisation */
@@ -150,7 +151,7 @@ int main(int argc, char** argv)
 
 	/* Draw polylines. */
 	test_line(main_window, clipper_ptr);
-	test_octogone	(main_window, clipper_ptr);
+	//test_octogone	(main_window, clipper_ptr);
 	test_square	(main_window, clipper_ptr);
 	test_dot	(main_window, clipper_ptr);
 	

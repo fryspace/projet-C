@@ -194,25 +194,21 @@ struct Y{
  */
 
 
-struct Y limits (ei_linked_point_t **first_point){
-    ei_point_t point = {1,1};
-    ei_linked_point_t sent = {point, *first_point};
-    ei_linked_point_t *queue = &sent;
-    struct Y limits={INT_MAX, 0};
-    while(queue->next != NULL){
-        if (queue->next->point.y < limits.y_min){
-            limits.y_min = queue->next->point.y;
+struct Y limits (ei_linked_point_t *first_point){
+    struct Y limits = {INT_MAX, 0};
+    while(first_point->next != NULL){
+        if (first_point->next->point.y < limits.y_min){
+            limits.y_min = first_point->next->point.y;
         }
-        if(queue->next->point.y > limits.y_max){
-            limits.y_max = queue->next->point.y;
+        if(first_point->next->point.y > limits.y_max){
+            limits.y_max = first_point->next->point.y;
         }
-        queue=queue->next;
+        first_point=first_point->next;
     }
-    *first_point=sent.next;
     return limits;
 }
 
- struct side *add_side(int y, float x, float m_inverse, struct side *my_side){
+struct side *add_side(int y, float x, float m_inverse, struct side *my_side){
     struct side sent={0,0,0,my_side};
     struct side *queue = &sent;
     while(queue->next != NULL){
@@ -224,13 +220,17 @@ struct Y limits (ei_linked_point_t **first_point){
     queue->next->x_min = x;
     queue->next->m_inverse = m_inverse;
     queue->next->next=NULL;
+
     my_side = sent.next;
     return my_side;
 }
 
 struct TC *initialisation_TC(ei_linked_point_t *first_point, struct Y limits){
-    struct TC my_tc = {0, NULL, NULL};
-    struct TC *real_tc = &my_tc;
+    //struct TC my_tc = {0, NULL, NULL};
+    struct TC *real_tc = malloc(sizeof(struct TC));
+    real_tc->state = 0;
+    real_tc->side = NULL;
+    real_tc->next = NULL;
     struct TC sent ={0,NULL, real_tc};
     ei_point_t point = {1,1};
     ei_linked_point_t sent2 = {point, first_point};
@@ -242,10 +242,10 @@ struct TC *initialisation_TC(ei_linked_point_t *first_point, struct Y limits){
                 float m= ((float)(queue->next->point.x - queue->next->next->point.x)/(float)(queue->next->point.y - queue->next->next->point.y));
                 if(queue->next->point.y > queue->next->next->point.y){
                     float x = (float)queue->next->point.x;
-                    real_tc->side=add_side(queue->next->point.y, x , m, real_tc->side);
+                    real_tc->side = add_side(queue->next->point.y, x , m, real_tc->side);
                 }else{
                     float x = (float)queue->next->point.x;
-                    real_tc->side=add_side(queue->next->next->point.y, x, m, real_tc->side);
+                    real_tc->side = add_side(queue->next->next->point.y, x, m, real_tc->side);
                 }
             }queue = queue->next;
         }
@@ -254,14 +254,15 @@ struct TC *initialisation_TC(ei_linked_point_t *first_point, struct Y limits){
                        (float) (queue->next->point.y - sent2.next->point.y));
             if (queue->next->point.y > sent2.next->point.y) {
                 float x = (float) queue->next->point.x;
-                real_tc->side=add_side(queue->next->point.y, x, m, real_tc->side);
+                real_tc->side = add_side(queue->next->point.y, x, m, real_tc->side);
             } else {
                 float x = (float) queue->next->point.x;
-                real_tc->side=add_side(sent2.next->point.y, x, m, real_tc->side);
+                real_tc->side = add_side(sent2.next->point.y, x, m, real_tc->side);
             }
         }
         first_point = sent2.next;
         real_tc->next=malloc(sizeof (struct TC));
+        real_tc->next->state = 0;
         real_tc->next->next = NULL;
         real_tc->next->side =NULL;
         real_tc=real_tc->next;
@@ -351,19 +352,19 @@ void filled(int y,struct side **TCA,ei_color_t  color, ei_surface_t  surface, co
         if (colo == true){
             ei_linked_point_t pts[2];
             if ((int)queue->next->x_min==queue->next->x_min){
-                ei_point_t point1={(int)queue->next->x_min,y};
-                pts[0].point=point1;
+                pts[0].point.x = (int)queue->next->x_min;
+                pts[0].point.y = y;
             }else{
-                ei_point_t point1= {(int) ceilf(queue->next->x_min), y};
-                pts[0].point=point1;
+                pts[0].point.x = (int) ceilf(queue->next->x_min);
+                pts[0].point.y = y;
             }
             pts[0].next=&pts[1];
             if ((int)queue->next->next->x_min == queue->next->next->x_min){
-                ei_point_t point2= {(int)queue->next->next->x_min - 1, y};
-                pts[1].point=point2;
+                pts[1].point.x = (int)queue->next->next->x_min - 1;
+                pts[1].point.y = y;
             }else{
-                ei_point_t point2= {(int)floorf(queue->next->next->x_min), y};
-                pts[1].point=point2;
+                pts[1].point.x = (int)floorf(queue->next->next->x_min);
+                pts[1].point.y = y;
             }
             pts[1].next=NULL;
             ei_draw_polyline(surface,pts,color,clipper);
@@ -403,12 +404,12 @@ void ei_draw_polygon (ei_surface_t  surface, const ei_linked_point_t*   first_po
                       , const ei_rect_t*    clipper){
     if (first_point != NULL){
         // limits of the scanline
-        struct Y limit= limits(&first_point);
+        struct Y limit = limits(first_point);
         // TC construction
         struct TC *my_tc = initialisation_TC(first_point, limit);
         //TCA construction
         struct side *real_TCA = NULL;
-        while ((my_tc != NULL) || (real_TCA != NULL)){
+        while (my_tc != NULL){
             add_TC(&my_tc->side, &real_TCA);
             suppression_TCA(my_tc->state,&real_TCA);
             trier_TCA(&real_TCA);
