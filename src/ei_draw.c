@@ -157,7 +157,14 @@ void ei_fill(ei_surface_t surface, const ei_color_t* color, const ei_rect_t* cli
 
 /**
  * \brief represent the side of a polygon.
+ *
+ * -y_max: defines until which y the side needs to be treat
+ * -x_min: defines which is the x of the y_min of the side, after the initializations, it represents the x of the side
+ * for the current y
+ * -m_inverse: represents dx/dy
+ * -next: pointer on another side
  */
+
 struct side {
     int y_max;
     float x_min;
@@ -167,6 +174,10 @@ struct side {
 
 /**
  * \brief represent the TC of a polygon.
+ *
+ * -state: defines at which y the TC corresponds
+ * -side: pointer on the side too add at this side
+ * -next: pointer on a structures representing the next state
  */
 struct TC {
     int state;
@@ -187,7 +198,7 @@ struct Y{
 /**
  * \brief Search the limits of the scanline to build the TC of a Polygon
  *
- * @param first_point first_point 	The head of a linked list of the points of the line. It is either
+ * @param first_point  The head of a linked list of the points of the line. It is either
  *				NULL (i.e. draws nothing), or has more than 2 points. The last point
  *				is implicitly connected to the first point, i.e. polygons are
  *				closed, it is not necessary to repeat the first point.
@@ -208,6 +219,18 @@ struct Y limits (ei_linked_point_t *first_point){
     return limits;
 }
 
+/**
+ * \brief add a side at the end of a side chain
+ *
+ * @param   y   the value to add to then new side for y_max parameter
+ *
+ * @param   x   the value to add to the new side for x_min parameter
+ *
+ * @param   m_inverse   the value to add to the new side for m_inverse parameter
+ *
+ * @param   my_side     a pointer on a chained side which we want to add a new_side
+ */
+
 struct side *add_side(int y, float x, float m_inverse, struct side *my_side){
     struct side sent={0,0,0,my_side};
     struct side *queue = &sent;
@@ -224,6 +247,17 @@ struct side *add_side(int y, float x, float m_inverse, struct side *my_side){
     my_side = sent.next;
     return my_side;
 }
+
+/**
+ * \brief	Initialise the TC needed to draw a polygon
+ *
+ * @param	first_point 	The head of a linked list of the points of the line. It is either
+ *				NULL (i.e. draws nothing), or has more than 2 points. The last point
+ *				is implicitly connected to the first point, i.e. polygons are
+ *				closed, it is not necessary to repeat the first point.
+ *
+ * @param	limits      the limits of the points and side to draw the polygon
+ */
 
 struct TC *initialisation_TC(ei_linked_point_t *first_point, struct Y limits){
     //struct TC my_tc = {0, NULL, NULL};
@@ -271,6 +305,16 @@ struct TC *initialisation_TC(ei_linked_point_t *first_point, struct Y limits){
     return real_tc;
 }
 
+
+/**
+ * \brief	add a TC side to the TCA, respecting the increasing order of the TCA
+ *
+ * @param	tc_side     a side of a TC to be add
+ *
+ * @param	TCA     a side which will help to fill the pixels of the polygon
+ */
+
+
 void add_TC(struct side **tc_side, struct side **TCA){
     struct side sent = {0,0,0, *TCA};
     struct side *queue = &sent;
@@ -308,6 +352,14 @@ void add_TC(struct side **tc_side, struct side **TCA){
     *TCA=sent.next;
 }
 
+/**
+ * \brief	suppress sides which are outdated from the TCA
+ *
+ * @param	y     the number of the current scanline
+ *
+ * @param	TCA     a side which will help to fill the pixels of the polygon
+ */
+
 void suppression_TCA(int y, struct side **TCA){
     struct side sent = {0,0,0, *TCA};
     struct side *queue = &sent;
@@ -327,6 +379,14 @@ void suppression_TCA(int y, struct side **TCA){
     }
     *TCA=sent.next;
 }
+
+/**
+ * \brief	sort the TCA following the increasing order
+ *
+ * @param	y     the number of the current scanline
+ *
+ * @param	TCA     a side which will help to fill the pixels of the polygon
+ */
 
 void trier_TCA(struct side **TCA){
    struct side sent = {0,0,0, *TCA};
@@ -351,6 +411,21 @@ void trier_TCA(struct side **TCA){
    *TCA=sent.next;
 }
 
+
+/**
+ * \brief	fill the pixels on the scanline which needs to be filled
+ *
+ * @param	y     the number of the current scanline
+ *
+ * @param	TCA     a side which will help to fill the pixels of the polygon
+ *
+ * @param	color		The color used to draw the polygon. The alpha channel is managed.
+ *
+ * @param	surface 	Where to draw the polygon. The surface must be *locked* by
+ *				\ref hw_surface_lock.
+ *
+ * @param	clipper		If not NULL, the drawing is restricted within this rectangle.
+ */
 
 void filled(int y,struct side **TCA,ei_color_t  color, ei_surface_t  surface, const ei_rect_t*    clipper){
     struct side sent = {0, 0, 0, *TCA};
@@ -384,6 +459,13 @@ void filled(int y,struct side **TCA,ei_color_t  color, ei_surface_t  surface, co
     }
     *TCA=sent.next;
 }
+
+/**
+ * \brief	refresh the TCA to prepare the next scanline scan
+ *
+ * @param	TCA     a side which will help to fill the pixels of the polygon
+ */
+
 
 void increment(struct side **TCA){
     struct side sent = {0, 0, 0, *TCA};
