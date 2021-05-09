@@ -17,17 +17,17 @@ void ei_frame_configure	(ei_widget_t* widget, ei_size_t*	requested_size, const e
                             char** text, ei_font_t* text_font, ei_color_t*	text_color, ei_anchor_t* text_anchor, ei_surface_t* img, ei_rect_t** img_rect, ei_anchor_t*	img_anchor){
     ei_frame_t* frame=(ei_frame_t*)widget; //voir page22
     if(color!=NULL){
-        frame->color=color;
+        frame->bg_color=color;
     }
     else{
-        frame->color=&ei_default_background_color;
+        frame->bg_color=&ei_default_background_color;
     }
 
     if(border_width!=NULL){
-        frame->border_width=border_width;
+        frame->border=border_width;
     }
     else{
-        frame->border_width=0;
+        frame->border=0;
     }
     if(relief!=NULL && border_width!=0){
         frame->relief=relief;
@@ -35,7 +35,7 @@ void ei_frame_configure	(ei_widget_t* widget, ei_size_t*	requested_size, const e
     else{
         frame->relief=ei_relief_none;
     }
-    assert(text!=NULL && img!=NULL);
+    //assert(text!=NULL && img!=NULL);
     frame->text=text;
 
     if(text_font!=NULL){

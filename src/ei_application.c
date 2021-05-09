@@ -9,10 +9,12 @@
 #include "ei_widgetclass.h"
 #include <stdio.h>
 #include "ei_frame.h"
+#include "bg_utils.h"
 #include <stdbool.h>
 
 ei_surface_t main_window;
 ei_surface_t surface_offscreen;
+ei_widget_t* root;
 
 void ei_app_create(ei_size_t main_window_size, ei_bool_t fullscreen){
     hw_init();
@@ -22,7 +24,7 @@ void ei_app_create(ei_size_t main_window_size, ei_bool_t fullscreen){
     surface_offscreen = hw_surface_create(main_window, main_window_size, EI_FALSE);
     frame_register_class();
 
-    ei_widget_t* root = ei_widget_create("frame", NULL, NULL, NULL);
+    root = ei_widget_create("frame", NULL, NULL, NULL);
     if (root!=NULL) {
         root->requested_size = main_window_size;
         root->screen_location.size.width = main_window_size.width;
@@ -31,12 +33,18 @@ void ei_app_create(ei_size_t main_window_size, ei_bool_t fullscreen){
 
 }
 
-ei_bool_t fin=EI_FALSE;
-
 void ei_app_run(){
-    while (fin==EI_FALSE){
+    hw_surface_lock(main_window);
 
-    }
+    ei_rect_t clipper = hw_surface_get_rect(main_window);
+
+    hw_surface_lock(surface_offscreen);
+
+    draw_widgets(root, main_window, surface_offscreen, &clipper);
+
+    hw_surface_unlock(surface_offscreen);
+    hw_surface_unlock(main_window);
+
     getchar();
 }
 
@@ -44,7 +52,7 @@ void ei_app_free(){
 
 }
 void ei_app_quit_request(void){
-    fin=EI_TRUE;
+
 }
 
 ei_widget_t*  ei_app_root_widget(){
