@@ -94,7 +94,7 @@ ei_widget_t* ei_widget_create (ei_widgetclass_name_t class_name, ei_widget_t* pa
         widget->children_head = NULL;
         widget->children_tail = NULL;
         widget->next_sibling = NULL;
-        widget->pick_color = NULL;
+        widget->pick_color = malloc(sizeof (ei_color_t));
         widget->pick_id = 0;
         widget->placer_params = NULL;
         widget->requested_size.width = 0;

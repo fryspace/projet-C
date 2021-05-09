@@ -9,6 +9,7 @@
 #include "ei_widgetclass.h"
 #include <stdio.h>
 #include "ei_frame.h"
+#include "ei_event.h"
 #include "bg_utils.h"
 #include <stdbool.h>
 
@@ -34,6 +35,7 @@ void ei_app_create(ei_size_t main_window_size, ei_bool_t fullscreen){
 }
 
 void ei_app_run(){
+    ei_event_t		event;
     hw_surface_lock(main_window);
 
     ei_rect_t clipper = hw_surface_get_rect(main_window);
@@ -44,12 +46,16 @@ void ei_app_run(){
 
     hw_surface_unlock(surface_offscreen);
     hw_surface_unlock(main_window);
+    hw_surface_update_rects(main_window, NULL);
 
-    getchar();
+    /* Wait for a character on command line. */
+    event.type = ei_ev_none;
+    while (event.type != ei_ev_keydown)
+        hw_event_wait_next(&event);
 }
 
 void ei_app_free(){
-
+    hw_quit();
 }
 void ei_app_quit_request(void){
 

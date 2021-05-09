@@ -157,7 +157,7 @@ int main(int argc, char** argv)
 	/* Unlock and update the surface. */
 	hw_surface_unlock(main_window);
 	hw_surface_update_rects(main_window, NULL);
-	
+
 	/* Wait for a character on command line. */
 	event.type = ei_ev_none;
 	while (event.type != ei_ev_keydown)

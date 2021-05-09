@@ -22,10 +22,23 @@ ei_color_t *modify_color(ei_color_t *color, ei_color_t *new_color ,float coef){
 
 void draw_widgets(ei_widget_t *widget, ei_surface_t main_windows, ei_surface_t pick_surface, ei_rect_t *clipper){
     if(widget != NULL){
-        widget->wclass->drawfunc(widget, main_windows, pick_surface, clipper);
-        draw_widgets(widget->children_head, main_windows, pick_surface, widget->parent->content_rect);
-        if(widget->next_sibling != NULL){
-            draw_widgets(widget->next_sibling, main_windows, pick_surface, widget->parent->content_rect);
+        if(widget->parent != NULL){
+            if(clipper != NULL){
+                widget->wclass->drawfunc(widget, main_windows, pick_surface, clipper);
+            }else{
+                widget->wclass->drawfunc(widget, main_windows, pick_surface, widget->parent->content_rect);
+            }
+        }else{
+            widget->wclass->drawfunc(widget, main_windows, pick_surface, clipper);
+        }
+
+        if(widget->children_head != NULL){
+            draw_widgets(widget->children_head, main_windows, pick_surface, clipper);
+            ei_widget_t  *queue = widget->children_head->next_sibling;
+            while(queue != NULL){
+                draw_widgets(queue, main_windows, pick_surface, clipper);
+                queue = queue->next_sibling;
+            }
         }
     }
 }
