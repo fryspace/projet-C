@@ -240,12 +240,12 @@ struct TC *initialisation_TC(ei_linked_point_t *first_point, struct Y limits){
         while(queue->next->next != NULL){
             if ((MIN(queue->next->point.y , queue->next->next->point.y) == i) && (queue->next->point.y != queue->next->next->point.y)){
                 float m= ((float)(queue->next->point.x - queue->next->next->point.x)/(float)(queue->next->point.y - queue->next->next->point.y));
-                if(queue->next->point.y > queue->next->next->point.y){
+                if(queue->next->point.y < queue->next->next->point.y){
                     float x = (float)queue->next->point.x;
-                    real_tc->side = add_side(queue->next->point.y, x , m, real_tc->side);
+                    real_tc->side = add_side(queue->next->next->point.y, x , m, real_tc->side);
                 }else{
-                    float x = (float)queue->next->point.x;
-                    real_tc->side = add_side(queue->next->next->point.y, x, m, real_tc->side);
+                    float x = (float)queue->next->next->point.x;
+                    real_tc->side = add_side(queue->next->point.y, x, m, real_tc->side);
                 }
             }queue = queue->next;
         }
@@ -253,7 +253,7 @@ struct TC *initialisation_TC(ei_linked_point_t *first_point, struct Y limits){
             float m = ((float) (queue->next->point.x - sent2.next->point.x) /
                        (float) (queue->next->point.y - sent2.next->point.y));
             if (queue->next->point.y > sent2.next->point.y) {
-                float x = (float) queue->next->point.x;
+                float x = (float) sent2.next->point.x;
                 real_tc->side = add_side(queue->next->point.y, x, m, real_tc->side);
             } else {
                 float x = (float) queue->next->point.x;
@@ -284,7 +284,7 @@ void add_TC(struct side **tc_side, struct side **TCA){
             queue->next=move;
         }else {
             while (queue->next != NULL) {
-                if (queue->next->x_min > queue2->next->x_min) {
+                if (queue->next->x_min >= queue2->next->x_min) {
                     struct side *move = queue2->next;
                     queue2->next = queue2->next->next;
                     move->next = queue->next;
@@ -292,6 +292,12 @@ void add_TC(struct side **tc_side, struct side **TCA){
                     break;
                 } else {
                     queue = queue->next;
+                    if (queue->next == NULL) {
+                        struct side *move = queue2->next;
+                        queue2->next = queue2->next->next;
+                        move->next = NULL;
+                        queue->next = move;
+                    }
                 }
             }
         }
@@ -313,6 +319,7 @@ void suppression_TCA(int y, struct side **TCA){
             }else{
                 free(queue->next);
                 queue->next = NULL;
+                break;
             }
         }
         queue=queue->next;
