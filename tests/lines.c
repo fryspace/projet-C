@@ -36,9 +36,9 @@ void test_button(ei_surface_t surface, ei_rect_t* clipper)
 
     ei_rect_t rect = {top_left, size};
 
-    ei_linked_point_t *pts = ei_rounded_frame(rect, 50, 0, 1000);
+    ei_linked_point_t *pts = ei_rounded_frame(rect, 50, 0, 10);
 
-    ei_draw_polyline(surface, pts, color, clipper);
+    ei_draw_polygon(surface, pts, color, clipper);
 }
 
 /* test_line --
@@ -108,7 +108,7 @@ void test_octogone(ei_surface_t surface, ei_rect_t* clipper)
 	pts[i-1].next = NULL;
 
 	/* Draw the form with polylines */
-	ei_draw_polyline(surface, pts, color, clipper);
+	ei_draw_polygon(surface, pts, color, clipper);
 }
 
 
@@ -147,7 +147,7 @@ void test_square(ei_surface_t surface, ei_rect_t* clipper)
 	pts[i-1].next = NULL;
 
 	/* Draw the form with polylines */
-	ei_draw_polyline(surface, pts, color, clipper);
+	ei_draw_polygon(surface, pts, color, clipper);
 }
 
 
