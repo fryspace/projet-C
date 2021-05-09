@@ -30,15 +30,16 @@ void test_line(ei_surface_t surface, ei_rect_t* clipper)
 
 void test_button(ei_surface_t surface, ei_rect_t* clipper)
 {
-    ei_color_t		color		= { 255, 0, 0, 255 };
-    ei_point_t	top_left = {200, 200};
-    ei_size_t size = {300, 200};
+    ei_color_t		color		= { 150, 0, 160, 255 };
+    ei_point_t	top_left1 = {100, 200};
+    ei_point_t	top_left2 = {450, 200};
+    ei_size_t size = {300, 100};
 
-    ei_rect_t rect = {top_left, size};
+    ei_rect_t rect1 = {top_left1, size};
+    ei_rect_t rect2 = {top_left2, size};
 
-    ei_linked_point_t *pts = ei_rounded_frame(rect, 50, 0, 10);
-
-    ei_draw_polygon(surface, pts, color, clipper);
+    ei_draw_button(rect1, surface, 20, color, 0, clipper);
+    ei_draw_button(rect2, surface, 20, color, 1, clipper);
 }
 
 /* test_line --
@@ -181,8 +182,8 @@ int main(int argc, char** argv)
 	ei_surface_t		main_window	= NULL;
 	ei_color_t		white		= { 0xff, 0xff, 0xff, 0xff };
 	ei_rect_t*		clipper_ptr	= NULL;
-	ei_rect_t		clipper		= ei_rect(ei_point(200, 150), ei_size(400, 300));
-	clipper_ptr		= &clipper;
+	//ei_rect_t		clipper		= ei_rect(ei_point(200, 150), ei_size(400, 300));
+	//clipper_ptr		= &clipper;
 	ei_event_t		event;
 
 	hw_init();
