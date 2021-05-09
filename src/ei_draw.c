@@ -297,6 +297,7 @@ void add_TC(struct side **tc_side, struct side **TCA){
                         queue2->next = queue2->next->next;
                         move->next = NULL;
                         queue->next = move;
+                        break;
                     }
                 }
             }

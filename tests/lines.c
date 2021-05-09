@@ -38,7 +38,7 @@ void test_button(ei_surface_t surface, ei_rect_t* clipper)
 
     ei_linked_point_t *pts = ei_rounded_frame(rect, 50, 0, 10);
 
-    //ei_draw_polygon(surface, pts, color, clipper);
+    ei_draw_polygon(surface, pts, color, clipper);
 }
 
 /* test_line --
@@ -196,9 +196,9 @@ int main(int argc, char** argv)
 	/* Draw polylines. */
     //test_button(main_window, clipper_ptr);
 	//test_line(main_window, clipper_ptr);
-    //test_heart(main_window, clipper_ptr);
-	test_octogone	(main_window, clipper_ptr);
-	test_square	(main_window, clipper_ptr);
+    test_heart(main_window, clipper_ptr);
+	//test_octogone	(main_window, clipper_ptr);
+	//test_square	(main_window, clipper_ptr);
 	//test_dot	(main_window, clipper_ptr);
 	
 	/* Unlock and update the surface. */
