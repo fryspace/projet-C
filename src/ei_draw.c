@@ -510,3 +510,19 @@ void ei_draw_polygon (ei_surface_t  surface, const ei_linked_point_t*   first_po
     }
 }
 
+void ei_draw_text(ei_surface_t surface, const ei_point_t* where, const char* text, ei_font_t font, ei_color_t color, const ei_rect_t* clipper){
+    ei_rect_t rect = hw_surface_get_rect(surface);
+    ei_font_t text_font = font == NULL ? ei_default_font : font;
+
+    ei_surface_t text_surface = hw_text_create_surface(text, text_font, color);
+
+    hw_surface_lock(text_surface);
+    hw_surface_set_origin(text_surface, *where);
+
+    hw_surface_unlock(text_surface);
+    hw_surface_free(text_surface);
+}
+
+int	ei_copy_surface(ei_surface_t destination, const ei_rect_t* dst_rect, ei_surface_t source, const ei_rect_t* src_rect, ei_bool_t alpha){
+
+}
