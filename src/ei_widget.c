@@ -5,13 +5,56 @@
 #include "ei_widgetclass.h"
 #include <malloc.h>
 #include "ei_draw.h"
+#include "ei_button.h"
 #include "ei_application.h"
 #include "ei_frame.h"
 #include "ei_types.h"
 #include <assert.h>
 
+void ei_button_configure(ei_widget_t*		widget,
+                                            ei_size_t*		requested_size,
+                                            const ei_color_t*	color,
+                                            int*			border_width,
+                                            int*			corner_radius,
+                                            ei_relief_t*		relief,
+                                            char**			text,
+                                            ei_font_t*		text_font,
+                                            ei_color_t*		text_color,
+                                            ei_anchor_t*		text_anchor,
+                                            ei_surface_t*		img,
+                                            ei_rect_t**		img_rect,
+                                            ei_anchor_t*		img_anchor,
+                                            ei_callback_t*		callback,
+                                            void**			user_param){
 
+    ei_button_t* button=(ei_button_t*)widget;
 
+    button->bg_color = color!=NULL ? color : &ei_default_background_color;
+
+    button->border = border_width!=NULL ? border_width : 0;
+
+    button->corner_radius = corner_radius!=NULL ? corner_radius : 40;
+
+    button->relief = relief!=NULL && border_width!=0 ? relief : ei_relief_none;
+
+    button->text=text;
+
+    button->text_font= text_font!=NULL ? text_font : ei_default_font;
+
+    button->text_color = text_color!=NULL ? text_color : &ei_font_default_color;
+
+    button->text_anchor = text_anchor!=NULL ? text_anchor : ei_anc_center;
+
+    button->img = img;
+
+    button->img_anchor = img_anchor!=NULL ? img_anchor : ei_anc_center;
+
+    button->img_rect = img_rect;
+
+    button->callback = callback;
+    button->user_param = user_param;
+
+}
 
 void ei_frame_configure	(ei_widget_t* widget, ei_size_t*	requested_size, const ei_color_t* color,int* border_width, ei_relief_t* relief,
                             char** text, ei_font_t* text_font, ei_color_t*	text_color, ei_anchor_t* text_anchor, ei_surface_t* img, ei_rect_t** img_rect, ei_anchor_t*	img_anchor){

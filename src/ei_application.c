@@ -9,6 +9,7 @@
 #include "ei_widgetclass.h"
 #include <stdio.h>
 #include "ei_frame.h"
+#include "ei_button.h"
 #include "ei_event.h"
 #include "bg_utils.h"
 #include <stdbool.h>
@@ -24,6 +25,7 @@ void ei_app_create(ei_size_t main_window_size, ei_bool_t fullscreen){
 
     surface_offscreen = hw_surface_create(main_window, main_window_size, EI_FALSE);
     frame_register_class();
+    button_register_class();
 
     root = ei_widget_create("frame", NULL, NULL, NULL);
     if (root!=NULL) {
