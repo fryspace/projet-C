@@ -20,11 +20,14 @@
 void test_line(ei_surface_t surface, ei_rect_t* clipper)
 {
 	ei_color_t		color		= { 255, 0, 255, 255 };
+    char *text = "SEXE";
 	ei_linked_point_t	pts[2];
+    ei_point_t point = {100, 100};
 
 	pts[0].point.x = 200; pts[0].point.y = 200; pts[0].next = &pts[1];
 	pts[1].point.x = 600; pts[1].point.y = 400; pts[1].next = NULL;
-	
+
+    ei_draw_text(surface, &point, text, ei_default_font,color, clipper);
 	ei_draw_polyline(surface, pts, color, clipper);
 }
 
@@ -53,6 +56,7 @@ void test_heart(ei_surface_t surface, ei_rect_t* clipper)
     ei_color_t		color		= { 255, 0, 0, 255 };
     ei_point_t center1 = {360, 300};
     ei_point_t center2 = {440, 300};
+
     ei_linked_point_t arc;
     ei_linked_point_t *arc1 = &arc;
     ei_linked_point_t arcb;
@@ -68,7 +72,6 @@ void test_heart(ei_surface_t surface, ei_rect_t* clipper)
     pts[2].point.x = 490; pts[2].point.y = 305; pts[2].next = NULL;
 
     ei_draw_polyline(surface, pts, color, clipper);
-
     ei_draw_polyline(surface, arc1, color, clipper);
     ei_draw_polyline(surface, arc2, color, clipper);
 }

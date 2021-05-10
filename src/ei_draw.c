@@ -544,6 +544,11 @@ void ei_draw_text(ei_surface_t surface, const ei_point_t* where, const char* tex
     hw_surface_lock(text_surface);
     hw_surface_set_origin(text_surface, *where);
 
+    ei_rect_t text_rect = hw_surface_get_rect(text_surface);
+    ei_bool_t alpha = hw_surface_has_alpha(text_surface);
+
+    ei_copy_surface(surface, &text_rect, text_surface, &text_rect, alpha);
+
     hw_surface_unlock(text_surface);
     hw_surface_free(text_surface);
 }
@@ -573,8 +578,8 @@ int	ei_copy_surface	(ei_surface_t	destination,    const ei_rect_t*	dst_rect,
                                     ei_surface_t	source, const ei_rect_t*	src_rect,
                                     ei_bool_t	alpha){
     // initialisation and exit cases
-    ei_point_t * dst_buffer;
-    ei_point_t * src_buffer;
+    ei_point_t * dst_buffer = malloc(sizeof(ei_point_t));
+    ei_point_t * src_buffer = malloc(sizeof(ei_point_t));
     int width;
     int height;
     if (dst_rect != NULL){
