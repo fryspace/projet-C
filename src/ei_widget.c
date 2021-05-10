@@ -29,6 +29,11 @@ void ei_button_configure(ei_widget_t*		widget,
 
     ei_button_t* button=(ei_button_t*)widget;
 
+    if(requested_size != NULL){
+        widget->requested_size = *requested_size;
+    }
+
+
     button->bg_color = color!=NULL ? color : &ei_default_background_color;
 
     button->border = border_width!=NULL ? border_width : 0;
@@ -59,6 +64,10 @@ void ei_button_configure(ei_widget_t*		widget,
 void ei_frame_configure	(ei_widget_t* widget, ei_size_t*	requested_size, const ei_color_t* color,int* border_width, ei_relief_t* relief,
                             char** text, ei_font_t* text_font, ei_color_t*	text_color, ei_anchor_t* text_anchor, ei_surface_t* img, ei_rect_t** img_rect, ei_anchor_t*	img_anchor){
     ei_frame_t* frame=(ei_frame_t*)widget; //voir page22
+    if(requested_size!=NULL){
+        frame->widget.requested_size=*requested_size;
+    }
+
     if(color!=NULL){
         frame->bg_color=color;
     }

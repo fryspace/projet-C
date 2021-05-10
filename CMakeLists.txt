@@ -88,6 +88,7 @@ set(LIB_EI_SOURCES
 		${SRC}/ei_widgetclass.c
 		${SRC}/ei_frame.c
 		${SRC}/ei_button.c
+		${SRC}/ei_event.c
 		${SRC}/bg_utils.c
 		${SRC}/bg_button.c
 

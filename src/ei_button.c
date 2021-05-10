@@ -3,7 +3,6 @@
 #include "ei_widget.h"
 #include "ei_button.h"
 #include "bg_button.h"
-#include "bg_utils.h"
 #include <string.h>
 #include <malloc.h>
 
@@ -13,9 +12,9 @@ void button_drawfunc(struct ei_widget_t* widget, ei_surface_t surface, ei_surfac
     ei_button_t  *button = (ei_button_t*) widget;
 
 
-    if(button->relief == ei_relief_none){
-        ei_draw_button(widget->screen_location, surface, button->corner_radius, *button->bg_color, 0, clipper);
-    }
+
+    ei_draw_button(widget->screen_location, surface, *button->corner_radius, *button->bg_color, 0, clipper);
+
 
 
 }

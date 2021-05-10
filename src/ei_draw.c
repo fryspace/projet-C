@@ -14,6 +14,17 @@
 
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
+bool clipper_brute(int x, int y, const ei_rect_t* clipper){
+    if (clipper == NULL){
+        return true;
+    }
+    else if(clipper->top_left.x <= x && clipper->top_left.y<=y &&  clipper->top_left.y+clipper->size.height >=y
+            && clipper->top_left.x + clipper->size.width >=x){
+        return true;
+    }
+    return false;
+}
+
 
 uint32_t ei_map_rgba(ei_surface_t surface, ei_color_t color){
     int ib=0;
@@ -30,13 +41,15 @@ uint32_t ei_map_rgba(ei_surface_t surface, ei_color_t color){
     return result;
 }
 
-void ei_draw_pixel(ei_surface_t surface, ei_color_t color,int x, int y, int width){
-    uint32_t* pixel_ptr = (uint32_t*)hw_surface_get_buffer(surface) + y*width + x;
-    *pixel_ptr= ei_map_rgba(surface, color);
+void ei_draw_pixel(ei_surface_t surface, ei_color_t color,int x, int y, int width, const ei_rect_t* clipper){
+    if (clipper_brute( x, y, clipper)){
+        uint32_t* pixel_ptr = (uint32_t*)hw_surface_get_buffer(surface) + y*width + x;
+        *pixel_ptr= ei_map_rgba(surface, color);
+    }
+
 }
 
-void ei_draw_polyline	(ei_surface_t surface, const ei_linked_point_t*	first_point, ei_color_t	color,
-                          const ei_rect_t*	clipper){
+void ei_draw_polyline	(ei_surface_t surface, const ei_linked_point_t*	first_point, ei_color_t	color, const ei_rect_t*	clipper){
     hw_surface_lock(surface);
     while(first_point->next != NULL){
         int x0 = first_point->point.x;
@@ -51,7 +64,7 @@ void ei_draw_polyline	(ei_surface_t surface, const ei_linked_point_t*	first_poin
 
         if(abs(dx) > abs(dy)  && dx >= 0 && dy >= 0){
             while (x0<x1){
-                ei_draw_pixel(surface, color, x0, y0, size.width);
+                ei_draw_pixel(surface, color, x0, y0, size.width, clipper);
                 x0+=1;
                 error +=dy;
                 if (2*error > dx){
@@ -61,7 +74,7 @@ void ei_draw_polyline	(ei_surface_t surface, const ei_linked_point_t*	first_poin
             }
         } else if(abs(dx) > abs(dy)  && dx > 0 && dy < 0){
             while (x0<x1){
-                ei_draw_pixel(surface, color, x0, y0, size.width);
+                ei_draw_pixel(surface, color, x0, y0, size.width, clipper);
                 x0+=1;
                 error -=dy;
                 if (2*error > dx){
@@ -71,7 +84,7 @@ void ei_draw_polyline	(ei_surface_t surface, const ei_linked_point_t*	first_poin
             }
         }else if(abs(dx) > abs(dy)  && dx < 0 && dy > 0){
             while (x0>x1){
-                ei_draw_pixel(surface, color, x0, y0, size.width);
+                ei_draw_pixel(surface, color, x0, y0, size.width, clipper);
                 x0-=1;
                 error +=dy;
                 if (2*error > dx){
@@ -81,7 +94,7 @@ void ei_draw_polyline	(ei_surface_t surface, const ei_linked_point_t*	first_poin
             }
         } else if(abs(dx) > abs(dy)  && dx <= 0 && dy <= 0){
             while (x0>x1){
-                ei_draw_pixel(surface, color, x0, y0, size.width);
+                ei_draw_pixel(surface, color, x0, y0, size.width, clipper);
                 x0-=1;
                 error +=dy;
                 if (2*error < dx){
@@ -91,7 +104,7 @@ void ei_draw_polyline	(ei_surface_t surface, const ei_linked_point_t*	first_poin
             }
         } else if (abs(dy) > abs(dx) && dx >= 0 && dy >= 0) {
             while (y0<y1){
-                ei_draw_pixel(surface, color, x0, y0, size.width);
+                ei_draw_pixel(surface, color, x0, y0, size.width, clipper);
                 y0+=1;
                 error +=dx;
                 if (2*error > dy){
@@ -101,7 +114,7 @@ void ei_draw_polyline	(ei_surface_t surface, const ei_linked_point_t*	first_poin
             }
         } else if (abs(dy) > abs(dx) && dx <= 0 && dy <= 0) {
             while (y0>y1){
-                ei_draw_pixel(surface, color, x0, y0, size.width);
+                ei_draw_pixel(surface, color, x0, y0, size.width, clipper);
                 y0-=1;
                 error +=dx;
                 if (2*error < dy){
@@ -111,7 +124,7 @@ void ei_draw_polyline	(ei_surface_t surface, const ei_linked_point_t*	first_poin
             }
         } else if (abs(dy) > abs(dx) && dx > 0 && dy < 0) {
             while (y0>y1){
-                ei_draw_pixel(surface, color, x0, y0, size.width);
+                ei_draw_pixel(surface, color, x0, y0, size.width, clipper);
                 y0-=1;
                 error +=dx;
                 if (2*error > dy){
@@ -121,7 +134,7 @@ void ei_draw_polyline	(ei_surface_t surface, const ei_linked_point_t*	first_poin
             }
         } else if (abs(dy) > abs(dx) && dx < 0 && dy > 0) {
             while (y0<y1){
-                ei_draw_pixel(surface, color, x0, y0, size.width);
+                ei_draw_pixel(surface, color, x0, y0, size.width, clipper);
                 y0+=1;
                 error -=dx;
                 if (2*error > dy){
@@ -130,7 +143,7 @@ void ei_draw_polyline	(ei_surface_t surface, const ei_linked_point_t*	first_poin
                 }
             }
         } else if (dx == 0 && dy == 0){
-            ei_draw_pixel(surface, color, x0, y0, size.width);
+            ei_draw_pixel(surface, color, x0, y0, size.width, clipper);
         }
 
 
@@ -147,9 +160,16 @@ void ei_fill(ei_surface_t surface, const ei_color_t* color, const ei_rect_t* cli
 
     ei_size_t size = hw_surface_get_size(surface);
 
-    uint32_t* pixel_ptr = (uint32_t*)hw_surface_get_buffer(surface);
-    for (int i = 0; i < (size.width * size.height); i++)
-        *pixel_ptr++ = ei_map_rgba(surface, *color);
+
+    for(int x = 0; x <= size.width; x++){
+        for(int y = 0; y <= size.height; y++){
+            if (clipper_brute( x, y, clipper)){
+                uint32_t* pixel_ptr = (uint32_t*)hw_surface_get_buffer(surface) + y*size.width + x;
+                *pixel_ptr= ei_map_rgba(surface, *color);
+            }
+        }
+    }
+
 
     hw_surface_unlock(surface);
 }

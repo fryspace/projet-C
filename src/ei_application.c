@@ -17,6 +17,7 @@
 ei_surface_t main_window;
 ei_surface_t surface_offscreen;
 ei_widget_t* root;
+ei_bool_t MAIN_LOOP_EXIT = EI_FALSE;
 
 void ei_app_create(ei_size_t main_window_size, ei_bool_t fullscreen){
     hw_init();
@@ -38,32 +39,34 @@ void ei_app_create(ei_size_t main_window_size, ei_bool_t fullscreen){
 
 void ei_app_run(){
     ei_event_t		event;
-    hw_surface_lock(main_window);
+    while(MAIN_LOOP_EXIT != EI_TRUE){
+        hw_surface_lock(main_window);
 
-    ei_rect_t clipper = hw_surface_get_rect(main_window);
+        ei_rect_t clipper = hw_surface_get_rect(main_window);
 
-    hw_surface_lock(surface_offscreen);
+        hw_surface_lock(surface_offscreen);
 
-    draw_widgets(root, main_window, surface_offscreen, &clipper);
+        draw_widgets(root, main_window, surface_offscreen, &clipper);
 
-    hw_surface_unlock(surface_offscreen);
-    hw_surface_unlock(main_window);
-    hw_surface_update_rects(main_window, NULL);
+        hw_surface_unlock(surface_offscreen);
+        hw_surface_unlock(main_window);
+        hw_surface_update_rects(main_window, NULL);
 
-    /* Wait for a character on command line. */
-    event.type = ei_ev_none;
-    while (event.type != ei_ev_keydown)
-        hw_event_wait_next(&event);
+        /* Wait for a character on command line. */
+        event.type = ei_ev_none;
+        while (event.type != ei_ev_keydown)
+            hw_event_wait_next(&event);
+    }
 }
 
 void ei_app_free(){
     hw_quit();
 }
 void ei_app_quit_request(void){
-
+    MAIN_LOOP_EXIT = EI_TRUE;
 }
 
 ei_widget_t*  ei_app_root_widget(){
-
+    return root;
 }
 

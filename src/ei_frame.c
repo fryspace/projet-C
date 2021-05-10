@@ -23,9 +23,11 @@ void frame_drawfunc(struct ei_widget_t* widget, ei_surface_t surface, ei_surface
 
    // ei_rect_t rect = {top_left, rect_size};
 
-    if(frame->relief == ei_relief_none){
-        ei_fill(surface, frame->bg_color, &widget->screen_location);
-    }
+
+   ei_fill(surface, frame->bg_color, &widget->screen_location);
+   ei_fill(pick_surface, ((ei_frame_t*)widget) -> bg_color, clipper);
+
+
 
 
 }
