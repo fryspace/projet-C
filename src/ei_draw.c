@@ -374,8 +374,9 @@ void suppression_TCA(int y, struct side **TCA){
                 queue->next = NULL;
                 break;
             }
+        }else{
+            queue=queue->next;
         }
-        queue=queue->next;
     }
     *TCA=sent.next;
 }
@@ -502,10 +503,14 @@ void ei_draw_polygon (ei_surface_t  surface, const ei_linked_point_t*   first_po
         for (int i = limit.y_min; i<= limit.y_max; i++){
             add_TC(&my_tc->side, &real_TCA);
             suppression_TCA(my_tc->state,&real_TCA);
-            trier_TCA(&real_TCA);
-            filled(i, &real_TCA, color, surface, clipper);
+            if (real_TCA != NULL){
+                trier_TCA(&real_TCA);
+                filled(i, &real_TCA, color, surface, clipper);
+            }
             my_tc=my_tc->next;
-            increment(&real_TCA);
+            if (real_TCA != NULL){
+                increment(&real_TCA);
+            }
         }
     }
 }
