@@ -528,6 +528,90 @@ void ei_draw_text(ei_surface_t surface, const ei_point_t* where, const char* tex
     hw_surface_free(text_surface);
 }
 
-int	ei_copy_surface(ei_surface_t destination, const ei_rect_t* dst_rect, ei_surface_t source, const ei_rect_t* src_rect, ei_bool_t alpha){
-
+/**
+ * \brief	Copies pixels from a source surface to a destination surface.
+ *		The source and destination areas of the copy (either the entire surfaces, or
+ *		subparts) must have the same size before considering clipping.
+ *		Both surfaces must be *locked* by \ref hw_surface_lock.
+ *
+ * @param	destination	The surface on which to copy pixels.
+ * @param	dst_rect	If NULL, the entire destination surface is used. If not NULL,
+ *				defines the rectangle on the destination surface where to copy
+ *				the pixels.
+ * @param	source		The surface from which to copy pixels.
+ * @param	src_rect	If NULL, the entire source surface is used. If not NULL, defines the
+ *				rectangle on the source surface from which to copy the pixels.
+ * @param	alpha		If true, the final pixels are a combination of source and
+ *				destination pixels weighted by the source alpha channel and
+ *				the transparency of the final pixels is set to opaque.
+ *				If false, the final pixels are an exact copy of the source pixels,
+ 				including the alpha channel.
+ *
+ * @return			Returns 0 on success, 1 on failure (different sizes between source and destination).
+ */
+int	ei_copy_surface	(ei_surface_t	destination,    const ei_rect_t*	dst_rect,
+                                    ei_surface_t	source, const ei_rect_t*	src_rect,
+                                    ei_bool_t	alpha){
+    // initialisation and exit cases
+    ei_point_t * dst_buffer;
+    ei_point_t * src_buffer;
+    int width;
+    int height;
+    if (dst_rect != NULL){
+        if(src_rect != NULL){
+            if (dst_rect->size.width != src_rect->size.width || dst_rect->size.height != src_rect->size.height){
+                return 1;
+            }else{
+                dst_buffer->x = dst_rect->top_left.x;
+                dst_buffer->y = dst_rect->top_left.y;
+                src_buffer->x = src_rect->top_left.x;
+                src_buffer->y = src_rect->top_left.y;
+                width = dst_rect->size.width;
+                height = dst_rect->size.height;
+            }
+        }else{
+            if (dst_rect->size.width != hw_surface_get_size(source).width || dst_rect->size.height != hw_surface_get_size(source).height){
+                return 1;
+            }else{
+                dst_buffer->x = dst_rect->top_left.x;
+                dst_buffer->y = dst_rect->top_left.y;
+                src_buffer->x = 0;
+                src_buffer->y = 0;
+                width = dst_rect->size.width;
+                height = dst_rect->size.height;
+            }
+        }
+    }else{
+        if(src_rect != NULL){
+            if (hw_surface_get_size(destination).width != src_rect->size.width || hw_surface_get_size(destination).height != src_rect->size.height){
+                return 1;
+            }else{
+                dst_buffer->x = 0;
+                dst_buffer->y = 0;
+                src_buffer->x = src_rect->top_left.x;
+                src_buffer->y = src_rect->top_left.y;
+                width = hw_surface_get_size(destination).width;
+                height = hw_surface_get_size(destination).height;
+            }
+        }else{
+            if (hw_surface_get_size(destination).width != hw_surface_get_size(source).width || hw_surface_get_size(destination).height != hw_surface_get_size(source).height){
+                return 1;
+            }else{
+                dst_buffer->x = 0;
+                dst_buffer->y = 0;
+                src_buffer->x = 0;
+                src_buffer->y = 0;
+                width = hw_surface_get_size(destination).width;
+                height = hw_surface_get_size(destination).height;
+            }
+        }
+    }
+    //treatment
+    for (int i = 0; i < height; i++){
+        for(int j =0; j< width; j++){
+            uint32_t* pixel_src = (uint32_t *)hw_surface_get_buffer(source) + (src_buffer->x + i)*width + j + src_buffer->y;
+            uint32_t * pixel_dst = (uint32_t *)hw_surface_get_buffer(destination) + (dst_buffer->x + i)*width + j + dst_buffer->y;
+            *pixel_dst = *pixel_src;
+        }
+    }
 }
