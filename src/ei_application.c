@@ -62,6 +62,6 @@ void ei_app_quit_request(void){
 }
 
 ei_widget_t*  ei_app_root_widget(){
-
+    return root;
 }
 

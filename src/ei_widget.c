@@ -5,7 +5,6 @@
 #include "ei_widgetclass.h"
 #include <malloc.h>
 #include "ei_draw.h"
-#include "ei_application.h"
 #include "ei_frame.h"
 #include "ei_types.h"
 #include <assert.h>
@@ -16,13 +15,16 @@
 void ei_frame_configure	(ei_widget_t* widget, ei_size_t*	requested_size, const ei_color_t* color,int* border_width, ei_relief_t* relief,
                             char** text, ei_font_t* text_font, ei_color_t*	text_color, ei_anchor_t* text_anchor, ei_surface_t* img, ei_rect_t** img_rect, ei_anchor_t*	img_anchor){
     ei_frame_t* frame=(ei_frame_t*)widget; //voir page22
+    if(requested_size!=NULL){
+        frame->widget.requested_size=*requested_size;
+    }
+
     if(color!=NULL){
         frame->bg_color=color;
     }
     else{
         frame->bg_color=&ei_default_background_color;
     }
-
     if(border_width!=NULL){
         frame->border=border_width;
     }
