@@ -33,7 +33,7 @@ void test_button(ei_surface_t surface, ei_rect_t* clipper)
     ei_color_t		color		= { 150, 0, 160, 255 };
     ei_point_t	top_left1 = {100, 200};
     ei_point_t	top_left2 = {450, 200};
-    ei_size_t size = {300, 200};
+    ei_size_t size = {300, 100};
 
     ei_rect_t rect1 = {top_left1, size};
     ei_rect_t rect2 = {top_left2, size};

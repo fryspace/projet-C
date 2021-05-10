@@ -11,8 +11,6 @@
 
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
-typedef enum{HD,HG, BG, BD} quadrant;
-
 ei_linked_point_t *ei_arc(ei_point_t center, int radius, float start, float end, int n){
 
     ei_linked_point_t *result = NULL;
@@ -20,86 +18,26 @@ ei_linked_point_t *ei_arc(ei_point_t center, int radius, float start, float end,
     // On passe en radian nos variables qui sont en degré
     float start_rad = start * (M_PI / 180.0);
     float end_rad = end * (M_PI / 180.0);
-    float h = (end - start)/n;
+    float h = (end_rad - start_rad)/n;
 
     ei_linked_point_t* current = malloc(sizeof(ei_linked_point_t));
-    current->point.x = center.x + radius*cos(start* (M_PI / 180.0));
-    current->point.y = center.y - radius*sin(start* (M_PI / 180.0));
-    quadrant quad;
+    current->point.x = center.x + radius*cos(start_rad);
+    current->point.y = center.y - radius*sin(start_rad);
 
     result = current;
 
-    for(int i = 1; i < n + 1; i++){
+    for(int i = 1; i < n; i++){
         ei_linked_point_t* next = malloc(sizeof(ei_linked_point_t));
-        current->next = next;
-        float x_1 = cos((start + i*h)* (M_PI / 180.0));
-        float y_1 = sin((start + i*h)* (M_PI / 180.0));
-        int x = (int)(center.x + radius*x_1);
-        int y = (int)(center.y - radius*y_1);
-        if(x_1>=0 && y_1 >=0){
-            quad = HD;
-        }else if(x_1<0 && y_1>=0){
-            quad = HG;
-        }else if(x_1<0 && y_1<0){
-            quad = BG;
-        }else if(x_1>=0 && y_1<0){
-            quad = BD;
-        }
+        next->point.x = center.x + radius*cos(start_rad + i*h);
+        next->point.y = center.y - radius*sin(start_rad + i*h);
         next->next = NULL;
-        switch(quad){
-            case HD:
-                if (x > current->point.x){
-                    current->next->point.x = current->point.x;
-                }else{
-                    current->next->point.x = x;
-                }
-                if(y > current->point.y){
-                    current->next->point.y = current->point.y;
-                }else{
-                    current->next->point.y = y;
-                }
-                break;
-            case HG:
-                if (x > current->point.x){
-                    current->next->point.x = current->point.x;
-                }else{
-                    current->next->point.x = x;
-                }
-                if(y < current->point.y){
-                    current->next->point.y = current->point.y;
-                }else{
-                    current->next->point.y = y;
-                }
-                break;
-            case BG:
-                if (x < current->point.x){
-                    current->next->point.x = current->point.x;
-                }else{
-                    current->next->point.x = x;
-                }
-                if(y < current->point.y){
-                    current->next->point.y = current->point.y;
-                }else{
-                    current->next->point.y = y;
-                }
-                break;
-            case BD:
-                if (x < current->point.x){
-                    current->next->point.x = current->point.x;
-                }else{
-                    current->next->point.x = x;
-                }
-                if(y > current->point.y){
-                    current->next->point.y = current->point.y;
-                }else{
-                    current->next->point.y = y;
-                }
-                break;
-        }
+        current->next = next;
         current = next;
     }
+
     return result;
 }
+
 
 ei_linked_point_t* ei_rounded_frame(ei_rect_t rect, int radius, int part, int n){
     ei_linked_point_t *result;
@@ -307,7 +245,7 @@ void ei_draw_button(ei_rect_t rect, ei_surface_t surface, int radius, ei_color_t
     ei_linked_point_t *top = ei_rounded_frame(rect, radius, 1, 10);
     ei_linked_point_t *bottom = ei_rounded_frame(rect, radius, 2, 10);
 
-    //ei_draw_polygon(surface, top, top_color, clipper);
-    //ei_draw_polygon(surface, bottom, bottom_color, clipper);
+    ei_draw_polygon(surface, top, top_color, clipper);
+    ei_draw_polygon(surface, bottom, bottom_color, clipper);
     ei_draw_polygon(surface, main, color, clipper);
 }
