@@ -210,7 +210,7 @@ ei_linked_point_t* ei_rounded_frame(ei_rect_t rect, int radius, int part, int n)
     return result;
 }
 
-void ei_draw_button(ei_rect_t rect, ei_surface_t surface, int radius, ei_color_t color, int button_type, ei_rect_t* clipper){
+void ei_draw_button(ei_rect_t rect, int border, ei_surface_t surface, ei_surface_t pick_surface, int radius, ei_color_t color, ei_color_t pick_color, int button_type, ei_rect_t* clipper){
 
     ei_color_t top_color, bottom_color;
     switch (button_type) {
@@ -232,19 +232,21 @@ void ei_draw_button(ei_rect_t rect, ei_surface_t surface, int radius, ei_color_t
 
 
     ei_point_t little_rect_point;
-    little_rect_point.x = rect.top_left.x + 5;
-    little_rect_point.y = rect.top_left.y + 5;
+    little_rect_point.x = rect.top_left.x + border;
+    little_rect_point.y = rect.top_left.y + border;
 
     ei_size_t little_rect_size;
-    little_rect_size.width = rect.size.width - 10;
-    little_rect_size.height = rect.size.height - 10;
+    little_rect_size.width = rect.size.width - 2* border;
+    little_rect_size.height = rect.size.height - 2* border;
 
     ei_rect_t little_rect = {little_rect_point, little_rect_size};
 
-    ei_linked_point_t *main = ei_rounded_frame(little_rect, radius, 0, 14);
+    ei_linked_point_t *main = ei_rounded_frame(little_rect, radius, 0, 10);
     ei_linked_point_t *top = ei_rounded_frame(rect, radius, 1, 10);
     ei_linked_point_t *bottom = ei_rounded_frame(rect, radius, 2, 10);
+    ei_linked_point_t *offscreen_points = ei_rounded_frame(rect, radius, 0, 10);
 
+    ei_draw_polygon(pick_surface, offscreen_points, pick_color, clipper);
     ei_draw_polygon(surface, top, top_color, clipper);
     ei_draw_polygon(surface, bottom, bottom_color, clipper);
     ei_draw_polygon(surface, main, color, clipper);

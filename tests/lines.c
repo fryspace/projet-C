@@ -20,15 +20,16 @@
 void test_line(ei_surface_t surface, ei_rect_t* clipper)
 {
 	ei_color_t		color		= { 255, 0, 255, 255 };
+    ei_color_t		color2		= { 255, 0, 0, 255 };
     char *text = "SEXE";
 	ei_linked_point_t	pts[2];
-    ei_point_t point = {100, 100};
+    ei_point_t point = {200, 200};
 
 	pts[0].point.x = 200; pts[0].point.y = 200; pts[0].next = &pts[1];
 	pts[1].point.x = 600; pts[1].point.y = 400; pts[1].next = NULL;
 
-    ei_draw_text(surface, &point, text, ei_default_font,color, clipper);
-	ei_draw_polyline(surface, pts, color, clipper);
+    ei_draw_text(surface, &point, text, ei_default_font,color2, clipper);
+	//ei_draw_polyline(surface, pts, color, clipper);
 }
 
 void test_button(ei_surface_t surface, ei_rect_t* clipper)

@@ -4,12 +4,16 @@
 #include "ei_widget.h"
 #include "ei_widgetclass.h"
 #include <malloc.h>
+#include "bg_utils.h"
 #include "ei_draw.h"
 #include "ei_button.h"
-#include "ei_application.h"
 #include "ei_frame.h"
 #include "ei_types.h"
 #include <assert.h>
+
+static uint32_t BASE_PICK_ID = 0x00000000;
+extern ei_surface_t surface_offscreen;
+extern ei_widget_t *root;
 
 void ei_button_configure(ei_widget_t*		widget,
                                             ei_size_t*		requested_size,
@@ -48,7 +52,7 @@ void ei_button_configure(ei_widget_t*		widget,
 
     button->text_color = text_color!=NULL ? text_color : &ei_font_default_color;
 
-    button->text_anchor = text_anchor!=NULL ? text_anchor : ei_anc_center;
+    *(button->text_anchor) = text_anchor!=NULL ? *text_anchor : ei_anc_center;
 
     button->img = img;
 
@@ -82,10 +86,10 @@ void ei_frame_configure	(ei_widget_t* widget, ei_size_t*	requested_size, const e
         frame->border=0;
     }
     if(relief!=NULL && border_width!=0){
-        frame->relief=relief;
+        *(frame->relief)=*relief;
     }
     else{
-        frame->relief=ei_relief_none;
+        *(frame->relief)=ei_relief_none;
     }
     //assert(text!=NULL && img!=NULL);
     frame->text=text;
@@ -103,10 +107,10 @@ void ei_frame_configure	(ei_widget_t* widget, ei_size_t*	requested_size, const e
         frame->text_color=&ei_font_default_color;
     }
     if(text_anchor!=NULL){
-        frame->text_anchor=text_anchor;
+        *(frame->text_anchor)=*text_anchor;
     }
     else{
-        frame->text_anchor= ei_anc_center;
+        *(frame->text_anchor)= ei_anc_center;
     }
     frame->img=img;
 
@@ -146,8 +150,14 @@ ei_widget_t* ei_widget_create (ei_widgetclass_name_t class_name, ei_widget_t* pa
         widget->children_head = NULL;
         widget->children_tail = NULL;
         widget->next_sibling = NULL;
-        widget->pick_color = malloc(sizeof (ei_color_t));
-        widget->pick_id = 0;
+        uint8_t *pick = (uint8_t *)&BASE_PICK_ID;
+        widget->pick_color = malloc(sizeof(ei_color_t));
+        widget->pick_color->red = pick[0];
+        widget->pick_color->green = pick[1];
+        widget->pick_color->blue = pick[2];
+        widget->pick_color->alpha = 255;
+        widget->pick_id = ei_map_rgba(surface_offscreen, *widget->pick_color);
+        BASE_PICK_ID += 1;
         widget->placer_params = NULL;
         widget->requested_size.width = 0;
         widget->requested_size.height = 0;
@@ -164,6 +174,16 @@ ei_widget_t* ei_widget_create (ei_widgetclass_name_t class_name, ei_widget_t* pa
     return NULL;
 }
 
+ei_widget_t* ei_widget_pick(ei_point_t*	where){
+    hw_surface_lock(surface_offscreen);
+    ei_size_t size = hw_surface_get_size(surface_offscreen);
+    uint32_t* pick_id = (uint32_t *)hw_surface_get_buffer(surface_offscreen) + where->y*size.width + where->x;
+    ei_widget_t *widget = search_in_widget(root, *pick_id);
+    hw_surface_unlock(surface_offscreen);
+
+    return widget == root ? NULL : widget;
+
+}
 
 
 

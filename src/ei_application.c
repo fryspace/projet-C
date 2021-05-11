@@ -6,13 +6,10 @@
 #include "ei_application.h"
 #include "ei_types.h"
 #include "ei_widget.h"
-#include "ei_widgetclass.h"
-#include <stdio.h>
 #include "ei_frame.h"
 #include "ei_button.h"
 #include "ei_event.h"
 #include "bg_utils.h"
-#include <stdbool.h>
 
 ei_surface_t main_window;
 ei_surface_t surface_offscreen;
@@ -25,6 +22,7 @@ void ei_app_create(ei_size_t main_window_size, ei_bool_t fullscreen){
     main_window = hw_create_window(main_window_size, fullscreen);
 
     surface_offscreen = hw_surface_create(main_window, main_window_size, EI_FALSE);
+    hw_surface_lock(surface_offscreen);
     frame_register_class();
     button_register_class();
 
@@ -44,18 +42,37 @@ void ei_app_run(){
 
         ei_rect_t clipper = hw_surface_get_rect(main_window);
 
-        hw_surface_lock(surface_offscreen);
+
 
         draw_widgets(root, main_window, surface_offscreen, &clipper);
 
-        hw_surface_unlock(surface_offscreen);
         hw_surface_unlock(main_window);
         hw_surface_update_rects(main_window, NULL);
 
         /* Wait for a character on command line. */
-        event.type = ei_ev_none;
-        while (event.type != ei_ev_keydown)
-            hw_event_wait_next(&event);
+        hw_event_wait_next(&event);
+        ei_widget_t *widget;
+
+        ei_point_t mouse = event.param.mouse.where;
+
+        switch(event.type){
+            case ei_ev_exposed:
+                break;
+            case ei_ev_mouse_buttondown:
+            case ei_ev_mouse_move:
+            case ei_ev_mouse_buttonup:
+                widget = ei_widget_pick(&mouse);
+
+                if(widget != NULL) {
+                    widget->wclass->handlefunc(widget, &event);
+                }
+
+                break;
+            default:
+                break;
+        }
+
+
     }
 }
 
