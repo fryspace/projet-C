@@ -91,6 +91,7 @@ set(LIB_EI_SOURCES
 		${SRC}/ei_event.c
 		${SRC}/bg_utils.c
 		${SRC}/bg_button.c
+		${SRC}/ei_toplevel.c
 
 )
 

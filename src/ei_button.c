@@ -30,7 +30,7 @@ void button_drawfunc(struct ei_widget_t* widget, ei_surface_t surface, ei_surfac
         ei_point_t text_position;
         ei_size_t text_size;
         hw_text_compute_size(*(button->text), button->text_font, &(text_size.width), &(text_size.height));
-        ei_anchor(*(button->text_anchor), &text_size, clipper, &text_position);
+        ei_anchor(*(button->text_anchor), &text_size, &widget->screen_location, &text_position);
 
         if(button->relief == ei_relief_sunken) {
             text_position.x += *(button->border)/2;

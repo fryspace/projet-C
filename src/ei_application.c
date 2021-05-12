@@ -7,6 +7,7 @@
 #include "ei_types.h"
 #include "ei_widget.h"
 #include "ei_frame.h"
+#include "ei_toplevel.h"
 #include "ei_button.h"
 #include "ei_event.h"
 #include "bg_utils.h"
@@ -25,6 +26,7 @@ void ei_app_create(ei_size_t main_window_size, ei_bool_t fullscreen){
     hw_surface_lock(surface_offscreen);
     frame_register_class();
     button_register_class();
+    toplevel_register_class();
 
     root = ei_widget_create("frame", NULL, NULL, NULL);
     if (root!=NULL) {
@@ -64,6 +66,7 @@ void ei_app_run(){
                 widget = ei_widget_pick(&mouse);
 
                 if(widget != NULL) {
+
                     widget->wclass->handlefunc(widget, &event);
                 }
 

@@ -7,6 +7,7 @@
 #include "bg_utils.h"
 #include "ei_draw.h"
 #include "ei_button.h"
+#include "ei_toplevel.h"
 #include "ei_frame.h"
 #include "ei_types.h"
 #include <assert.h>
@@ -32,17 +33,18 @@ void ei_button_configure(ei_widget_t*		widget,
                                             void**			user_param){
 
     ei_button_t* button=(ei_button_t*)widget;
+    int *default_radius = malloc(sizeof (int));
+    *default_radius = 40;
 
     if(requested_size != NULL){
         widget->requested_size = *requested_size;
     }
 
-
     button->bg_color = color!=NULL ? color : &ei_default_background_color;
 
     button->border = border_width!=NULL ? border_width : 0;
 
-    button->corner_radius = corner_radius!=NULL ? corner_radius : 40;
+    button->corner_radius = corner_radius!=NULL ? corner_radius : default_radius;
 
     button->relief = relief!=NULL && border_width!=0 ? relief : ei_relief_none;
 
@@ -121,6 +123,43 @@ void ei_frame_configure	(ei_widget_t* widget, ei_size_t*	requested_size, const e
         frame->img_anchor=ei_anc_center;
     }
     frame->img_rect=img_rect;
+
+}
+
+void ei_toplevel_configure(ei_widget_t*		widget,
+                                              ei_size_t*		requested_size,
+                                              ei_color_t*		color,
+                                              int*			border_width,
+                                              char**			title,
+                                              ei_bool_t*		closable,
+                                              ei_axis_set_t*		resizable,
+                                              ei_size_t**		min_size){
+    ei_toplevel_t* toplevel=(ei_toplevel_t*)widget; //voir page22
+    if(requested_size!=NULL){
+        toplevel->widget.requested_size=*requested_size;
+    }
+
+    if(color!=NULL){
+        toplevel->bg_color=color;
+    }
+    else{
+        toplevel->bg_color=&ei_default_background_color;
+    }
+
+    if(border_width!=NULL){
+        toplevel->border=border_width;
+    }
+    else{
+        toplevel->border=0;
+    }
+
+    toplevel->closable = closable;
+    toplevel->resizable = resizable;
+    toplevel->size_min = min_size;
+
+    if(title!=NULL){
+        toplevel->title=title;
+    }
 
 }
 

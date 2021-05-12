@@ -17,24 +17,22 @@ void ei_place (struct ei_widget_t*	widget, ei_anchor_t* anchor, int* x, int* y, 
 
     int w;
     if(width==NULL){
-        if (widget->requested_size.width!=NULL){
+        if (rel_width==NULL){
             w=widget->requested_size.width;
         }
-        else if (rel_width==0 || rel_width==NULL){
-            w=widget->parent->screen_location.size.width;
+        else {
+            w=0;
         }
-        else{w=0;}
     }else{w=*width;}
 
     int h;
     if(height==NULL){
-        if (widget->requested_size.height!=NULL){
+        if (rel_height==NULL){
             h=widget->requested_size.height;
         }
-        else if (rel_height==0 || rel_height==NULL){
-            h=widget->parent->screen_location.size.height;
+        else{
+            h=0;
         }
-        else{h=0;}
     }else{h=*height;}
 
     ei_placer_params_t  placer={&anchor2, anchor2, &x_anchor, x_anchor, &y_anchor, y_anchor, &w, w, &h, h, &rx_anchor, rx_anchor,
@@ -60,8 +58,8 @@ void ei_placer_run(struct ei_widget_t* widget){
             width_anchor=(int)(*placer->rw * (float)widget->parent->requested_size.width);
         }
     }
-    else{ //si les 2 nuls on prend largeur du parent
-        width_anchor=widget->parent->screen_location.size.width;
+    else{
+        width_anchor=widget->requested_size.width;
     }
 
     if (*placer->h!=0 || *placer->rh!=0.0){ //pareil mais pour la hauteur
@@ -73,14 +71,14 @@ void ei_placer_run(struct ei_widget_t* widget){
         }
     }
     else{
-        height_anchor=widget->parent->screen_location.size.height;
+        height_anchor = widget->requested_size.height;
     }
     widget->screen_location.size.height=height_anchor;
     widget->screen_location.size.width=width_anchor;
 
     //cherche position de l'ancre
-    x_anchor= *((int)(*placer->rx * (float)widget->parent->requested_size.width) + placer->x) + widget->parent->screen_location.top_left.x;
-    y_anchor= *((int)(*placer->ry * (float)widget->parent->requested_size.height) + placer->y) + widget->parent->screen_location.top_left.y;
+    x_anchor= ((int)(*placer->rx * (float)widget->parent->requested_size.width) + *placer->x) + widget->parent->screen_location.top_left.x;
+    y_anchor= ((int)(*placer->ry * (float)widget->parent->requested_size.height) + *placer->y) + widget->parent->screen_location.top_left.y;
 
     //en fonction d'où est l'ancre on donne position du top_left
     if (*placer->anchor==ei_anc_northwest || *placer->anchor==0){

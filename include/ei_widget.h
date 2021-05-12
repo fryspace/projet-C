@@ -15,7 +15,6 @@
 #include "ei_placer.h"
 
 
-
 struct ei_placer_params_t;
 
 /**
