@@ -35,12 +35,12 @@ void draw_widgets(ei_widget_t *widget, ei_surface_t main_windows, ei_surface_t p
 
         if(widget->children_head != NULL){
             draw_widgets(widget->children_head, main_windows, pick_surface, clipper);
-            ei_widget_t  *queue = widget->children_head->next_sibling;
-            while(queue != NULL){
-                draw_widgets(queue, main_windows, pick_surface, clipper);
-                queue = queue->next_sibling;
-            }
         }
+
+        if(widget->next_sibling != NULL){
+            draw_widgets(widget->next_sibling, main_windows, pick_surface, clipper);
+        }
+
     }
 }
 
@@ -92,12 +92,14 @@ ei_widget_t* search_in_widget(ei_widget_t* widget, uint32_t pick_id)
     if (widget->pick_id == pick_id) {
         return widget;
     }
-    if (widget->children_head != NULL){
-        ei_widget_t* current = widget->children_head->next_sibling;
-        while (current != NULL){
-            return search_in_widget(current, pick_id);
+    ei_widget_t *current = widget->children_head;
+    while(current){
+        ei_widget_t *picking_widget = search_in_widget(current, pick_id);
+        if(picking_widget){
+            return picking_widget;
         }
-        return search_in_widget(widget->children_head, pick_id);
+        current = current->next_sibling;
     }
+
     return NULL;
 }

@@ -33,8 +33,7 @@ void ei_button_configure(ei_widget_t*		widget,
                                             void**			user_param){
 
     ei_button_t* button=(ei_button_t*)widget;
-    int *default_radius = malloc(sizeof (int));
-    *default_radius = 40;
+    int default_radius = 40;
 
     if(requested_size != NULL){
         widget->requested_size = *requested_size;
@@ -44,7 +43,7 @@ void ei_button_configure(ei_widget_t*		widget,
 
     button->border = border_width!=NULL ? border_width : 0;
 
-    button->corner_radius = corner_radius!=NULL ? corner_radius : default_radius;
+    button->corner_radius = corner_radius!=NULL ? corner_radius : &default_radius;
 
     button->relief = relief!=NULL && border_width!=0 ? relief : ei_relief_none;
 
@@ -211,6 +210,47 @@ ei_widget_t* ei_widget_create (ei_widgetclass_name_t class_name, ei_widget_t* pa
         return widget;
     }
     return NULL;
+}
+
+static void ei_widget_destroy_children(ei_widget_t*	widget) {
+    if(widget != NULL){
+        ei_widget_destroy_children(widget->children_head);
+
+        if(widget->next_sibling != NULL){
+            ei_widget_destroy_children(widget->next_sibling);
+        }
+
+        widget->wclass->releasefunc(widget);
+        free(widget);
+    }
+}
+
+void ei_widget_destroy(ei_widget_t*	widget){
+    if(widget != NULL){
+        if(widget->parent != NULL){
+            ei_widget_t *parent = widget->parent;
+            ei_widget_t *current_widget = parent->children_head;
+
+            if(current_widget == widget){
+                parent->children_head = widget->next_sibling;
+            }
+            else if(parent->children_tail == widget){
+                parent->children_tail = parent->children_head;
+            }
+            else{
+                while(current_widget->next_sibling != NULL && current_widget->next_sibling != widget){
+                    current_widget = current_widget->next_sibling;
+                }
+
+                if(current_widget->next_sibling == widget){
+                    current_widget->next_sibling = widget->next_sibling;
+                }
+            }
+            widget->parent = NULL;
+            widget->next_sibling = NULL;
+        }
+        ei_widget_destroy_children(widget);
+    }
 }
 
 ei_widget_t* ei_widget_pick(ei_point_t*	where){

@@ -44,8 +44,6 @@ void ei_app_run(){
 
         ei_rect_t clipper = hw_surface_get_rect(main_window);
 
-
-
         draw_widgets(root, main_window, surface_offscreen, &clipper);
 
         hw_surface_unlock(main_window);
@@ -54,6 +52,7 @@ void ei_app_run(){
         /* Wait for a character on command line. */
         hw_event_wait_next(&event);
         ei_widget_t *widget;
+        ei_widget_t *active_widget;
 
         ei_point_t mouse = event.param.mouse.where;
 
@@ -64,10 +63,14 @@ void ei_app_run(){
             case ei_ev_mouse_move:
             case ei_ev_mouse_buttonup:
                 widget = ei_widget_pick(&mouse);
+                active_widget = ei_event_get_active_widget();
 
                 if(widget != NULL) {
-
                     widget->wclass->handlefunc(widget, &event);
+                }
+
+                if(active_widget != NULL){
+                    active_widget->wclass->handlefunc(active_widget, &event);
                 }
 
                 break;
@@ -88,5 +91,9 @@ void ei_app_quit_request(void){
 
 ei_widget_t*  ei_app_root_widget(){
     return root;
+}
+
+ei_surface_t ei_app_root_surface(void){
+    return main_window;
 }
 

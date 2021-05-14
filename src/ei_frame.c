@@ -3,9 +3,11 @@
 //
 #include "ei_widgetclass.h"
 #include "ei_types.h"
+#include "ei_application.h"
 #include "ei_widget.h"
 #include "ei_frame.h"
 #include "bg_utils.h"
+#include "ei_event.h"
 #include <string.h>
 #include <malloc.h>
 
@@ -206,6 +208,45 @@ void frame_drawfunc(struct ei_widget_t* widget, ei_surface_t surface, ei_surface
         ei_fill(pick_surface, widget->pick_color, &rect);
     }
 
+    if(frame->text != NULL && strcmp(*frame->text, "") != 0){
+        ei_point_t text_position;
+        ei_size_t text_size = {0, 0};
+        hw_text_compute_size(frame->text, frame->text_font, &(text_size.width), &(text_size.height));
+        ei_anchor(*frame->text_anchor, &text_size, clipper, &text_position);
+        ei_draw_text(surface, &text_position, frame->text, ei_default_font, *frame->text_color, clipper);
+    }
+
+    if(frame->img != NULL){
+        ei_point_t image_position;
+        ei_size_t image_size;
+        ei_rect_t image_rect;
+
+        if (frame->img_rect)
+        {
+            image_rect = **(frame->img_rect);
+            image_size = (**frame->img_rect).size;
+        }
+        else
+        {
+            image_rect = hw_surface_get_rect(frame->img);
+            image_size = image_rect.size;
+        }
+        ei_anchor(*frame->img_anchor, &image_size, clipper, &image_position);
+        ei_rect_t rect_img = {image_position, image_size};
+
+        hw_surface_lock(frame->img);
+        ei_bool_t alpha_img = hw_surface_has_alpha(frame->img);
+        ei_rect_t surface_rect = hw_surface_get_rect(ei_app_root_surface());
+
+
+        rect_img.top_left.x = image_rect.top_left.x + surface_rect.top_left.x - image_position.x;
+        rect_img.top_left.y = image_rect.top_left.y;
+        rect_img.size = surface_rect.size;
+        ei_copy_surface(surface, &surface_rect, frame->img, &rect_img, alpha_img);
+        hw_surface_unlock(frame->img);
+    }
+
+
 }
 
 void* frame_allocfunc(){
@@ -254,11 +295,16 @@ void frame_setdefaultsfunc(struct ei_widget_t* widget){
 
 }
 
+void frame_handlefunc(ei_widget_t* widget, ei_event_t* event){
+
+
+}
+
 void frame_register_class (){
     strcpy(frame.name, "frame");
     frame.drawfunc = &frame_drawfunc;
     frame.allocfunc = &frame_allocfunc;
-    frame.handlefunc = NULL;
+    frame.handlefunc = &frame_handlefunc;
     frame.releasefunc = &frame_release_func;
     frame.setdefaultsfunc = &frame_setdefaultsfunc;
     ei_widgetclass_register(&frame);

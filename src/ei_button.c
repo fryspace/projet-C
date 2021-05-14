@@ -91,7 +91,7 @@ void button_setdefaultsfunc(struct ei_widget_t* widget){
     ((ei_button_t*)widget)->img_rect = NULL;
     *(((ei_button_t*)widget)->img_anchor) = ei_anc_center;
 
-    ((ei_button_t*)widget)->corner_radius = 40;
+    *(((ei_button_t*)widget)->corner_radius) = 40;
     ((ei_button_t*)widget)->callback = NULL;
     ((ei_button_t*)widget)->user_param = NULL;
 
@@ -102,11 +102,14 @@ ei_bool_t button_handle_func(ei_widget_t* widget, ei_event_t* event){
 
     if(event->type == ei_ev_mouse_buttondown){
         *button->relief = ei_relief_sunken;
+        ei_event_set_active_widget(widget);
     }
 
     if(event->type == ei_ev_mouse_buttonup){
         *button->relief = ei_relief_raised;
-        (*button->callback)(widget, event, button->user_param);
+        if(button->callback != NULL) {
+            (*button->callback)(widget, event, button->user_param);
+        }
     }
 
 }

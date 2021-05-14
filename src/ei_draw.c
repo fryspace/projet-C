@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <limits.h>
+#include <string.h>
 #include <stdbool.h>
 
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
@@ -537,20 +538,23 @@ void ei_draw_polygon (ei_surface_t  surface, const ei_linked_point_t*   first_po
 void ei_draw_text(ei_surface_t surface, const ei_point_t* where, const char* text, ei_font_t font, ei_color_t color, const ei_rect_t* clipper){
     ei_font_t text_font = font == NULL ? ei_default_font : font;
 
-    ei_surface_t text_surface = hw_text_create_surface(text, text_font, color);
+    if(strcmp(text, "") != 0){
+        ei_surface_t text_surface = hw_text_create_surface(text, text_font, color);
 
-    hw_surface_lock(text_surface);
-    //hw_surface_set_origin(text_surface, *where);
+        hw_surface_lock(text_surface);
+        //hw_surface_set_origin(text_surface, *where);
 
-    ei_rect_t text_rect = hw_surface_get_rect(text_surface);
-    ei_bool_t alpha = hw_surface_has_alpha(text_surface);
+        ei_rect_t text_rect = hw_surface_get_rect(text_surface);
+        ei_bool_t alpha = hw_surface_has_alpha(text_surface);
 
-    ei_rect_t final_rect = {*where, text_rect.size};
+        ei_rect_t final_rect = {*where, text_rect.size};
 
-    ei_copy_surface(surface, &final_rect, text_surface,&text_rect , alpha);
+        ei_copy_surface(surface, &final_rect, text_surface,&text_rect , alpha);
 
-    hw_surface_unlock(text_surface);
-    hw_surface_free(text_surface);
+        hw_surface_unlock(text_surface);
+        hw_surface_free(text_surface);
+    }
+
 }
 
 /**
