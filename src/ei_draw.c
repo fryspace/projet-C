@@ -10,9 +10,21 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <limits.h>
+#include <string.h>
 #include <stdbool.h>
 
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
+
+bool clipper_brute(int x, int y, const ei_rect_t* clipper){
+    if (clipper == NULL){
+        return true;
+    }
+    else if(clipper->top_left.x <= x && clipper->top_left.y<=y &&  clipper->top_left.y+clipper->size.height >=y
+            && clipper->top_left.x + clipper->size.width >=x){
+        return true;
+    }
+    return false;
+}
 
 
 uint32_t ei_map_rgba(ei_surface_t surface, ei_color_t color){
@@ -30,13 +42,15 @@ uint32_t ei_map_rgba(ei_surface_t surface, ei_color_t color){
     return result;
 }
 
-void ei_draw_pixel(ei_surface_t surface, ei_color_t color,int x, int y, int width){
-    uint32_t* pixel_ptr = (uint32_t*)hw_surface_get_buffer(surface) + y*width + x;
-    *pixel_ptr= ei_map_rgba(surface, color);
+void ei_draw_pixel(ei_surface_t surface, ei_color_t color,int x, int y, int width, const ei_rect_t* clipper){
+    if (clipper_brute( x, y, clipper)){
+        uint32_t* pixel_ptr = (uint32_t*)hw_surface_get_buffer(surface) + y*width + x;
+        *pixel_ptr= ei_map_rgba(surface, color);
+    }
+
 }
 
-void ei_draw_polyline	(ei_surface_t surface, const ei_linked_point_t*	first_point, ei_color_t	color,
-                          const ei_rect_t*	clipper){
+void ei_draw_polyline	(ei_surface_t surface, const ei_linked_point_t*	first_point, ei_color_t	color, const ei_rect_t*	clipper){
     hw_surface_lock(surface);
     while(first_point->next != NULL){
         int x0 = first_point->point.x;
@@ -51,7 +65,7 @@ void ei_draw_polyline	(ei_surface_t surface, const ei_linked_point_t*	first_poin
 
         if(abs(dx) > abs(dy)  && dx >= 0 && dy >= 0){
             while (x0<x1){
-                ei_draw_pixel(surface, color, x0, y0, size.width);
+                ei_draw_pixel(surface, color, x0, y0, size.width, clipper);
                 x0+=1;
                 error +=dy;
                 if (2*error > dx){
@@ -61,7 +75,7 @@ void ei_draw_polyline	(ei_surface_t surface, const ei_linked_point_t*	first_poin
             }
         } else if(abs(dx) > abs(dy)  && dx > 0 && dy < 0){
             while (x0<x1){
-                ei_draw_pixel(surface, color, x0, y0, size.width);
+                ei_draw_pixel(surface, color, x0, y0, size.width, clipper);
                 x0+=1;
                 error -=dy;
                 if (2*error > dx){
@@ -71,7 +85,7 @@ void ei_draw_polyline	(ei_surface_t surface, const ei_linked_point_t*	first_poin
             }
         }else if(abs(dx) > abs(dy)  && dx < 0 && dy > 0){
             while (x0>x1){
-                ei_draw_pixel(surface, color, x0, y0, size.width);
+                ei_draw_pixel(surface, color, x0, y0, size.width, clipper);
                 x0-=1;
                 error +=dy;
                 if (2*error > dx){
@@ -81,7 +95,7 @@ void ei_draw_polyline	(ei_surface_t surface, const ei_linked_point_t*	first_poin
             }
         } else if(abs(dx) > abs(dy)  && dx <= 0 && dy <= 0){
             while (x0>x1){
-                ei_draw_pixel(surface, color, x0, y0, size.width);
+                ei_draw_pixel(surface, color, x0, y0, size.width, clipper);
                 x0-=1;
                 error +=dy;
                 if (2*error < dx){
@@ -91,7 +105,7 @@ void ei_draw_polyline	(ei_surface_t surface, const ei_linked_point_t*	first_poin
             }
         } else if (abs(dy) > abs(dx) && dx >= 0 && dy >= 0) {
             while (y0<y1){
-                ei_draw_pixel(surface, color, x0, y0, size.width);
+                ei_draw_pixel(surface, color, x0, y0, size.width, clipper);
                 y0+=1;
                 error +=dx;
                 if (2*error > dy){
@@ -101,7 +115,7 @@ void ei_draw_polyline	(ei_surface_t surface, const ei_linked_point_t*	first_poin
             }
         } else if (abs(dy) > abs(dx) && dx <= 0 && dy <= 0) {
             while (y0>y1){
-                ei_draw_pixel(surface, color, x0, y0, size.width);
+                ei_draw_pixel(surface, color, x0, y0, size.width, clipper);
                 y0-=1;
                 error +=dx;
                 if (2*error < dy){
@@ -111,7 +125,7 @@ void ei_draw_polyline	(ei_surface_t surface, const ei_linked_point_t*	first_poin
             }
         } else if (abs(dy) > abs(dx) && dx > 0 && dy < 0) {
             while (y0>y1){
-                ei_draw_pixel(surface, color, x0, y0, size.width);
+                ei_draw_pixel(surface, color, x0, y0, size.width, clipper);
                 y0-=1;
                 error +=dx;
                 if (2*error > dy){
@@ -121,7 +135,7 @@ void ei_draw_polyline	(ei_surface_t surface, const ei_linked_point_t*	first_poin
             }
         } else if (abs(dy) > abs(dx) && dx < 0 && dy > 0) {
             while (y0<y1){
-                ei_draw_pixel(surface, color, x0, y0, size.width);
+                ei_draw_pixel(surface, color, x0, y0, size.width, clipper);
                 y0+=1;
                 error -=dx;
                 if (2*error > dy){
@@ -130,7 +144,7 @@ void ei_draw_polyline	(ei_surface_t surface, const ei_linked_point_t*	first_poin
                 }
             }
         } else if (dx == 0 && dy == 0){
-            ei_draw_pixel(surface, color, x0, y0, size.width);
+            ei_draw_pixel(surface, color, x0, y0, size.width, clipper);
         }
 
 
@@ -147,9 +161,15 @@ void ei_fill(ei_surface_t surface, const ei_color_t* color, const ei_rect_t* cli
 
     ei_size_t size = hw_surface_get_size(surface);
 
-    uint32_t* pixel_ptr = (uint32_t*)hw_surface_get_buffer(surface);
-    for (int i = 0; i < (size.width * size.height); i++)
-        *pixel_ptr++ = ei_map_rgba(surface, *color);
+    for(int x = 0; x < size.width ; x++){
+        for(int y = 0; y < size.height; y++){
+            if (clipper_brute( x, y, clipper)){
+                uint32_t* pixel_ptr = (uint32_t*)hw_surface_get_buffer(surface) + y*size.width + x;
+                *pixel_ptr= ei_map_rgba(surface, *color);
+            }
+        }
+    }
+
 
     hw_surface_unlock(surface);
 }
@@ -157,7 +177,14 @@ void ei_fill(ei_surface_t surface, const ei_color_t* color, const ei_rect_t* cli
 
 /**
  * \brief represent the side of a polygon.
+ *
+ * -y_max: defines until which y the side needs to be treat
+ * -x_min: defines which is the x of the y_min of the side, after the initializations, it represents the x of the side
+ * for the current y
+ * -m_inverse: represents dx/dy
+ * -next: pointer on another side
  */
+
 struct side {
     int y_max;
     float x_min;
@@ -167,6 +194,10 @@ struct side {
 
 /**
  * \brief represent the TC of a polygon.
+ *
+ * -state: defines at which y the TC corresponds
+ * -side: pointer on the side too add at this side
+ * -next: pointer on a structures representing the next state
  */
 struct TC {
     int state;
@@ -187,7 +218,7 @@ struct Y{
 /**
  * \brief Search the limits of the scanline to build the TC of a Polygon
  *
- * @param first_point first_point 	The head of a linked list of the points of the line. It is either
+ * @param first_point  The head of a linked list of the points of the line. It is either
  *				NULL (i.e. draws nothing), or has more than 2 points. The last point
  *				is implicitly connected to the first point, i.e. polygons are
  *				closed, it is not necessary to repeat the first point.
@@ -208,6 +239,18 @@ struct Y limits (ei_linked_point_t *first_point){
     return limits;
 }
 
+/**
+ * \brief add a side at the end of a side chain
+ *
+ * @param   y   the value to add to then new side for y_max parameter
+ *
+ * @param   x   the value to add to the new side for x_min parameter
+ *
+ * @param   m_inverse   the value to add to the new side for m_inverse parameter
+ *
+ * @param   my_side     a pointer on a chained side which we want to add a new_side
+ */
+
 struct side *add_side(int y, float x, float m_inverse, struct side *my_side){
     struct side sent={0,0,0,my_side};
     struct side *queue = &sent;
@@ -224,6 +267,17 @@ struct side *add_side(int y, float x, float m_inverse, struct side *my_side){
     my_side = sent.next;
     return my_side;
 }
+
+/**
+ * \brief	Initialise the TC needed to draw a polygon
+ *
+ * @param	first_point 	The head of a linked list of the points of the line. It is either
+ *				NULL (i.e. draws nothing), or has more than 2 points. The last point
+ *				is implicitly connected to the first point, i.e. polygons are
+ *				closed, it is not necessary to repeat the first point.
+ *
+ * @param	limits      the limits of the points and side to draw the polygon
+ */
 
 struct TC *initialisation_TC(ei_linked_point_t *first_point, struct Y limits){
     //struct TC my_tc = {0, NULL, NULL};
@@ -271,6 +325,16 @@ struct TC *initialisation_TC(ei_linked_point_t *first_point, struct Y limits){
     return real_tc;
 }
 
+
+/**
+ * \brief	add a TC side to the TCA, respecting the increasing order of the TCA
+ *
+ * @param	tc_side     a side of a TC to be add
+ *
+ * @param	TCA     a side which will help to fill the pixels of the polygon
+ */
+
+
 void add_TC(struct side **tc_side, struct side **TCA){
     struct side sent = {0,0,0, *TCA};
     struct side *queue = &sent;
@@ -297,6 +361,7 @@ void add_TC(struct side **tc_side, struct side **TCA){
                         queue2->next = queue2->next->next;
                         move->next = NULL;
                         queue->next = move;
+                        break;
                     }
                 }
             }
@@ -306,6 +371,14 @@ void add_TC(struct side **tc_side, struct side **TCA){
     *tc_side = sent2.next;
     *TCA=sent.next;
 }
+
+/**
+ * \brief	suppress sides which are outdated from the TCA
+ *
+ * @param	y     the number of the current scanline
+ *
+ * @param	TCA     a side which will help to fill the pixels of the polygon
+ */
 
 void suppression_TCA(int y, struct side **TCA){
     struct side sent = {0,0,0, *TCA};
@@ -321,11 +394,20 @@ void suppression_TCA(int y, struct side **TCA){
                 queue->next = NULL;
                 break;
             }
+        }else{
+            queue=queue->next;
         }
-        queue=queue->next;
     }
     *TCA=sent.next;
 }
+
+/**
+ * \brief	sort the TCA following the increasing order
+ *
+ * @param	y     the number of the current scanline
+ *
+ * @param	TCA     a side which will help to fill the pixels of the polygon
+ */
 
 void trier_TCA(struct side **TCA){
    struct side sent = {0,0,0, *TCA};
@@ -350,6 +432,21 @@ void trier_TCA(struct side **TCA){
    *TCA=sent.next;
 }
 
+
+/**
+ * \brief	fill the pixels on the scanline which needs to be filled
+ *
+ * @param	y     the number of the current scanline
+ *
+ * @param	TCA     a side which will help to fill the pixels of the polygon
+ *
+ * @param	color		The color used to draw the polygon. The alpha channel is managed.
+ *
+ * @param	surface 	Where to draw the polygon. The surface must be *locked* by
+ *				\ref hw_surface_lock.
+ *
+ * @param	clipper		If not NULL, the drawing is restricted within this rectangle.
+ */
 
 void filled(int y,struct side **TCA,ei_color_t  color, ei_surface_t  surface, const ei_rect_t*    clipper){
     struct side sent = {0, 0, 0, *TCA};
@@ -383,6 +480,13 @@ void filled(int y,struct side **TCA,ei_color_t  color, ei_surface_t  surface, co
     }
     *TCA=sent.next;
 }
+
+/**
+ * \brief	refresh the TCA to prepare the next scanline scan
+ *
+ * @param	TCA     a side which will help to fill the pixels of the polygon
+ */
+
 
 void increment(struct side **TCA){
     struct side sent = {0, 0, 0, *TCA};
@@ -419,11 +523,159 @@ void ei_draw_polygon (ei_surface_t  surface, const ei_linked_point_t*   first_po
         for (int i = limit.y_min; i<= limit.y_max; i++){
             add_TC(&my_tc->side, &real_TCA);
             suppression_TCA(my_tc->state,&real_TCA);
-            trier_TCA(&real_TCA);
-            filled(i, &real_TCA, color, surface, clipper);
+            if (real_TCA != NULL){
+                trier_TCA(&real_TCA);
+                filled(i, &real_TCA, color, surface, clipper);
+            }
             my_tc=my_tc->next;
-            increment(&real_TCA);
+            if (real_TCA != NULL){
+                increment(&real_TCA);
+            }
         }
     }
 }
 
+void ei_draw_text(ei_surface_t surface, const ei_point_t* where, const char* text, ei_font_t font, ei_color_t color, const ei_rect_t* clipper){
+    ei_font_t text_font = font == NULL ? ei_default_font : font;
+
+    if(strcmp(text, "") != 0){
+        ei_surface_t text_surface = hw_text_create_surface(text, text_font, color);
+
+        hw_surface_lock(text_surface);
+        //hw_surface_set_origin(text_surface, *where);
+
+        ei_rect_t text_rect = hw_surface_get_rect(text_surface);
+        ei_bool_t alpha = hw_surface_has_alpha(text_surface);
+
+        ei_rect_t final_rect = {*where, text_rect.size};
+
+        ei_copy_surface(surface, &final_rect, text_surface,&text_rect , alpha);
+
+        hw_surface_unlock(text_surface);
+        hw_surface_free(text_surface);
+    }
+
+}
+
+/**
+ * \brief	Copies pixels from a source surface to a destination surface.
+ *		The source and destination areas of the copy (either the entire surfaces, or
+ *		subparts) must have the same size before considering clipping.
+ *		Both surfaces must be *locked* by \ref hw_surface_lock.
+ *
+ * @param	destination	The surface on which to copy pixels.
+ * @param	dst_rect	If NULL, the entire destination surface is used. If not NULL,
+ *				defines the rectangle on the destination surface where to copy
+ *				the pixels.
+ * @param	source		The surface from which to copy pixels.
+ * @param	src_rect	If NULL, the entire source surface is used. If not NULL, defines the
+ *				rectangle on the source surface from which to copy the pixels.
+ * @param	alpha		If true, the final pixels are a combination of source and
+ *				destination pixels weighted by the source alpha channel and
+ *				the transparency of the final pixels is set to opaque.
+ *				If false, the final pixels are an exact copy of the source pixels,
+ 				including the alpha channel.
+ *
+ * @return			Returns 0 on success, 1 on failure (different sizes between source and destination).
+ */
+int	ei_copy_surface	(ei_surface_t	destination,    const ei_rect_t*	dst_rect,
+                                    ei_surface_t	source, const ei_rect_t*	src_rect,
+                                    ei_bool_t	alpha){
+    // initialisation and exit cases
+    ei_point_t dst_buffer;
+    ei_point_t src_buffer;
+    int width;
+    int height;
+    if (dst_rect != NULL){
+        if(src_rect != NULL){
+            if (dst_rect->size.width != src_rect->size.width || dst_rect->size.height != src_rect->size.height){
+                return 1;
+            }else{
+                dst_buffer.x = dst_rect->top_left.x;
+                dst_buffer.y = dst_rect->top_left.y;
+                src_buffer.x = src_rect->top_left.x;
+                src_buffer.y = src_rect->top_left.y;
+                width = dst_rect->size.width;
+                height = dst_rect->size.height;
+            }
+        }else{
+            if (dst_rect->size.width != hw_surface_get_size(source).width || dst_rect->size.height != hw_surface_get_size(source).height){
+                return 1;
+            }else{
+                dst_buffer.x = dst_rect->top_left.x;
+                dst_buffer.y = dst_rect->top_left.y;
+                src_buffer.x = 0;
+                src_buffer.y = 0;
+                width = dst_rect->size.width;
+                height = dst_rect->size.height;
+            }
+        }
+    }else{
+        if(src_rect != NULL){
+            if (hw_surface_get_size(destination).width != src_rect->size.width || hw_surface_get_size(destination).height != src_rect->size.height){
+                return 1;
+            }else{
+                dst_buffer.x = 0;
+                dst_buffer.y = 0;
+                src_buffer.x = src_rect->top_left.x;
+                src_buffer.y = src_rect->top_left.y;
+                width = hw_surface_get_size(destination).width;
+                height = hw_surface_get_size(destination).height;
+            }
+        }else{
+            if (hw_surface_get_size(destination).width != hw_surface_get_size(source).width || hw_surface_get_size(destination).height != hw_surface_get_size(source).height){
+                return 1;
+            }else{
+                dst_buffer.x = 0;
+                dst_buffer.y = 0;
+                src_buffer.x = 0;
+                src_buffer.y = 0;
+                width = hw_surface_get_size(destination).width;
+                height = hw_surface_get_size(destination).height;
+            }
+        }
+    }
+    //treatment
+    int dest_width = hw_surface_get_size(destination).width;
+    uint32_t * src_surface_get_buffer = (uint32_t *)hw_surface_get_buffer(source);
+    uint32_t * dst_surface_get_buffer = (uint32_t *)hw_surface_get_buffer(destination);
+
+    if(alpha){
+        int ib=0;
+        int ia=0;
+        int ir=0;
+        int ig=0;
+
+        hw_surface_get_channel_indices(source, &ir, &ig, &ib, &ia);
+        for (int x = 0; x < width; x++){
+            for(int y =0; y< height; y++){
+                uint32_t* pixel_src = src_surface_get_buffer + y*width + x;
+                uint8_t* pixel_src_8 = (uint8_t *)pixel_src;
+                int src_red = pixel_src_8[ir];
+                int src_blue = pixel_src_8[ib];
+                int src_green = pixel_src_8[ig];
+                int src_alpha = pixel_src_8[ia];
+
+
+                uint32_t * pixel_dst = dst_surface_get_buffer  + (y + dst_buffer.y)*dest_width + x + dst_buffer.x;
+                uint8_t* pixel_dst_8 = (uint8_t *)pixel_dst;
+                int dst_red = pixel_dst_8[ir];
+                int dst_blue = pixel_dst_8[ib];
+                int dst_green = pixel_dst_8[ig];
+
+                ei_color_t color = {(src_red*src_alpha + dst_red*(255 - src_alpha))/255,(src_green*src_alpha + dst_green*(255 - src_alpha))/255, src_blue*src_alpha + dst_blue*(255 - src_alpha)/255, 255};
+                *pixel_dst = ei_map_rgba(destination, color);
+            }
+        }
+    }else{
+        for (int x = 0; x < width; x++){
+            for(int y =0; y< height; y++){
+                uint32_t* pixel_src = src_surface_get_buffer + y*width + x;
+                uint32_t * pixel_dst = dst_surface_get_buffer  + (y + dst_buffer.y)*dest_width + x + dst_buffer.x;
+                *pixel_dst = *pixel_src;
+            }
+        }
+    }
+
+
+}

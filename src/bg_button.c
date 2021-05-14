@@ -5,6 +5,9 @@
 #include <math.h>
 #include "ei_types.h"
 #include "bg_button.h"
+#include "ei_draw.h"
+#include "hw_interface.h"
+#include "bg_utils.h"
 
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
@@ -34,6 +37,7 @@ ei_linked_point_t *ei_arc(ei_point_t center, int radius, float start, float end,
 
     return result;
 }
+
 
 ei_linked_point_t* ei_rounded_frame(ei_rect_t rect, int radius, int part, int n){
     ei_linked_point_t *result;
@@ -69,10 +73,10 @@ ei_linked_point_t* ei_rounded_frame(ei_rect_t rect, int radius, int part, int n)
     switch(part){
         // If we want the whole rectangle
         case 0:
-            top_left_arc = ei_arc(top_left_center, radius, 180, 90, n);
-            top_right_arc = ei_arc(top_right_center, radius, 90, 0, n);
-            bottom_left_arc = ei_arc(bottom_left_center, radius, -90, -180, n);
-            bottom_right_arc = ei_arc(bottom_right_center, radius, 0, -90, n);
+            top_left_arc = ei_arc(top_left_center, radius, 90, 180, n);
+            bottom_right_arc = ei_arc(bottom_right_center, radius, 270, 360, n);
+            bottom_left_arc = ei_arc(bottom_left_center, radius, 180, 270, n);
+            top_right_arc = ei_arc(top_right_center, radius, 0, 90, n);
 
             first_point.x = top_left_arc->point.x;
             first_point.y = top_left_arc->point.y;
@@ -84,18 +88,17 @@ ei_linked_point_t* ei_rounded_frame(ei_rect_t rect, int radius, int part, int n)
                 current = current->next;
             }
 
-            current->next = top_right_arc;
+            current->next = bottom_left_arc;
             while(current->next != NULL){
                 current = current->next;
             }
-
 
             current->next = bottom_right_arc;
             while(current->next != NULL){
                 current = current->next;
             }
 
-            current->next = bottom_left_arc;
+            current->next = top_right_arc;
             while(current->next != NULL){
                 current = current->next;
             }
@@ -111,8 +114,8 @@ ei_linked_point_t* ei_rounded_frame(ei_rect_t rect, int radius, int part, int n)
             h = (int)MIN(height/2, width/2);
 
             bottom_right_arc = ei_arc(bottom_right_center, radius, 0, -90, n);
-            top_right_arc = ei_arc(top_right_center, radius, 45, 0, n);
-            bottom_left_arc = ei_arc(bottom_left_center, radius, -90, -135, n);
+            top_right_arc = ei_arc(top_right_center, radius, 45, 0, n/2);
+            bottom_left_arc = ei_arc(bottom_left_center, radius, -90, -145, n/2);
 
             first_point.x = top_right_arc->point.x;
             first_point.y = top_right_arc->point.y;
@@ -158,8 +161,8 @@ ei_linked_point_t* ei_rounded_frame(ei_rect_t rect, int radius, int part, int n)
             h = (int)MIN(height/2, width/2);
 
             top_left_arc = ei_arc(top_left_center, radius, 180, 90, n);
-            top_right_arc = ei_arc(top_right_center, radius, 90, 45, n);
-            bottom_left_arc = ei_arc(bottom_left_center, radius, -135, -180, n);
+            top_right_arc = ei_arc(top_right_center, radius, 90, 35, n/2);
+            bottom_left_arc = ei_arc(bottom_left_center, radius, -135, -180, n/2);
 
             first_point.x = top_left_arc->point.x;
             first_point.y = top_left_arc->point.y;
@@ -205,4 +208,46 @@ ei_linked_point_t* ei_rounded_frame(ei_rect_t rect, int radius, int part, int n)
     }
 
     return result;
+}
+
+void ei_draw_button(ei_rect_t rect, int border, ei_surface_t surface, ei_surface_t pick_surface, int radius, ei_color_t color, ei_color_t pick_color, int button_type, ei_rect_t* clipper){
+
+    ei_color_t top_color, bottom_color;
+    switch (button_type) {
+        // Unpressed
+        case 0:
+            modify_color(&color, &top_color, 1.4);
+            modify_color(&color, &bottom_color, 0.6);
+            break;
+        // Pressed
+        case 1:
+            modify_color(&color, &top_color, 0.6);
+            modify_color(&color, &bottom_color, 1.4);
+            break;
+        default:
+            modify_color(&color, &top_color, 1.4);
+            modify_color(&color, &bottom_color, 0.6);
+            break;
+    }
+
+
+    ei_point_t little_rect_point;
+    little_rect_point.x = rect.top_left.x + border;
+    little_rect_point.y = rect.top_left.y + border;
+
+    ei_size_t little_rect_size;
+    little_rect_size.width = rect.size.width - 2* border;
+    little_rect_size.height = rect.size.height - 2* border;
+
+    ei_rect_t little_rect = {little_rect_point, little_rect_size};
+
+    ei_linked_point_t *main = ei_rounded_frame(little_rect, radius, 0, 10);
+    ei_linked_point_t *top = ei_rounded_frame(rect, radius, 1, 10);
+    ei_linked_point_t *bottom = ei_rounded_frame(rect, radius, 2, 10);
+    ei_linked_point_t *offscreen_points = ei_rounded_frame(rect, radius, 0, 10);
+
+    ei_draw_polygon(pick_surface, offscreen_points, pick_color, clipper);
+    ei_draw_polygon(surface, top, top_color, clipper);
+    ei_draw_polygon(surface, bottom, bottom_color, clipper);
+    ei_draw_polygon(surface, main, color, clipper);
 }

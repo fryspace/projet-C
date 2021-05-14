@@ -13,4 +13,8 @@ ei_color_t *modify_color(ei_color_t *color, ei_color_t *new_color ,float coef);
 
 void draw_widgets(ei_widget_t *widget, ei_surface_t main_windows, ei_surface_t pick_surface, ei_rect_t *clipper);
 
+void ei_anchor(ei_anchor_t anchor, ei_size_t *size, ei_rect_t *rect, ei_point_t *position);
+
+ei_widget_t* search_in_widget(ei_widget_t* widget, uint32_t pick_id);
+
 #endif //PROJETC_IG_BG_UTILS_H

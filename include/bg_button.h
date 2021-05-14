@@ -5,6 +5,9 @@
 #ifndef BG_BUTTON_H
 #define BG_BUTTON_H
 
+#include "ei_types.h"
+#include "hw_interface.h"
+
 /**
  * \brief	Create an arc
  *
@@ -29,5 +32,7 @@ ei_linked_point_t *ei_arc(ei_point_t center, int radius, float start, float end,
  * @return 			A chained list of points
  */
 ei_linked_point_t* ei_rounded_frame(ei_rect_t rect, int radius, int part, int n);
+
+void ei_draw_button(ei_rect_t rect, int border, ei_surface_t surface, ei_surface_t pick_surface, int radius, ei_color_t color, ei_color_t pick_color, int button_type, ei_rect_t* clipper);
 
 #endif //BG_BUTTON_H
