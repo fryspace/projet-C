@@ -7,7 +7,7 @@
 #include "ei_widget.h"
 
 // /!\ IL MANQUE : tests des images dans boutons, quand on click on click pour tous les boutons à la fois,
-//                  text qui depasse des boutons, text qui dépasse cadre va de l'autre côté
+//                  text qui depasse des boutons, text qui dépasse cadre va de l'autre côté, varier alpha
 
 
 /*
