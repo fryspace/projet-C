@@ -35,6 +35,7 @@ void test_line(ei_surface_t surface, ei_rect_t* clipper)
 void test_button(ei_surface_t surface, ei_rect_t* clipper)
 {
     ei_color_t		color		= { 150, 0, 160, 255 };
+    ei_color_t		pick_color		= { 150, 160, 0, 255 };
     ei_point_t	top_left1 = {100, 200};
     ei_point_t	top_left2 = {450, 200};
     ei_size_t size = {300, 100};
@@ -42,8 +43,8 @@ void test_button(ei_surface_t surface, ei_rect_t* clipper)
     ei_rect_t rect1 = {top_left1, size};
     ei_rect_t rect2 = {top_left2, size};
 
-    ei_draw_button(rect1, surface, 40, color, 0, clipper);
-    ei_draw_button(rect2, surface, 40, color, 1, clipper);
+    ei_draw_button(rect1,1, surface, 40,40, color,pick_color, 0, clipper);
+    ei_draw_button(rect2,1, surface,40, 40, color,pick_color, 1, clipper);
 }
 
 /* test_line --
@@ -200,10 +201,10 @@ int main(int argc, char** argv)
 
 	/* Draw polylines. */
     //test_button(main_window, clipper_ptr);
-	test_line(main_window, clipper_ptr);
+	//test_line(main_window, clipper_ptr);
     //test_heart(main_window, clipper_ptr);
-	//test_octogone	(main_window, clipper_ptr);
-	//test_square	(main_window, clipper_ptr);
+	test_octogone	(main_window, clipper_ptr);
+	test_square	(main_window, clipper_ptr);
 	//test_dot	(main_window, clipper_ptr);
 	
 	/* Unlock and update the surface. */
