@@ -132,6 +132,11 @@ target_link_libraries(puzzle		ei ${PLATFORM_LIB_FLAGS})
 add_executable(two048			${TESTS_SRC}/two048.c)
 target_link_libraries(two048		ei ${PLATFORM_LIB_FLAGS})
 
+# target test_polygone
+
+add_executable(test_polygone			${TESTS_SRC}/test_polygone.c)
+target_link_libraries(test_polygone		ei ${PLATFORM_LIB_FLAGS})
+
 # target to build the documentation
 
 add_custom_target(doc doxygen		${DOCS_DIR}/doxygen.cfg WORKING_DIRECTORY ${ROOT_DIR})

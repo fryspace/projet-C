@@ -42,8 +42,8 @@ void test_button(ei_surface_t surface, ei_rect_t* clipper)
     ei_rect_t rect1 = {top_left1, size};
     ei_rect_t rect2 = {top_left2, size};
 
-    ei_draw_button(rect1, surface, 40, color, 0, clipper);
-    ei_draw_button(rect2, surface, 40, color, 1, clipper);
+    //ei_draw_button(rect1, surface, 40, color, 0, clipper);
+    //ei_draw_button(rect2, surface, 40, color, 1, clipper);
 }
 
 /* test_line --
@@ -200,9 +200,9 @@ int main(int argc, char** argv)
 
 	/* Draw polylines. */
     //test_button(main_window, clipper_ptr);
-	test_line(main_window, clipper_ptr);
+	//test_line(main_window, clipper_ptr);
     //test_heart(main_window, clipper_ptr);
-	//test_octogone	(main_window, clipper_ptr);
+	test_octogone	(main_window, clipper_ptr);
 	//test_square	(main_window, clipper_ptr);
 	//test_dot	(main_window, clipper_ptr);
 	
