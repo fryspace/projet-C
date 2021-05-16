@@ -35,18 +35,18 @@ ei_linked_point_t *make_poly_random(int n, int max_y, int max_x){
 
 int main(int argc, char** argv){
     ei_event_t	event;
-    srand(109388);
+    srand(time(NULL));
     int N = rand() % 10;
     ei_size_t win_size = ei_size(800, 600);
-    ei_surface_t main_window = hw_create_window(win_size, EI_FALSE);
     ei_color_t	white = { 0xff, 0xff, 0xff, 0xff };
     ei_rect_t*	clipper_ptr	= NULL;
 
     hw_init();
 
+    ei_surface_t main_window = hw_create_window(win_size, EI_FALSE);
     hw_surface_lock	(main_window);
     ei_fill	(main_window, &white, clipper_ptr);
-/*
+
     for(int i=0; i < N; i++){
         int n = rand() % 10;
         int red = rand() % 256;
@@ -57,11 +57,14 @@ int main(int argc, char** argv){
         ei_linked_point_t *poly = make_poly_random(n, win_size.height, win_size.width);
         ei_draw_polygon(main_window, poly, color, NULL);
     }
-*/
+
     hw_surface_unlock(main_window);
+    hw_surface_update_rects(main_window, NULL);
+
     event.type = ei_ev_none;
     while (event.type != ei_ev_keydown)
         hw_event_wait_next(&event);
     hw_quit();
+
     return (EXIT_SUCCESS);
 }
