@@ -226,7 +226,7 @@ struct Y{
 
 
 struct Y limits (ei_linked_point_t *first_point){
-    struct Y limits = {INT_MAX, 0};
+    struct Y limits = {first_point->point.y, first_point->point.y};
     while(first_point->next != NULL){
         if (first_point->next->point.y < limits.y_min){
             limits.y_min = first_point->next->point.y;
@@ -303,7 +303,7 @@ struct TC *initialisation_TC(ei_linked_point_t *first_point, struct Y limits){
                 }
             }queue = queue->next;
         }
-        if ((queue->next->point.y || sent2.next->point.y == i) && (queue->next->point.y != sent2.next->point.y)) {
+        if ((MIN(queue->next->point.y, sent2.next->point.y ) == i) && (queue->next->point.y != sent2.next->point.y)) {
             float m = ((float) (queue->next->point.x - sent2.next->point.x) /
                        (float) (queue->next->point.y - sent2.next->point.y));
             if (queue->next->point.y > sent2.next->point.y) {
@@ -415,17 +415,17 @@ void trier_TCA(struct side **TCA){
    while (queue->next->next != NULL){
        if (queue->next->x_min > queue->next->next->x_min){
            struct  side *queue2 = &sent;
-           while(queue2->next->x_min < queue->next->next->x_min){
+           while(queue2->next->x_min <= queue->next->next->x_min){
                queue2=queue2->next;
            }
            struct side *in = queue->next->next;
-           in->next=queue2->next;
-           queue2->next = in;
            if(queue->next->next->next == NULL){
                queue->next->next = NULL;
            }else{
-               queue->next->next =queue ->next -> next -> next;
+              queue->next->next = queue->next->next->next;
            }
+           in->next = queue2->next;
+           queue2->next = in;
        }
        queue=queue->next;
    }
@@ -513,7 +513,7 @@ void increment(struct side **TCA){
 
 void ei_draw_polygon (ei_surface_t  surface, const ei_linked_point_t*   first_point, ei_color_t  color
                       , const ei_rect_t*    clipper){
-    if (first_point != NULL){
+    if (first_point != NULL && first_point->next != NULL && first_point->next->next !=NULL){
         // limits of the scanline
         struct Y limit = limits(first_point);
         // TC construction
