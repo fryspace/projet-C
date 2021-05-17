@@ -116,6 +116,7 @@ void ei_placer_run(struct ei_widget_t* widget){
         widget->screen_location.top_left.x = x_anchor - width_anchor/2;
         widget->screen_location.top_left.y = y_anchor - height_anchor/2;
     }
+    /*
     ei_widget_t *child = widget->children_head;
     while ( child != NULL) {
         if (child->placer_params != NULL){
@@ -123,6 +124,7 @@ void ei_placer_run(struct ei_widget_t* widget){
         }
         child = child->next_sibling;
     }
+     */
 }
 
 void ei_placer_forget(struct ei_widget_t* widget){

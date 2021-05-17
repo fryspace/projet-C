@@ -11,6 +11,9 @@
 #include "ei_frame.h"
 #include "ei_types.h"
 #include <assert.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
 static uint32_t BASE_PICK_ID = 0x00000000;
 extern ei_surface_t surface_offscreen;
@@ -40,10 +43,6 @@ void ei_button_configure(ei_widget_t*		widget,
             widget->requested_size.width = 30;
             widget->requested_size.height = 30;
     }
-    else if(widget->requested_size.width==0 && widget->requested_size.height==0){
-        widget->requested_size.width = 40;
-        widget->requested_size.height = 40;
-    }
 
     button->bg_color = color!=NULL ? *color : ei_default_background_color;
 
@@ -54,7 +53,18 @@ void ei_button_configure(ei_widget_t*		widget,
     button->relief = relief!=NULL && border_width!=0 ? *relief : ei_relief_none;
 
     if(text != NULL){
-        button->text=*text;
+        if(text != NULL){
+            if(*text){
+                if(button->text != NULL){
+                    button->text = realloc(button->text, strlen(*text) + 1);
+                }else{
+                    button->text = malloc(strlen(*text) + 1);
+                }
+                strcpy(button->text, *text);
+            }else{
+                button->text = NULL;
+            }
+        }
     }
 
 
@@ -65,7 +75,6 @@ void ei_button_configure(ei_widget_t*		widget,
     button->text_anchor = text_anchor!=NULL ? *text_anchor : ei_anc_center;
 
     if(img != NULL){
-        button->img = malloc(sizeof ( ei_surface_t ));
         button->img = *img;
     }
 
@@ -119,7 +128,16 @@ void ei_frame_configure	(ei_widget_t* widget, ei_size_t*	requested_size, const e
     }
     //assert(text!=NULL && img!=NULL);
     if(text != NULL){
-        frame->text=*text;
+        if(*text){
+            if(frame->text != NULL){
+                frame->text = realloc(frame->text, strlen(*text) + 1);
+            }else{
+                frame->text = malloc(strlen(*text) + 1);
+            }
+            strcpy(frame->text, *text);
+        }else{
+            frame->text = NULL;
+        }
     }
 
 
@@ -202,7 +220,8 @@ void ei_toplevel_configure(ei_widget_t*		widget,
 
 
     if(title!=NULL){
-        toplevel->title=*title;
+        toplevel->title= realloc(toplevel->title, strlen(*title) + 1);
+        strcpy(toplevel->title, *title);
     }
 
 }
@@ -266,7 +285,6 @@ static void ei_widget_destroy_children(ei_widget_t*	widget) {
         }
 
         widget->wclass->releasefunc(widget);
-        free(widget);
     }
 }
 
@@ -279,7 +297,7 @@ void ei_widget_destroy(ei_widget_t*	widget){
             if(current_widget == widget){
                 parent->children_head = widget->next_sibling;
             }
-            else if(parent->children_tail == widget){
+            if(parent->children_tail == widget){
                 parent->children_tail = parent->children_head;
             }
             else{
@@ -295,6 +313,7 @@ void ei_widget_destroy(ei_widget_t*	widget){
             widget->next_sibling = NULL;
         }
         ei_widget_destroy_children(widget);
+        widget = NULL;
     }
 }
 

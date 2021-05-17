@@ -148,8 +148,16 @@ ei_linked_point_t* ei_flat_frame(ei_rect_t rect, int part){
 
 void frame_drawfunc(struct ei_widget_t* widget, ei_surface_t surface, ei_surface_t pick_surface, ei_rect_t* clipper){
     ei_frame_t  *frame = (ei_frame_t*) widget;
+    ei_rect_t rect;
 
-    ei_rect_t rect = widget->screen_location;
+    if(widget->screen_location.size.width == 0 && widget->screen_location.size.height == 0){
+        rect.top_left = widget->screen_location.top_left;
+        rect.size = widget->requested_size;
+    }else{
+        rect = widget->screen_location;
+    }
+
+
 
     ei_color_t top_color, bottom_color;
 
@@ -212,7 +220,7 @@ void frame_drawfunc(struct ei_widget_t* widget, ei_surface_t surface, ei_surface
         ei_point_t text_position;
         ei_size_t text_size = {0, 0};
         hw_text_compute_size(frame->text, frame->text_font, &(text_size.width), &(text_size.height));
-        ei_anchor(frame->text_anchor, &text_size, clipper, &text_position);
+        ei_anchor(frame->text_anchor, &text_size, &rect, &text_position);
         ei_draw_text(surface, &text_position, frame->text, frame->text_font, frame->text_color, clipper);
     }
 
@@ -297,12 +305,17 @@ void frame_handlefunc(ei_widget_t* widget, ei_event_t* event){
 
 }
 
+void frame_geomnotifyfunc(ei_widget_t*	widget, ei_rect_t rect){
+    widget->screen_location = rect;
+}
+
 void frame_register_class (){
     strcpy(frame.name, "frame");
     frame.drawfunc = &frame_drawfunc;
     frame.allocfunc = &frame_allocfunc;
     frame.handlefunc = &frame_handlefunc;
     frame.releasefunc = &frame_release_func;
+    frame.geomnotifyfunc = &frame_geomnotifyfunc;
     frame.setdefaultsfunc = &frame_setdefaultsfunc;
     ei_widgetclass_register(&frame);
 }

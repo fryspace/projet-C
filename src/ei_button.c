@@ -129,12 +129,17 @@ ei_bool_t button_handle_func(ei_widget_t* widget, ei_event_t* event){
 
 }
 
+void button_geomnotifyfunc(ei_widget_t*	widget, ei_rect_t rect){
+    widget->screen_location = rect;
+}
+
 void button_register_class (){
     strcpy(button.name, "button");
     button.drawfunc = &button_drawfunc;
     button.allocfunc = &button_allocfunc;
     button.releasefunc = &button_release_func;
     button.handlefunc = &button_handle_func;
+    button.geomnotifyfunc = &button_geomnotifyfunc;
     button.setdefaultsfunc = &button_setdefaultsfunc;
     ei_widgetclass_register(&button);
 }

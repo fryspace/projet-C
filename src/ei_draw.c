@@ -542,7 +542,6 @@ void ei_draw_text(ei_surface_t surface, const ei_point_t* where, const char* tex
         ei_surface_t text_surface = hw_text_create_surface(text, text_font, color);
 
         hw_surface_lock(text_surface);
-        //hw_surface_set_origin(text_surface, *where);
 
         ei_rect_t text_rect = hw_surface_get_rect(text_surface);
         ei_bool_t alpha = hw_surface_has_alpha(text_surface);

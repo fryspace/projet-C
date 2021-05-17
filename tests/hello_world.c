@@ -65,7 +65,7 @@ int main(int argc, char** argv)
 	int		window_border_width	= 2;
 	ei_bool_t	window_closable		= EI_TRUE;
 	ei_axis_set_t	window_resizable	= ei_axis_both;
-	ei_point_t	window_position		= {30, 10};
+	ei_point_t	window_position		= {30, 40};
 
 	
 	/* Create the application and change the color of the background. */

@@ -54,7 +54,10 @@ void ei_app_run(){
 
         // We call the default handler
         ei_default_handle_func_t default_handler = ei_event_get_default_handle_func();
-        default_handler(&event);
+        if(default_handler != NULL){
+            default_handler(&event);
+        }
+
 
         ei_widget_t *widget;
         ei_widget_t *active_widget;
@@ -74,9 +77,9 @@ void ei_app_run(){
                     widget->wclass->handlefunc(widget, &event);
                 }
 
-                if(active_widget != NULL){
-                    active_widget->wclass->handlefunc(active_widget, &event);
-                }
+                //if(active_widget != NULL){
+                //    active_widget->wclass->handlefunc(active_widget, &event);
+                //}
 
                 break;
             default:
