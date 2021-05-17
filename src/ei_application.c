@@ -51,6 +51,11 @@ void ei_app_run(){
 
         /* Wait for a character on command line. */
         hw_event_wait_next(&event);
+
+        // We call the default handler
+        ei_default_handle_func_t default_handler = ei_event_get_default_handle_func();
+        default_handler(&event);
+
         ei_widget_t *widget;
         ei_widget_t *active_widget;
 

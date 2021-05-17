@@ -33,36 +33,57 @@ void ei_button_configure(ei_widget_t*		widget,
                                             void**			user_param){
 
     ei_button_t* button=(ei_button_t*)widget;
-    int default_radius = 40;
 
     if(requested_size != NULL){
         widget->requested_size = *requested_size;
+    }else{
+            widget->requested_size.width = 30;
+            widget->requested_size.height = 30;
     }
 
-    button->bg_color = color!=NULL ? color : &ei_default_background_color;
+    button->bg_color = color!=NULL ? *color : ei_default_background_color;
 
-    button->border = border_width!=NULL ? border_width : 0;
+    button->border = border_width!=NULL ? *border_width : k_default_button_border_width;
 
-    button->corner_radius = corner_radius!=NULL ? corner_radius : &default_radius;
+    button->corner_radius = corner_radius!=NULL ? *corner_radius : k_default_button_corner_radius;
 
-    button->relief = relief!=NULL && border_width!=0 ? relief : ei_relief_none;
+    button->relief = relief!=NULL && border_width!=0 ? *relief : ei_relief_none;
 
-    button->text=text;
+    if(text != NULL){
+        button->text=*text;
+    }
 
-    button->text_font= text_font!=NULL ? text_font : ei_default_font;
 
-    button->text_color = text_color!=NULL ? text_color : &ei_font_default_color;
+    button->text_font= text_font!=NULL ? *text_font : ei_default_font;
 
-    *(button->text_anchor) = text_anchor!=NULL ? *text_anchor : ei_anc_center;
+    button->text_color = text_color!=NULL ? *text_color : ei_font_default_color;
 
-    button->img = img;
+    button->text_anchor = text_anchor!=NULL ? *text_anchor : ei_anc_center;
 
-    button->img_anchor = img_anchor!=NULL ? img_anchor : ei_anc_center;
+    if(img != NULL){
+        button->img = malloc(sizeof ( ei_surface_t ));
+        button->img = *img;
+    }
 
-    button->img_rect = img_rect;
 
-    button->callback = callback;
-    button->user_param = user_param;
+    button->img_anchor = img_anchor!=NULL ? *img_anchor : ei_anc_center;
+
+    if(img_rect != NULL){
+        button->img_rect = malloc(sizeof ( ei_rect_t ));
+        button->img_rect->size = (*img_rect)->size;
+        button->img_rect->top_left.x = (*img_rect)->top_left.x;
+        button->img_rect->top_left.y = (*img_rect)->top_left.y;
+    }
+
+    if(callback != NULL){
+        button->callback = *callback;
+    }
+
+    if(user_param != NULL){
+        button->user_param = user_param;
+    }
+
+
 
 }
 
@@ -74,54 +95,64 @@ void ei_frame_configure	(ei_widget_t* widget, ei_size_t*	requested_size, const e
     }
 
     if(color!=NULL){
-        frame->bg_color=color;
+        frame->bg_color=*color;
     }
     else{
-        frame->bg_color=&ei_default_background_color;
+        frame->bg_color=ei_default_background_color;
     }
 
     if(border_width!=NULL){
-        frame->border=border_width;
+        frame->border=*border_width;
     }
     else{
         frame->border=0;
     }
     if(relief!=NULL && border_width!=0){
-        *(frame->relief)=*relief;
+        frame->relief=*relief;
     }
     else{
-        *(frame->relief)=ei_relief_none;
+        frame->relief=ei_relief_none;
     }
     //assert(text!=NULL && img!=NULL);
-    frame->text=text;
+    if(text != NULL){
+        frame->text=*text;
+    }
+
 
     if(text_font!=NULL){
-        frame->text_font=text_font;
+        frame->text_font=*text_font;
     }
     else{
         frame->text_font=ei_default_font;
     }
     if(text_color!=NULL){
-        frame->text_color=text_color;
+        frame->text_color=*text_color;
     }
     else{
-        frame->text_color=&ei_font_default_color;
+        frame->text_color=ei_font_default_color;
     }
     if(text_anchor!=NULL){
-        *(frame->text_anchor)=*text_anchor;
+        frame->text_anchor=*text_anchor;
     }
     else{
-        *(frame->text_anchor)= ei_anc_center;
+        frame->text_anchor= ei_anc_center;
     }
-    frame->img=img;
+    if(img != NULL){
+        frame->img=img;
+    }
+
 
     if(img_anchor!=NULL){
-        frame->img_anchor=img_anchor;
+        frame->img_anchor=*img_anchor;
     }
     else{
         frame->img_anchor=ei_anc_center;
     }
-    frame->img_rect=img_rect;
+
+    if(img_rect != NULL){
+        frame->img_rect=*img_rect;
+    }
+
 
 }
 
@@ -139,25 +170,35 @@ void ei_toplevel_configure(ei_widget_t*		widget,
     }
 
     if(color!=NULL){
-        toplevel->bg_color=color;
+        toplevel->bg_color=*color;
     }
     else{
-        toplevel->bg_color=&ei_default_background_color;
+        toplevel->bg_color=ei_default_background_color;
     }
 
     if(border_width!=NULL){
-        toplevel->border=border_width;
+        toplevel->border=*border_width;
     }
     else{
         toplevel->border=0;
     }
 
-    toplevel->closable = closable;
-    toplevel->resizable = resizable;
-    toplevel->size_min = min_size;
+    if(closable != NULL){
+        toplevel->closable = *closable;
+    }
+
+    if(resizable != NULL){
+        toplevel->resizable = *resizable;
+    }
+
+
+    if(min_size != NULL){
+        toplevel->size_min = *min_size;
+    }
+
 
     if(title!=NULL){
-        toplevel->title=title;
+        toplevel->title=*title;
     }
 
 }

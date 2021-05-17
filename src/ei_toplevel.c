@@ -20,7 +20,7 @@ static int delta_x;
 static int delta_y;
 
 void close_toplevel(ei_widget_t* widget, ei_event_t* event, void* user_param){
-    ei_widget_destroy(search_in_widget(widget, widget->pick_id - 1));
+    //ei_widget_destroy(search_in_widget(widget, widget->pick_id - 1));
     ei_widget_destroy(widget);
 }
 
@@ -48,7 +48,7 @@ ei_bool_t point_in_topbar(ei_point_t point, ei_widget_t *widget){
     ei_rect_t rect = widget->screen_location;
 
 
-    int border = *toplevel->border;
+    int border = toplevel->border;
     int top_size = 27;
 
     int xmin = rect.top_left.x + border;
@@ -95,9 +95,9 @@ void toplevel_drawfunc(struct ei_widget_t* widget, ei_surface_t surface, ei_surf
     ei_rect_t rect = widget->screen_location;
 
     ei_color_t top_color;
-    modify_color(toplevel->bg_color, &top_color, 0.6);
+    modify_color(&toplevel->bg_color, &top_color, 0.6);
 
-    int border = *toplevel->border;
+    int border = toplevel->border;
     int top_size = 27;
     int resizable_button_size = 15;
 
@@ -105,27 +105,33 @@ void toplevel_drawfunc(struct ei_widget_t* widget, ei_surface_t surface, ei_surf
     ei_size_t little_rect_size = {rect.size.width - 2*border, rect.size.height - border - top_size};
     ei_rect_t little_rect = {little_rect_point, little_rect_size};
 
-    ei_point_t resizable_rect_point = {rect.top_left.x + rect.size.width - resizable_button_size, rect.top_left.y + rect.size.height - resizable_button_size};
-    ei_size_t resizable_rect_size = {resizable_button_size, resizable_button_size};
-    ei_rect_t resizable_rect = {resizable_rect_point, resizable_rect_size};
 
     ei_fill(surface, &top_color, &rect);
-    ei_fill(surface, toplevel->bg_color, &little_rect);
-    ei_fill(surface, &top_color, &resizable_rect);
-    ei_fill(pick_surface, widget->pick_color, &resizable_rect);
+    ei_fill(surface, &toplevel->bg_color, &little_rect);
     ei_fill(pick_surface, widget->pick_color, &little_rect);
     ei_fill(pick_surface, widget->pick_color, &rect);
 
-    // Creating the close button
+    if(toplevel->resizable != ei_axis_none){
+        ei_point_t resizable_rect_point = {rect.top_left.x + rect.size.width - resizable_button_size, rect.top_left.y + rect.size.height - resizable_button_size};
+        ei_size_t resizable_rect_size = {resizable_button_size, resizable_button_size};
+        ei_rect_t resizable_rect = {resizable_rect_point, resizable_rect_size};
 
-    toplevel->close_button->widget.screen_location.top_left.x = widget->screen_location.top_left.x + toplevel->border + \
-                                                                                *toplevel->close_button->border * 5;
-    toplevel->close_button->widget.screen_location.top_left.y = widget->screen_location.top_left.y + *toplevel->border * 2 + \
-                                                                                *toplevel->close_button->border * 5;
-    toplevel->close_button->widget.screen_location.size.width = ((ei_widget_t *)toplevel->close_button)->requested_size.width;
-    toplevel->close_button->widget.screen_location.size.height = ((ei_widget_t *)toplevel->close_button)->requested_size.height;
-    ei_widget_t *button_widget = (ei_widget_t *)toplevel->close_button;
-    button_drawfunc(button_widget, surface, pick_surface, clipper);
+        ei_fill(surface, &top_color, &resizable_rect);
+        ei_fill(pick_surface, widget->pick_color, &resizable_rect);
+    }
+
+    if(toplevel->closable == EI_TRUE){
+        // Creating the close button
+
+        toplevel->close_button->widget.screen_location.top_left.x = widget->screen_location.top_left.x + toplevel->border + \
+                                                                                toplevel->close_button->border * 5;
+        toplevel->close_button->widget.screen_location.top_left.y = widget->screen_location.top_left.y + toplevel->border * 2 + \
+                                                                                toplevel->close_button->border * 5;
+        toplevel->close_button->widget.screen_location.size.width = ((ei_widget_t *)toplevel->close_button)->requested_size.width;
+        toplevel->close_button->widget.screen_location.size.height = ((ei_widget_t *)toplevel->close_button)->requested_size.height;
+        ei_widget_t *button_widget = (ei_widget_t *)toplevel->close_button;
+        button_drawfunc(button_widget, surface, pick_surface, clipper);
+    }
 
     // Drawing text
 
@@ -134,45 +140,37 @@ void toplevel_drawfunc(struct ei_widget_t* widget, ei_surface_t surface, ei_surf
         ei_point_t text_position;
         ei_size_t text_size;
 
-        hw_text_compute_size(*(toplevel->title), ei_default_font, &(text_size.width), &(text_size.height));
+        hw_text_compute_size(toplevel->title, ei_default_font, &(text_size.width), &(text_size.height));
 
         ei_anchor(ei_anc_northwest, &text_size, &widget->screen_location, &text_position);
         text_position.x += 25;
 
-        ei_draw_text(surface, &text_position, *(toplevel->title), ei_default_font, ei_font_default_color, clipper);
+        ei_draw_text(surface, &text_position, toplevel->title, ei_default_font, ei_font_default_color, clipper);
     }
 }
 
 void* toplevel_allocfunc(){
     ei_toplevel_t *toplevel = calloc(1, sizeof(ei_toplevel_t));
-    toplevel->border = calloc(1, sizeof(int));
-    toplevel->bg_color = calloc(1, sizeof (ei_color_t));
-
-    toplevel->close_button = calloc(1, sizeof(ei_button_t));
-    toplevel->closable = calloc(1, sizeof(ei_bool_t));
-    toplevel->resizable = calloc(1, sizeof(ei_axis_set_t));
-
-    toplevel->size_min = calloc(1, sizeof(ei_size_t));
 
     return toplevel;
 }
 
 void toplevel_release_func(struct ei_widget_t* widget){
-    free(((ei_toplevel_t*)widget)->bg_color);
-    free(((ei_toplevel_t*)widget)->border);
-    free(((ei_toplevel_t*)widget)->closable);
+    free(&((ei_toplevel_t*)widget)->bg_color);
+    free(&((ei_toplevel_t*)widget)->border);
+    free(&((ei_toplevel_t*)widget)->closable);
     free(((ei_toplevel_t*)widget)->close_button);
-    free(((ei_toplevel_t*)widget)->resizable);
+    free(&((ei_toplevel_t*)widget)->resizable);
     free(((ei_toplevel_t*)widget)->size_min);
 
 }
 
 void toplevel_setdefaultsfunc(struct ei_widget_t* widget){
 
-    *(((ei_toplevel_t*)widget)->bg_color) = ei_default_background_color;
-    *(((ei_toplevel_t*)widget)->border) = 0;
-    *(((ei_toplevel_t*)widget)->closable) =  EI_FALSE;
-    *(((ei_toplevel_t*)widget)->resizable) = ei_axis_none;
+    (((ei_toplevel_t*)widget)->bg_color) = ei_default_background_color;
+    (((ei_toplevel_t*)widget)->border) = 0;
+    (((ei_toplevel_t*)widget)->closable) =  EI_FALSE;
+    (((ei_toplevel_t*)widget)->resizable) = ei_axis_none;
 
     ((ei_toplevel_t*)widget)->title = NULL;
 

@@ -11,13 +11,13 @@
 
 typedef struct ei_toplevel_t {
     ei_widget_t           widget;
-    ei_color_t*           bg_color;
-    int*                  border;
-    char**                title;
+    ei_color_t           bg_color;
+    int                  border;
+    char*                title;
     ei_button_t*		close_button;
-    ei_bool_t*		closable;
-    ei_axis_set_t*		resizable;
-    ei_size_t**		size_min;
+    ei_bool_t		closable;
+    ei_axis_set_t		resizable;
+    ei_size_t*		size_min;
 
 } ei_toplevel_t;
 

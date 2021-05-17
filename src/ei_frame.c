@@ -153,17 +153,17 @@ void frame_drawfunc(struct ei_widget_t* widget, ei_surface_t surface, ei_surface
 
     ei_color_t top_color, bottom_color;
 
-    if(*(frame->relief) == ei_relief_raised){
-        modify_color(frame->bg_color, &top_color, 1.5);
-        modify_color(frame->bg_color, &bottom_color, 0.5);
+    if(frame->relief == ei_relief_raised){
+        modify_color(&frame->bg_color, &top_color, 1.5);
+        modify_color(&frame->bg_color, &bottom_color, 0.5);
 
         ei_point_t little_rect_point;
-        little_rect_point.x = rect.top_left.x + *(frame->border);
-        little_rect_point.y = rect.top_left.y + *(frame->border);
+        little_rect_point.x = rect.top_left.x + frame->border;
+        little_rect_point.y = rect.top_left.y + frame->border;
 
         ei_size_t little_rect_size;
-        little_rect_size.width = rect.size.width - 2* *(frame->border);
-        little_rect_size.height = rect.size.height - 2* *(frame->border);
+        little_rect_size.width = rect.size.width - 2* frame->border;
+        little_rect_size.height = rect.size.height - 2* frame->border;
 
         ei_rect_t little_rect = {little_rect_point, little_rect_size};
 
@@ -175,20 +175,20 @@ void frame_drawfunc(struct ei_widget_t* widget, ei_surface_t surface, ei_surface
         ei_draw_polygon(pick_surface, pick_points, *(widget->pick_color), clipper);
         ei_draw_polygon(surface, top, top_color, clipper);
         ei_draw_polygon(surface, bottom, bottom_color, clipper);
-        ei_draw_polygon(surface, main, *frame->bg_color, &rect);
+        ei_draw_polygon(surface, main, frame->bg_color, &rect);
     }
 
-    if(*(frame->relief) == ei_relief_sunken){
-        modify_color(frame->bg_color, &top_color, 0.5);
-        modify_color(frame->bg_color, &bottom_color, 1.5);
+    if(frame->relief == ei_relief_sunken){
+        modify_color(&frame->bg_color, &top_color, 0.5);
+        modify_color(&frame->bg_color, &bottom_color, 1.5);
 
         ei_point_t little_rect_point;
-        little_rect_point.x = rect.top_left.x + *(frame->border);
-        little_rect_point.y = rect.top_left.y + *(frame->border);
+        little_rect_point.x = rect.top_left.x + frame->border;
+        little_rect_point.y = rect.top_left.y + frame->border;
 
         ei_size_t little_rect_size;
-        little_rect_size.width = rect.size.width - 2* *(frame->border);
-        little_rect_size.height = rect.size.height - 2* *(frame->border);
+        little_rect_size.width = rect.size.width - 2* frame->border;
+        little_rect_size.height = rect.size.height - 2* frame->border;
 
         ei_rect_t little_rect = {little_rect_point, little_rect_size};
 
@@ -200,20 +200,20 @@ void frame_drawfunc(struct ei_widget_t* widget, ei_surface_t surface, ei_surface
         ei_draw_polygon(pick_surface, pick_points, *(widget->pick_color), clipper);
         ei_draw_polygon(surface, top, top_color, clipper);
         ei_draw_polygon(surface, bottom, bottom_color, clipper);
-        ei_draw_polygon(surface, main, *frame->bg_color, &rect);
+        ei_draw_polygon(surface, main, frame->bg_color, &rect);
     }
 
-    if(*(frame->relief) == ei_relief_none){
-        ei_fill(surface, frame->bg_color, &rect);
+    if(frame->relief == ei_relief_none){
+        ei_fill(surface, &frame->bg_color, &rect);
         ei_fill(pick_surface, widget->pick_color, &rect);
     }
 
-    if(frame->text != NULL && strcmp(*frame->text, "") != 0){
+    if(frame->text != NULL && strcmp(frame->text, "") != 0){
         ei_point_t text_position;
         ei_size_t text_size = {0, 0};
         hw_text_compute_size(frame->text, frame->text_font, &(text_size.width), &(text_size.height));
-        ei_anchor(*frame->text_anchor, &text_size, clipper, &text_position);
-        ei_draw_text(surface, &text_position, frame->text, ei_default_font, *frame->text_color, clipper);
+        ei_anchor(frame->text_anchor, &text_size, clipper, &text_position);
+        ei_draw_text(surface, &text_position, frame->text, frame->text_font, frame->text_color, clipper);
     }
 
     if(frame->img != NULL){
@@ -223,26 +223,31 @@ void frame_drawfunc(struct ei_widget_t* widget, ei_surface_t surface, ei_surface
 
         if (frame->img_rect)
         {
-            image_rect = **(frame->img_rect);
-            image_size = (**frame->img_rect).size;
+            image_rect = *(frame->img_rect);
+            image_size = frame->img_rect->size;
         }
         else
         {
             image_rect = hw_surface_get_rect(frame->img);
             image_size = image_rect.size;
         }
-        ei_anchor(*frame->img_anchor, &image_size, clipper, &image_position);
+        ei_anchor(frame->img_anchor, &image_size, clipper, &image_position);
         ei_rect_t rect_img = {image_position, image_size};
 
         hw_surface_lock(frame->img);
         ei_bool_t alpha_img = hw_surface_has_alpha(frame->img);
         ei_rect_t surface_rect = hw_surface_get_rect(ei_app_root_surface());
 
+        ei_rect_t image_clipper;
+        ei_intersection(&frame->widget.screen_location, &surface_rect, &image_clipper);
 
-        rect_img.top_left.x = image_rect.top_left.x + surface_rect.top_left.x - image_position.x;
+        ei_rect_t final_clipper;
+        ei_intersection(&image_clipper, &rect_img, &final_clipper);
+
+        rect_img.top_left.x = image_rect.top_left.x + final_clipper.top_left.x - image_position.x;
         rect_img.top_left.y = image_rect.top_left.y;
-        rect_img.size = surface_rect.size;
-        ei_copy_surface(surface, &surface_rect, frame->img, &rect_img, alpha_img);
+        rect_img.size = final_clipper.size;
+        ei_copy_surface(surface, &final_clipper, frame->img, &rect_img, alpha_img);
         hw_surface_unlock(frame->img);
     }
 
@@ -251,6 +256,7 @@ void frame_drawfunc(struct ei_widget_t* widget, ei_surface_t surface, ei_surface
 
 void* frame_allocfunc(){
     ei_frame_t *frame = calloc(1, sizeof(ei_frame_t));
+    /*
     frame->border = calloc(1, sizeof(int));
     frame->bg_color = calloc(1, sizeof (ei_color_t));
     frame->relief = calloc(1, sizeof (ei_relief_t));
@@ -262,36 +268,27 @@ void* frame_allocfunc(){
     frame->img = calloc(1, sizeof (ei_surface_t));
     frame->img_rect = calloc(1, sizeof (ei_rect_t));
     frame->img_anchor = calloc(1, sizeof (ei_anchor_t));
-
+*/
     return frame;
 }
 
 void frame_release_func(struct ei_widget_t* widget){
-    free(((ei_frame_t*)widget)->bg_color);
-    free(((ei_frame_t*)widget)->border);
-    free(((ei_frame_t*)widget)->relief);
-    free(((ei_frame_t*)widget)->text);
-    free(((ei_frame_t*)widget)->text_font);
-    free(((ei_frame_t*)widget)->text_color);
-    free(((ei_frame_t*)widget)->text_anchor);
-    free(((ei_frame_t*)widget)->img);
-    free(((ei_frame_t*)widget)->img_rect);
-    free(((ei_frame_t*)widget)->img_anchor);
+    free(((ei_frame_t*)widget));
 }
 
 void frame_setdefaultsfunc(struct ei_widget_t* widget){
-    *(((ei_frame_t*)widget)->bg_color) = ei_default_background_color;
-    *(((ei_frame_t*)widget)->border) = 0;
-    *(((ei_frame_t*)widget)->relief) = ei_relief_none;
+    (((ei_frame_t*)widget)->bg_color) = ei_default_background_color;
+    (((ei_frame_t*)widget)->border) = 0;
+    (((ei_frame_t*)widget)->relief) = ei_relief_none;
 
     ((ei_frame_t*)widget)->text = NULL;
-    *(((ei_frame_t*)widget)->text_font) = ei_default_font;
-    *(((ei_frame_t*)widget)->text_color) = ei_font_default_color;
-    *(((ei_frame_t*)widget)->text_anchor) = ei_anc_center;
+    (((ei_frame_t*)widget)->text_font) = ei_default_font;
+    (((ei_frame_t*)widget)->text_color) = ei_font_default_color;
+    (((ei_frame_t*)widget)->text_anchor) = ei_anc_center;
 
     ((ei_frame_t*)widget)->img = NULL;
     ((ei_frame_t*)widget)->img_rect = NULL;
-    *(((ei_frame_t*)widget)->img_anchor) = ei_anc_center;
+    (((ei_frame_t*)widget)->img_anchor) = ei_anc_center;
 
 }
 

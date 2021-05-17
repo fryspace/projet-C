@@ -1,6 +1,7 @@
 #include "ei_widgetclass.h"
 #include "ei_types.h"
 #include "ei_widget.h"
+#include "ei_application.h"
 #include "ei_button.h"
 #include "ei_event.h"
 #include "bg_button.h"
@@ -13,48 +14,74 @@ ei_widgetclass_t button;
 void button_drawfunc(struct ei_widget_t* widget, ei_surface_t surface, ei_surface_t pick_surface, ei_rect_t* clipper){
     ei_button_t  *button = (ei_button_t*) widget;
 
-    if(*(button->relief) == ei_relief_none){
-        ei_draw_button(widget->screen_location, *(button->border), surface, pick_surface, *button->corner_radius, *button->bg_color, *(widget->pick_color), 0, clipper);
+    if(button->relief == ei_relief_none){
+        ei_draw_button(widget->screen_location, button->border, surface, pick_surface, button->corner_radius, button->bg_color, *(widget->pick_color), 0, clipper);
     }
 
-    if(*(button->relief) == ei_relief_raised){
-        ei_draw_button(widget->screen_location, *(button->border), surface, pick_surface, *button->corner_radius, *button->bg_color, *(widget->pick_color), 0, clipper);
+    if(button->relief == ei_relief_raised){
+        ei_draw_button(widget->screen_location, button->border, surface, pick_surface, button->corner_radius, button->bg_color, *(widget->pick_color), 0, clipper);
     }
 
-    if(*(button->relief) == ei_relief_sunken){
-        ei_draw_button(widget->screen_location, *(button->border), surface, pick_surface, *button->corner_radius, *button->bg_color, *(widget->pick_color), 1, clipper);
+    if(button->relief == ei_relief_sunken){
+        ei_draw_button(widget->screen_location, button->border, surface, pick_surface, button->corner_radius, button->bg_color, *(widget->pick_color), 1, clipper);
     }
 
     if (button->text != NULL){
 
         ei_point_t text_position;
         ei_size_t text_size;
-        hw_text_compute_size(*(button->text), button->text_font, &(text_size.width), &(text_size.height));
-        ei_anchor(*(button->text_anchor), &text_size, &widget->screen_location, &text_position);
+        hw_text_compute_size(button->text, button->text_font, &(text_size.width), &(text_size.height));
+        ei_anchor(button->text_anchor, &text_size, &widget->screen_location, &text_position);
 
         if(button->relief == ei_relief_sunken) {
-            text_position.x += *(button->border)/2;
-            text_position.y += *(button->border)/2;
+            text_position.x += button->border/2;
+            text_position.y += button->border/2;
         }
-        ei_draw_text(surface, &text_position, *(button->text), button->text_font, *(button->text_color), clipper);
+        ei_draw_text(surface, &text_position, button->text, button->text_font, button->text_color, clipper);
+    }
+
+    if(button->img != NULL){
+        ei_point_t image_position;
+        ei_size_t image_size;
+        ei_rect_t image_rect;
+
+        if (button->img_rect)
+        {
+            image_rect = *(button->img_rect);
+            image_size = button->img_rect->size;
+        }
+        else
+        {
+            image_rect = hw_surface_get_rect(button->img);
+            image_size = image_rect.size;
+        }
+        ei_anchor(button->img_anchor, &image_size, clipper, &image_position);
+        ei_rect_t rect_img = {image_position, image_size};
+
+        hw_surface_lock(button->img);
+        ei_bool_t alpha_img = hw_surface_has_alpha(button->img);
+        ei_rect_t surface_rect = hw_surface_get_rect(ei_app_root_surface());
+
+        ei_rect_t image_clipper;
+        ei_intersection(&button->widget.screen_location, &surface_rect, &image_clipper);
+
+        ei_rect_t final_clipper;
+        ei_intersection(&image_clipper, &rect_img, &final_clipper);
+
+        rect_img.top_left.x = image_rect.top_left.x + final_clipper.top_left.x - image_position.x;
+        rect_img.top_left.y = image_rect.top_left.y;
+        rect_img.size = final_clipper.size;
+        ei_copy_surface(surface, &final_clipper, button->img, &rect_img, alpha_img);
+        hw_surface_unlock(button->img);
     }
 
 }
 
 void* button_allocfunc(){
     ei_button_t *button = calloc(1, sizeof(ei_button_t));
-    button->border = calloc(1, sizeof(int));
-    button->corner_radius = calloc(1, sizeof(int));
-    button->bg_color = calloc(1, sizeof (ei_color_t));
-    button->relief = calloc(1, sizeof (ei_relief_t));
-
-    button->text_font = calloc(1, sizeof (ei_font_t));
-    button->text_color = calloc(1, sizeof (ei_color_t));
-    button->text_anchor = calloc(1, sizeof (ei_anchor_t));
 
     button->img = calloc(1, sizeof (ei_surface_t));
     button->img_rect = calloc(1, sizeof (ei_rect_t));
-    button->img_anchor = calloc(1, sizeof (ei_anchor_t));
 
     button->callback = calloc(1, sizeof (ei_callback_t));
 
@@ -62,36 +89,24 @@ void* button_allocfunc(){
 }
 
 void button_release_func(struct ei_widget_t* widget){
-    free(((ei_button_t*)widget)->bg_color);
-    free(((ei_button_t*)widget)->border);
-    free(((ei_button_t*)widget)->corner_radius);
-    free(((ei_button_t*)widget)->relief);
-    free(((ei_button_t*)widget)->text);
-    free(((ei_button_t*)widget)->text_font);
-    free(((ei_button_t*)widget)->text_color);
-    free(((ei_button_t*)widget)->text_anchor);
-    free(((ei_button_t*)widget)->img);
-    free(((ei_button_t*)widget)->img_rect);
-    free(((ei_button_t*)widget)->img_anchor);
-
-    free(((ei_button_t*)widget)->callback);
+    free(((ei_button_t*)widget));
 }
 
 void button_setdefaultsfunc(struct ei_widget_t* widget){
-    *(((ei_button_t*)widget)->bg_color) = ei_default_background_color;
-    *(((ei_button_t*)widget)->border) = 0;
-    *(((ei_button_t*)widget)->relief) = ei_relief_none;
+    (((ei_button_t*)widget)->bg_color) = ei_default_background_color;
+    ((ei_button_t*)widget)->border = k_default_button_border_width;
+    (((ei_button_t*)widget)->relief) = ei_relief_none;
 
     ((ei_button_t*)widget)->text = NULL;
-    *(((ei_button_t*)widget)->text_font) = ei_default_font;
-    *(((ei_button_t*)widget)->text_color) = ei_font_default_color;
-    *(((ei_button_t*)widget)->text_anchor) = ei_anc_center;
+    (((ei_button_t*)widget)->text_font) = ei_default_font;
+    (((ei_button_t*)widget)->text_color) = ei_font_default_color;
+    (((ei_button_t*)widget)->text_anchor) = ei_anc_center;
 
     ((ei_button_t*)widget)->img = NULL;
     ((ei_button_t*)widget)->img_rect = NULL;
-    *(((ei_button_t*)widget)->img_anchor) = ei_anc_center;
+    (((ei_button_t*)widget)->img_anchor) = ei_anc_center;
 
-    *(((ei_button_t*)widget)->corner_radius) = 40;
+    ((ei_button_t*)widget)->corner_radius = k_default_button_corner_radius;
     ((ei_button_t*)widget)->callback = NULL;
     ((ei_button_t*)widget)->user_param = NULL;
 
@@ -101,14 +116,14 @@ ei_bool_t button_handle_func(ei_widget_t* widget, ei_event_t* event){
     ei_button_t *button = ((ei_button_t*)widget);
 
     if(event->type == ei_ev_mouse_buttondown){
-        *button->relief = ei_relief_sunken;
+        button->relief = ei_relief_sunken;
         ei_event_set_active_widget(widget);
     }
 
     if(event->type == ei_ev_mouse_buttonup){
-        *button->relief = ei_relief_raised;
+        button->relief = ei_relief_raised;
         if(button->callback != NULL) {
-            (*button->callback)(widget, event, button->user_param);
+            (button->callback)(widget, event, button->user_param);
         }
     }
 

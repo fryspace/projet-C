@@ -21,6 +21,72 @@ ei_color_t *modify_color(ei_color_t *color, ei_color_t *new_color ,float coef){
 
 }
 
+void ei_intersection(ei_rect_t *first, ei_rect_t *second, ei_rect_t *result){
+    ei_rect_t *left_rect, *right_rect, *top_rect, *bottom_rect;
+
+    if (first->top_left.x <= second->top_left.x)
+    {
+        left_rect = first;
+        right_rect = second;
+    }
+    else
+    {
+        left_rect = second;
+        right_rect = first;
+    }
+
+    if (first->top_left.y <= second->top_left.y)
+    {
+        top_rect = first;
+        bottom_rect = second;
+    }
+    else
+    {
+        top_rect = second;
+        bottom_rect = first;
+    }
+
+
+    // Creating the new rectangle
+    ei_point_t dest_point;
+    ei_size_t dest_size;
+
+    if ((left_rect->top_left.x + left_rect->size.width < right_rect->top_left.x) || top_rect->top_left.y + top_rect->size.height < bottom_rect->top_left.y)
+    {
+        dest_point.x = 0;
+        dest_point.y = 0;
+        dest_size.width = 0;
+        dest_size.height = 0;
+    }
+    else
+    {
+        int x_margin, y_margin;
+
+        if (right_rect->top_left.x + right_rect->size.width <= left_rect->top_left.x + left_rect->size.width)
+        {
+            x_margin = left_rect->top_left.x + left_rect->size.width - (right_rect->top_left.x + right_rect->size.width);
+        }
+        else
+        {
+            x_margin = 0;
+        }
+        if (bottom_rect->top_left.y + bottom_rect->size.height <= top_rect->top_left.y + top_rect->size.height)
+        {
+            y_margin = top_rect->top_left.y + top_rect->size.height - (bottom_rect->top_left.y + bottom_rect->size.height);
+        }
+        else
+        {
+            y_margin = 0;
+        }
+        dest_point.x = right_rect->top_left.x;
+        dest_point.y = bottom_rect->top_left.y;
+        dest_size.width = left_rect->top_left.x + left_rect->size.width - dest_point.x - x_margin;
+        dest_size.height = top_rect->top_left.y + top_rect->size.height - dest_point.y - y_margin;
+    }
+    result->top_left = dest_point;
+    result->size = dest_size;
+}
+
 void draw_widgets(ei_widget_t *widget, ei_surface_t main_windows, ei_surface_t pick_surface, ei_rect_t *clipper){
     if(widget != NULL){
         if(widget->parent != NULL){

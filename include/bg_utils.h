@@ -11,6 +11,8 @@
 
 ei_color_t *modify_color(ei_color_t *color, ei_color_t *new_color ,float coef);
 
+void ei_intersection(ei_rect_t *first, ei_rect_t *second, ei_rect_t *result);
+
 void draw_widgets(ei_widget_t *widget, ei_surface_t main_windows, ei_surface_t pick_surface, ei_rect_t *clipper);
 
 void ei_anchor(ei_anchor_t anchor, ei_size_t *size, ei_rect_t *rect, ei_point_t *position);
