@@ -14,14 +14,13 @@ void ei_place (struct ei_widget_t*	widget, ei_anchor_t* anchor, int* x, int* y, 
     float ry_anchor = (rel_y==NULL)?0 : *rel_y;
     float rw = (rel_width==NULL)?0 : *rel_width;
     float rh = (rel_height==NULL)?0 : *rel_height;
-
     int w;
     if(width==NULL){
         if (rel_width==NULL){
             w=widget->requested_size.width;
         }
         else {
-            w=0;
+            w=(int)(*rel_width*(float)widget->parent->screen_location.size.width);
         }
     }else{w=*width;}
 
@@ -31,7 +30,7 @@ void ei_place (struct ei_widget_t*	widget, ei_anchor_t* anchor, int* x, int* y, 
             h=widget->requested_size.height;
         }
         else{
-            h=0;
+            h=(int)(*rel_width*(float)widget->parent->screen_location.size.height);
         }
     }else{h=*height;}
 

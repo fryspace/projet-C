@@ -38,6 +38,10 @@ void ei_button_configure(ei_widget_t*		widget,
     if(requested_size != NULL){
         widget->requested_size = *requested_size;
     }
+    else{
+        widget->requested_size.width = 40;
+        widget->requested_size.height = 40;
+    }
 
     button->bg_color = color!=NULL ? color : &ei_default_background_color;
 
