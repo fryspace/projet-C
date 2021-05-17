@@ -11,19 +11,19 @@
 #include <assert.h>
 #include <limits.h>
 #include <string.h>
-#include <stdbool.h>
+
 
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
-bool clipper_brute(int x, int y, const ei_rect_t* clipper){
+ei_bool_t clipper_brute(int x, int y, const ei_rect_t* clipper){
     if (clipper == NULL){
-        return true;
+        return EI_TRUE;
     }
     else if(clipper->top_left.x <= x && clipper->top_left.y<=y &&  clipper->top_left.y+clipper->size.height >=y
             && clipper->top_left.x + clipper->size.width >=x){
-        return true;
+        return EI_TRUE;
     }
-    return false;
+    return EI_FALSE;
 }
 
 
@@ -451,9 +451,9 @@ void trier_TCA(struct side **TCA){
 void filled(int y,struct side **TCA,ei_color_t  color, ei_surface_t  surface, const ei_rect_t*    clipper){
     struct side sent = {0, 0, 0, *TCA};
     struct side *queue = &sent;
-    bool colo = true;
+    ei_bool_t colo = EI_TRUE;
     while(queue->next->next!=NULL){
-        if (colo == true){
+        if (colo == EI_TRUE){
             ei_linked_point_t pts[2];
             if ((int)queue->next->x_min==queue->next->x_min){
                 pts[0].point.x = (int)queue->next->x_min;
@@ -472,9 +472,9 @@ void filled(int y,struct side **TCA,ei_color_t  color, ei_surface_t  surface, co
             }
             pts[1].next=NULL;
             ei_draw_polyline(surface,pts,color,clipper);
-            colo=false;
+            colo=EI_FALSE;
         }else{
-            colo=true;
+            colo=EI_TRUE;
         }
         queue=queue->next;
     }
@@ -676,6 +676,5 @@ int	ei_copy_surface	(ei_surface_t	destination,    const ei_rect_t*	dst_rect,
             }
         }
     }
-
-
+    return 0;
 }
