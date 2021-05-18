@@ -195,12 +195,20 @@ void toplevel_handlefunc(ei_widget_t* widget, ei_event_t* event){
 
         if(event_type == 1){
             // Resize
-            widget->screen_location.size.width = event->param.mouse.where.x - widget->screen_location.top_left.x;
-            widget->screen_location.size.height = event->param.mouse.where.y - widget->screen_location.top_left.y;
+            int new_width = event->param.mouse.where.x - widget->screen_location.top_left.x;
+            int new_height = event->param.mouse.where.y - widget->screen_location.top_left.y;
+
+            ei_place(widget, NULL, NULL, NULL, &new_width, &new_height, NULL, NULL, NULL, NULL);
+
+            //widget->screen_location.size.width = event->param.mouse.where.x - widget->screen_location.top_left.x;
+            //widget->screen_location.size.height = event->param.mouse.where.y - widget->screen_location.top_left.y;
         }else if(event_type == 2){
             // Move
-            widget->screen_location.top_left.x = event->param.mouse.where.x - delta_x;
-            widget->screen_location.top_left.y = event->param.mouse.where.y - delta_y;
+            int new_x = event->param.mouse.where.x - delta_x;
+            int new_y = event->param.mouse.where.y - delta_y;
+
+            ei_place(widget, NULL, &new_x, &new_y, NULL, NULL, NULL, NULL, NULL, NULL);
+
         }
 
     }

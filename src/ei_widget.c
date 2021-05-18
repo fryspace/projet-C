@@ -283,16 +283,13 @@ ei_widget_t* ei_widget_create (ei_widgetclass_name_t class_name, ei_widget_t* pa
         widget->pick_color->alpha = 255;
         widget->pick_id = ei_map_rgba(surface_offscreen, *widget->pick_color);
         BASE_PICK_ID += 1;
-        widget->placer_params = NULL;
+        widget->placer_params = calloc(1, sizeof(ei_placer_params_t));
         widget->requested_size.width = 0;
         widget->requested_size.height = 0;
         ei_rect_t location = {0, 0};
         widget->content_rect = malloc(sizeof(ei_rect_t));
         widget->screen_location = location;
-        widget->content_rect->top_left.x = widget->screen_location.top_left.x;
-        widget->content_rect->top_left.y = widget->screen_location.top_left.y;
-        widget->content_rect->size.width = 0;
-        widget->content_rect->size.height = 0;
+        widget->content_rect = &widget->screen_location;
         wclasse->setdefaultsfunc(widget);
         return widget;
     }
