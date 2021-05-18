@@ -28,29 +28,12 @@ void test_line(ei_surface_t surface, ei_rect_t* clipper)
 	pts[0].point.x = 200; pts[0].point.y = 200; pts[0].next = &pts[1];
 	pts[1].point.x = 600; pts[1].point.y = 400; pts[1].next = NULL;
 
-    ei_draw_text(surface, &point, text, ei_default_font,color2, clipper);
-	//ei_draw_polyline(surface, pts, color, clipper);
+	ei_draw_polyline(surface, pts, color, clipper);
 }
 
-void test_button(ei_surface_t surface, ei_rect_t* clipper)
-{
-    ei_color_t		color		= { 150, 0, 160, 255 };
-    ei_point_t	top_left1 = {100, 200};
-    ei_point_t	top_left2 = {450, 200};
-    ei_size_t size = {300, 100};
-
-    ei_rect_t rect1 = {top_left1, size};
-    ei_rect_t rect2 = {top_left2, size};
-
-    //ei_draw_button(rect1, surface, 40, color, 0, clipper);
-    //ei_draw_button(rect2, surface, 40, color, 1, clipper);
-}
-
-/* test_line --
+/* test_heart --
  *
- *	Draws a simple line in the canonical octant, that is, x1>x0 and y1>y0, with
- *	dx > dy. This can be used to test a first implementation of Bresenham
- *	algorithm, for instance.
+ *	Draws a heart
  */
 void test_heart(ei_surface_t surface, ei_rect_t* clipper)
 {
@@ -113,7 +96,7 @@ void test_octogone(ei_surface_t surface, ei_rect_t* clipper)
 	pts[i-1].next = NULL;
 
 	/* Draw the form with polylines */
-	ei_draw_polygon(surface, pts, color, clipper);
+	ei_draw_polyline(surface, pts, color, clipper);
 }
 
 
@@ -152,7 +135,7 @@ void test_square(ei_surface_t surface, ei_rect_t* clipper)
 	pts[i-1].next = NULL;
 
 	/* Draw the form with polylines */
-	ei_draw_polygon(surface, pts, color, clipper);
+	ei_draw_polyline(surface, pts, color, clipper);
 }
 
 
@@ -186,8 +169,8 @@ int main(int argc, char** argv)
 	ei_surface_t		main_window	= NULL;
 	ei_color_t		white		= { 0xff, 0xff, 0xff, 0xff };
 	ei_rect_t*		clipper_ptr	= NULL;
-	//ei_rect_t		clipper		= ei_rect(ei_point(200, 150), ei_size(400, 300));
-	//clipper_ptr		= &clipper;
+	ei_rect_t		clipper		= ei_rect(ei_point(200, 150), ei_size(400, 300));
+	clipper_ptr		= &clipper;
 	ei_event_t		event;
 
 	hw_init();
@@ -199,12 +182,11 @@ int main(int argc, char** argv)
 	ei_fill		(main_window, &white, clipper_ptr);
 
 	/* Draw polylines. */
-    //test_button(main_window, clipper_ptr);
-	//test_line(main_window, clipper_ptr);
+	test_line(main_window, clipper_ptr);
     //test_heart(main_window, clipper_ptr);
 	test_octogone	(main_window, clipper_ptr);
-	//test_square	(main_window, clipper_ptr);
-	//test_dot	(main_window, clipper_ptr);
+	test_square	(main_window, clipper_ptr);
+	test_dot	(main_window, clipper_ptr);
 	
 	/* Unlock and update the surface. */
 	hw_surface_unlock(main_window);

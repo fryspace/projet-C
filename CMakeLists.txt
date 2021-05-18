@@ -142,6 +142,10 @@ target_link_libraries(test_polygone		ei ${PLATFORM_LIB_FLAGS})
 add_executable(minesweeper			${TESTS_SRC}/minesweeper.c)
 target_link_libraries(minesweeper		ei ${PLATFORM_LIB_FLAGS})
 
+add_executable(test_ext_class ${TESTS_SRC}/test_ext_class.c)
+target_include_directories(test_ext_class PUBLIC ${TESTS_SRC})
+target_link_libraries(test_ext_class ei ${PLATFORM_DIR}/_win.extclass64.lib ${PLATFORM_LIB_FLAGS})
+
 # target to build the documentation
 
 add_custom_target(doc doxygen		${DOCS_DIR}/doxygen.cfg WORKING_DIRECTORY ${ROOT_DIR})

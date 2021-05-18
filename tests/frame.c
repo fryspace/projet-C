@@ -8,7 +8,7 @@
 
 #include "ei_frame.h"
 
-// /!\ IL MANQUE : régler le clipper des enfants pour être dans parent, on voit pas les texts dans les frames, tests images
+// /!\ IL MANQUE : tests images
 
 /*
  * ei_main --

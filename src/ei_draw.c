@@ -6,6 +6,7 @@
 #include "ei_draw.h"
 #include "ei_types.h"
 #include "hw_interface.h"
+#include "bg_utils.h"
 #include <math.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -543,12 +544,24 @@ void ei_draw_text(ei_surface_t surface, const ei_point_t* where, const char* tex
 
         hw_surface_lock(text_surface);
 
+        ei_rect_t surface_rect = hw_surface_get_rect(surface);
+
         ei_rect_t text_rect = hw_surface_get_rect(text_surface);
         ei_bool_t alpha = hw_surface_has_alpha(text_surface);
 
         ei_rect_t final_rect = {*where, text_rect.size};
 
-        ei_copy_surface(surface, &final_rect, text_surface,&text_rect , alpha);
+        ei_rect_t new_clipper;
+        if (clipper != NULL){
+            ei_intersection(&surface_rect, clipper, &new_clipper);
+        }else{
+            new_clipper = surface_rect;
+        }
+
+        ei_rect_t final_clipper;
+        ei_intersection(&new_clipper, &final_rect, &final_clipper);
+
+        ei_copy_surface(surface, &final_clipper, text_surface,&final_clipper , alpha);
 
         hw_surface_unlock(text_surface);
         hw_surface_free(text_surface);

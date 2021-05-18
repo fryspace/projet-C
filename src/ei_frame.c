@@ -157,7 +157,11 @@ void frame_drawfunc(struct ei_widget_t* widget, ei_surface_t surface, ei_surface
         rect = widget->screen_location;
     }
 
+    ei_intersection(clipper, &rect, &rect);
 
+    if(widget->parent != NULL){
+        ei_intersection(&widget->parent->screen_location, &rect, &rect);
+    }
 
     ei_color_t top_color, bottom_color;
 

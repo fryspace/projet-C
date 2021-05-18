@@ -52,6 +52,8 @@ void ei_button_configure(ei_widget_t*		widget,
 
     button->relief = relief!=NULL && border_width!=0 ? *relief : ei_relief_none;
 
+    button->text_font= text_font!=NULL ? *text_font : ei_default_font;
+
     if(text != NULL){
         if(text != NULL){
             if(*text){
@@ -61,14 +63,22 @@ void ei_button_configure(ei_widget_t*		widget,
                     button->text = malloc(strlen(*text) + 1);
                 }
                 strcpy(button->text, *text);
+
+                ei_size_t text_size;
+                hw_text_compute_size(button->text, button->text_font, &(text_size.width), &(text_size.height));
+
+                if(button->widget.requested_size.width < text_size.width){
+                    button->widget.requested_size.width = text_size.width + 20;
+                }
+
+                if(button->widget.requested_size.height < text_size.height){
+                    button->widget.requested_size.height = text_size.height + 20;
+                }
             }else{
                 button->text = NULL;
             }
         }
     }
-
-
-    button->text_font= text_font!=NULL ? *text_font : ei_default_font;
 
     button->text_color = text_color!=NULL ? *text_color : ei_font_default_color;
 
@@ -127,6 +137,14 @@ void ei_frame_configure	(ei_widget_t* widget, ei_size_t*	requested_size, const e
         frame->relief=ei_relief_none;
     }
     //assert(text!=NULL && img!=NULL);
+
+    if(text_font!=NULL){
+        frame->text_font=*text_font;
+    }
+    else{
+        frame->text_font=ei_default_font;
+    }
+
     if(text != NULL){
         if(*text){
             if(frame->text != NULL){
@@ -135,18 +153,23 @@ void ei_frame_configure	(ei_widget_t* widget, ei_size_t*	requested_size, const e
                 frame->text = malloc(strlen(*text) + 1);
             }
             strcpy(frame->text, *text);
+
+            ei_size_t text_size;
+            hw_text_compute_size(frame->text, frame->text_font, &(text_size.width), &(text_size.height));
+
+            if(frame->widget.requested_size.width < text_size.width){
+                frame->widget.requested_size.width = text_size.width + 10;
+            }
+
+            if(frame->widget.requested_size.height < text_size.height){
+                frame->widget.requested_size.height = text_size.height + 10;
+            }
+
         }else{
             frame->text = NULL;
         }
     }
 
-
-    if(text_font!=NULL){
-        frame->text_font=*text_font;
-    }
-    else{
-        frame->text_font=ei_default_font;
-    }
     if(text_color!=NULL){
         frame->text_color=*text_color;
     }

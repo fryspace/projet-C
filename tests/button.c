@@ -6,8 +6,7 @@
 #include "hw_interface.h"
 #include "ei_widget.h"
 
-// /!\ IL MANQUE : tests des images dans boutons, quand on click on click pour tous les boutons à la fois,
-//                  text qui depasse des boutons, text qui dépasse cadre va de l'autre côté, varier alpha
+// /!\ IL MANQUE : tests des images dans boutons, varier alpha
 
 
 /*
@@ -45,7 +44,7 @@ ei_bool_t process_key(ei_event_t* event)
 int main(int argc, char** argv)
 {
 	ei_size_t	screen_size		= {600, 600};
-	ei_color_t	root_bgcol		= {0x52, 0x7f, 0xb4, 0xff};
+	ei_color_t	root_bgcol		= {0x52, 0x7f, 0xb4, 255};
 
 	ei_widget_t*	button;
     ei_widget_t*	button2;
