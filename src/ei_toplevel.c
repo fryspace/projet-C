@@ -19,6 +19,9 @@ ei_widgetclass_t toplevel;
 static int delta_x;
 static int delta_y;
 
+// 0 -> none | 1 -> resize | 2 -> move
+static int event_type;
+
 void close_toplevel(ei_widget_t* widget, ei_event_t* event, void* user_param){
     ei_widget_destroy(widget->parent);
 }
@@ -177,43 +180,34 @@ void toplevel_handlefunc(ei_widget_t* widget, ei_event_t* event){
     if(event->type == ei_ev_mouse_buttondown){
         if(point_in_resizable(event->param.mouse.where, widget) == EI_TRUE){
             ei_event_set_active_widget(widget);
+            event_type = 1;
         }
 
         if(point_in_topbar(event->param.mouse.where, widget) == EI_TRUE){
             ei_event_set_active_widget(widget);
             delta_x = event->param.mouse.where.x - widget->screen_location.top_left.x;
             delta_y = event->param.mouse.where.y - widget->screen_location.top_left.y;
+            event_type = 2;
         }
     }
 
     if(event->type == ei_ev_mouse_move){
-        if(point_in_resizable(event->param.mouse.where, widget) == EI_TRUE){
-            ei_widget_t *active = ei_event_get_active_widget();
 
-            if(active != NULL){
-                active->screen_location.size.width = event->param.mouse.where.x - active->screen_location.top_left.x + 10;
-                active->screen_location.size.height = event->param.mouse.where.y - active->screen_location.top_left.y + 10;
-            }
+        if(event_type == 1){
+            // Resize
+            widget->screen_location.size.width = event->param.mouse.where.x - widget->screen_location.top_left.x;
+            widget->screen_location.size.height = event->param.mouse.where.y - widget->screen_location.top_left.y;
+        }else if(event_type == 2){
+            // Move
+            widget->screen_location.top_left.x = event->param.mouse.where.x - delta_x;
+            widget->screen_location.top_left.y = event->param.mouse.where.y - delta_y;
         }
 
-        if(point_in_topbar(event->param.mouse.where, widget) == EI_TRUE){
-            ei_widget_t *active = ei_event_get_active_widget();
-
-            if(active != NULL){
-                active->screen_location.top_left.x = event->param.mouse.where.x - delta_x;
-                active->screen_location.top_left.y = event->param.mouse.where.y - delta_y;
-            }
-        }
     }
 
     if(event->type == ei_ev_mouse_buttonup){
-        if(point_in_resizable(event->param.mouse.where, widget) == EI_TRUE){
-            ei_event_set_active_widget(NULL);
-        }
-
-        if(point_in_topbar(event->param.mouse.where, widget) == EI_TRUE){
-            ei_event_set_active_widget(NULL);
-        }
+        ei_event_set_active_widget(NULL);
+        event_type = 0;
     }
 
 }
