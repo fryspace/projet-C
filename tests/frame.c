@@ -6,7 +6,6 @@
 #include "hw_interface.h"
 #include "ei_widget.h"
 
-#include "ei_frame.h"
 
 // /!\ IL MANQUE : tests images
 

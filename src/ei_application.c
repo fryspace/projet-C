@@ -73,13 +73,11 @@ void ei_app_run(){
                 widget = ei_widget_pick(&mouse);
                 active_widget = ei_event_get_active_widget();
 
-                if(widget != NULL) {
+                if(active_widget != NULL){
+                    active_widget->wclass->handlefunc(active_widget, &event);
+                }else if(widget != NULL) {
                     widget->wclass->handlefunc(widget, &event);
                 }
-
-                //if(active_widget != NULL){
-                //    active_widget->wclass->handlefunc(active_widget, &event);
-                //}
 
                 break;
             default:

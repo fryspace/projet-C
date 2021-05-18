@@ -122,8 +122,11 @@ ei_bool_t button_handle_func(ei_widget_t* widget, ei_event_t* event){
 
     if(event->type == ei_ev_mouse_buttonup){
         button->relief = ei_relief_raised;
-        if(button->callback != NULL) {
-            (button->callback)(widget, event, button->user_param);
+        ei_event_set_active_widget(NULL);
+        if(point_in_rectangle(event->param.mouse.where, widget->screen_location) == EI_TRUE){
+            if(button->callback != NULL) {
+                (button->callback)(widget, event, button->user_param);
+            }
         }
     }
 

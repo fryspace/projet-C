@@ -21,6 +21,14 @@ ei_color_t *modify_color(ei_color_t *color, ei_color_t *new_color ,float coef){
 
 }
 
+ei_bool_t point_in_rectangle(ei_point_t point, ei_rect_t rect){
+    if(point.x >= rect.top_left.x && point.x <= rect.top_left.x + rect.size.width && point.y >= rect.top_left.y && point.y <= rect.top_left.y + rect.size.height){
+        return EI_TRUE;
+    }else{
+        return EI_FALSE;
+    }
+}
+
 void ei_intersection(ei_rect_t *first, ei_rect_t *second, ei_rect_t *result){
     ei_rect_t *left_rect, *right_rect, *top_rect, *bottom_rect;
 
