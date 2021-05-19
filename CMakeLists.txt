@@ -107,15 +107,30 @@ target_link_libraries(minimal		${PLATFORM_LIB_FLAGS})
 add_executable(lines			${TESTS_SRC}/lines.c)
 target_link_libraries(lines		ei ${PLATFORM_LIB_FLAGS})
 
+# target custom_lines
+
+add_executable(custom_lines			${TESTS_SRC}/custom_lines.c)
+target_link_libraries(custom_lines		ei ${PLATFORM_LIB_FLAGS})
+
 # target frame
 
 add_executable(frame			${TESTS_SRC}/frame.c)
 target_link_libraries(frame		ei ${PLATFORM_LIB_FLAGS})
 
+# target custom_frame
+
+add_executable(custom_frame			${TESTS_SRC}/custom_frame.c)
+target_link_libraries(custom_frame		ei ${PLATFORM_LIB_FLAGS})
+
 # target button
 
 add_executable(button			${TESTS_SRC}/button.c)
 target_link_libraries(button		ei ${PLATFORM_LIB_FLAGS})
+
+# target custom_button
+
+add_executable(custom_button			${TESTS_SRC}/custom_button.c)
+target_link_libraries(custom_button		ei ${PLATFORM_LIB_FLAGS})
 
 # target hello_world
 
@@ -132,10 +147,10 @@ target_link_libraries(puzzle		ei ${PLATFORM_LIB_FLAGS})
 add_executable(two048			${TESTS_SRC}/two048.c)
 target_link_libraries(two048		ei ${PLATFORM_LIB_FLAGS})
 
-# target test_polygone
+# target custom_polygone
 
-add_executable(test_polygone			${TESTS_SRC}/test_polygone.c)
-target_link_libraries(test_polygone		ei ${PLATFORM_LIB_FLAGS})
+add_executable(custom_polygone			${TESTS_SRC}/custom_polygone.c)
+target_link_libraries(custom_polygone		ei ${PLATFORM_LIB_FLAGS})
 
 # target minesweeper
 

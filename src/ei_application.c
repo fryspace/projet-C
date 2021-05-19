@@ -88,6 +88,10 @@ void ei_app_run(){
     }
 }
 
+void ei_app_invalidate_rect(ei_rect_t* rect){
+
+}
+
 void ei_app_free(){
     hw_quit();
 }

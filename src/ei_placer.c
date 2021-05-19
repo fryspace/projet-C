@@ -9,9 +9,10 @@
 void ei_place (struct ei_widget_t*	widget, ei_anchor_t* anchor, int* x, int* y, int* width, int* height, float* rel_x, float* rel_y, float* rel_width, float* rel_height){
     ei_placer_params_t * current_placer = widget->placer_params;
 
-    ei_anchor_t  anchor2=(anchor==NULL)?ei_anc_northwest:*anchor;
+    ei_anchor_t anchor2=(anchor==NULL)?ei_anc_northwest:*anchor;
 
     int x_anchor, y_anchor, w, h;
+    float rx_anchor, ry_anchor, rw, rh;
 
 
     if(x != NULL){
@@ -30,10 +31,37 @@ void ei_place (struct ei_widget_t*	widget, ei_anchor_t* anchor, int* x, int* y, 
         y_anchor = 0;
     }
 
-    float rx_anchor = (rel_x==NULL)?0 : *rel_x;
-    float ry_anchor = (rel_y==NULL)?0 : *rel_y;
-    float rw = (rel_width==NULL)?0 : *rel_width;
-    float rh = (rel_height==NULL)?0 : *rel_height;
+    if(rel_x != NULL){
+        rx_anchor = *rel_x;
+    }else if(current_placer->rx != NULL){
+        rx_anchor = current_placer->rx_data;
+    }else{
+        rx_anchor = 0;
+    }
+
+    if(rel_y != NULL){
+        ry_anchor = *rel_y;
+    }else if(current_placer->ry != NULL){
+        ry_anchor = current_placer->ry_data;
+    }else{
+        ry_anchor = 0;
+    }
+
+    if(rel_width != NULL){
+        rw = *rel_width;
+    }else if(current_placer->rw != NULL){
+        rw = current_placer->rw_data;
+    }else{
+        rw = 0;
+    }
+
+    if(rel_height != NULL){
+        rh = *rel_height;
+    }else if(current_placer->rh != NULL){
+        rh = current_placer->rh_data;
+    }else{
+        rh = 0;
+    }
 
     if(width != NULL){
         w = *width;

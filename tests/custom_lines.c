@@ -7,6 +7,7 @@
 #include "ei_draw.h"
 #include "ei_types.h"
 #include "ei_event.h"
+#include "bg_button.h"
 
 
 
@@ -19,12 +20,44 @@
 void test_line(ei_surface_t surface, ei_rect_t* clipper)
 {
 	ei_color_t		color		= { 255, 0, 255, 255 };
+    ei_color_t		color2		= { 255, 0, 0, 255 };
+    char *text = "SEXE";
 	ei_linked_point_t	pts[2];
+    ei_point_t point = {200, 200};
 
 	pts[0].point.x = 200; pts[0].point.y = 200; pts[0].next = &pts[1];
 	pts[1].point.x = 600; pts[1].point.y = 400; pts[1].next = NULL;
-	
+
 	ei_draw_polyline(surface, pts, color, clipper);
+}
+
+/* test_heart --
+ *
+ *	Draws a heart
+ */
+void test_heart(ei_surface_t surface, ei_rect_t* clipper)
+{
+    ei_color_t		color		= { 255, 0, 0, 255 };
+    ei_point_t center1 = {360, 300};
+    ei_point_t center2 = {440, 300};
+
+    ei_linked_point_t arc;
+    ei_linked_point_t *arc1 = &arc;
+    ei_linked_point_t arcb;
+    ei_linked_point_t *arc2 = &arcb;
+
+    arc1 = ei_arc(center1, 50, 35, 200, 2000);
+    arc2 = ei_arc(center2, 50, -10, 145, 2000);
+
+    ei_linked_point_t	pts[3];
+
+    pts[0].point.x = 310; pts[0].point.y = 315; pts[0].next = &pts[1];
+    pts[1].point.x = 400; pts[1].point.y = 450; pts[1].next = &pts[2];
+    pts[2].point.x = 490; pts[2].point.y = 305; pts[2].next = NULL;
+
+    ei_draw_polyline(surface, pts, color, clipper);
+    ei_draw_polyline(surface, arc1, color, clipper);
+    ei_draw_polyline(surface, arc2, color, clipper);
 }
 
 
@@ -136,8 +169,8 @@ int main(int argc, char** argv)
 	ei_surface_t		main_window	= NULL;
 	ei_color_t		white		= { 0xff, 0xff, 0xff, 0xff };
 	ei_rect_t*		clipper_ptr	= NULL;
-//	ei_rect_t		clipper		= ei_rect(ei_point(200, 150), ei_size(400, 300));
-//	clipper_ptr		= &clipper;
+	ei_rect_t		clipper		= ei_rect(ei_point(200, 150), ei_size(400, 300));
+	clipper_ptr		= &clipper;
 	ei_event_t		event;
 
 	hw_init();
@@ -149,15 +182,16 @@ int main(int argc, char** argv)
 	ei_fill		(main_window, &white, clipper_ptr);
 
 	/* Draw polylines. */
-	test_line	(main_window, clipper_ptr);
-//	test_octogone	(main_window, clipper_ptr);
-//	test_square	(main_window, clipper_ptr);
-//	test_dot	(main_window, clipper_ptr);
+	test_line(main_window, clipper_ptr);
+    //test_heart(main_window, clipper_ptr);
+	test_octogone	(main_window, clipper_ptr);
+	test_square	(main_window, clipper_ptr);
+	test_dot	(main_window, clipper_ptr);
 	
 	/* Unlock and update the surface. */
 	hw_surface_unlock(main_window);
 	hw_surface_update_rects(main_window, NULL);
-	
+
 	/* Wait for a character on command line. */
 	event.type = ei_ev_none;
 	while (event.type != ei_ev_keydown)

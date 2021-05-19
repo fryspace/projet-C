@@ -200,8 +200,6 @@ void toplevel_handlefunc(ei_widget_t* widget, ei_event_t* event){
 
             ei_place(widget, NULL, NULL, NULL, &new_width, &new_height, NULL, NULL, NULL, NULL);
 
-            //widget->screen_location.size.width = event->param.mouse.where.x - widget->screen_location.top_left.x;
-            //widget->screen_location.size.height = event->param.mouse.where.y - widget->screen_location.top_left.y;
         }else if(event_type == 2){
             // Move
             int new_x = event->param.mouse.where.x - delta_x;
