@@ -148,7 +148,9 @@ void toplevel_drawfunc(struct ei_widget_t* widget, ei_surface_t surface, ei_surf
         text_position.x += 25;
         text_position.y -= top_size;
 
-        ei_draw_text(surface, &text_position, toplevel->title, ei_default_font, ei_font_default_color, clipper);
+        ei_color_t white = {255, 255, 255, 255};
+
+        ei_draw_text(surface, &text_position, toplevel->title, ei_default_font, white, clipper);
     }
 }
 
@@ -166,7 +168,7 @@ void toplevel_setdefaultsfunc(struct ei_widget_t* widget){
 
     (((ei_toplevel_t*)widget)->bg_color) = ei_default_background_color;
     (((ei_toplevel_t*)widget)->border) = 0;
-    (((ei_toplevel_t*)widget)->closable) =  EI_FALSE;
+    (((ei_toplevel_t*)widget)->closable) =  EI_TRUE;
     (((ei_toplevel_t*)widget)->resizable) = ei_axis_none;
 
     ((ei_toplevel_t*)widget)->title = NULL;

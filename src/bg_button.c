@@ -15,7 +15,7 @@ ei_linked_point_t *ei_arc(ei_point_t center, int radius, float start, float end,
 
     ei_linked_point_t *result = NULL;
 
-    // On passe en radian nos variables qui sont en degré
+    // We use radian angle instead of degree to use the cos and sin func
     float start_rad = start * (M_PI / 180.0);
     float end_rad = end * (M_PI / 180.0);
     float h = (end_rad - start_rad)/n;
@@ -27,10 +27,13 @@ ei_linked_point_t *ei_arc(ei_point_t center, int radius, float start, float end,
     result = current;
 
     for(int i = 1; i < n; i++){
+
         ei_linked_point_t* next = malloc(sizeof(ei_linked_point_t));
+
         next->point.x = center.x + radius*cos(start_rad + i*h);
         next->point.y = center.y - radius*sin(start_rad + i*h);
         next->next = NULL;
+
         current->next = next;
         current = next;
     }
@@ -58,10 +61,7 @@ ei_linked_point_t* ei_rounded_frame(ei_rect_t rect, int radius, int part, int n)
     ei_point_t bottom_left_center = {left_coord, bottom_coord};
     ei_point_t bottom_right_center = {right_coord, bottom_coord};
 
-    ei_point_t top_point, right_point, left_point, bottom_point;
-    ei_linked_point_t *top, *right, *left, *bottom;
-
-    ei_linked_point_t* current = malloc(sizeof(ei_linked_point_t));
+    ei_linked_point_t* current;
     ei_point_t first_point;
     ei_linked_point_t* first = malloc(sizeof(ei_linked_point_t));
 

@@ -34,8 +34,8 @@ int main(int argc, char** argv)
     float   frame_rh3           =(float)0.3;
 	ei_color_t	frame_color		= {0x88, 0x88, 0x88, 0xff};
 	ei_relief_t	frame_relief		= ei_relief_none;
-    ei_color_t	frame_color2		= {0x80, 0x00, 0xb0, 0xff};
-    ei_color_t	frame_color3		= {0x00, 0xb4, 0x80, 0xff};
+    ei_color_t	frame_color2		= {0x80, 0x00, 0xb0, 255};
+    ei_color_t	frame_color3		= {0x00, 0xb4, 0x80, 90};
     ei_relief_t	frame_relief2		= ei_relief_raised;
 	int		frame_border_width	= 4;
     char*		text		= "Mon magnifique frame !";

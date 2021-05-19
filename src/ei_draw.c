@@ -45,8 +45,23 @@ uint32_t ei_map_rgba(ei_surface_t surface, ei_color_t color){
 
 void ei_draw_pixel(ei_surface_t surface, ei_color_t color,int x, int y, int width, const ei_rect_t* clipper){
     if (clipper_brute( x, y, clipper)){
+        int ib=0;
+        int ia=0;
+        int ir=0;
+        int ig=0;
+
+        hw_surface_get_channel_indices(surface, &ir, &ig, &ib, &ia);
+
         uint32_t* pixel_ptr = (uint32_t*)hw_surface_get_buffer(surface) + y*width + x;
-        *pixel_ptr= ei_map_rgba(surface, color);
+        uint8_t* pixel_ptr_8 = (uint8_t *)pixel_ptr;
+
+        int src_red = pixel_ptr_8[ir + 1];
+        int src_blue = pixel_ptr_8[ib + 1];
+        int src_green = pixel_ptr_8[ig + 1];
+
+        ei_color_t new_color = {(color.red*color.alpha + src_red*(255 - color.alpha))/255,(color.green*color.alpha + src_green*(255 - color.alpha))/255, (color.blue*color.alpha + src_blue*(255 - color.alpha))/255, 255};
+
+        *pixel_ptr= ei_map_rgba(surface, new_color);
     }
 
 }
@@ -165,8 +180,25 @@ void ei_fill(ei_surface_t surface, const ei_color_t* color, const ei_rect_t* cli
     for(int x = 0; x < size.width ; x++){
         for(int y = 0; y < size.height; y++){
             if (clipper_brute( x, y, clipper)){
+                int ib=0;
+                int ia=0;
+                int ir=0;
+                int ig=0;
+
+                hw_surface_get_channel_indices(surface, &ir, &ig, &ib, &ia);
+
                 uint32_t* pixel_ptr = (uint32_t*)hw_surface_get_buffer(surface) + y*size.width + x;
-                *pixel_ptr= ei_map_rgba(surface, *color);
+                uint8_t* pixel_ptr_8 = (uint8_t *)pixel_ptr;
+
+                int src_red = pixel_ptr_8[ir];
+                int src_blue = pixel_ptr_8[ib];
+                int src_green = pixel_ptr_8[ig];
+
+                ei_color_t new_color = *color;
+
+                ei_color_t final_color = {(new_color.red*new_color.alpha + src_red*(255 - new_color.alpha))/255,(new_color.green*new_color.alpha + src_green*(255 - new_color.alpha))/255, (new_color.blue*new_color.alpha + src_blue*(255 - new_color.alpha))/255, new_color.alpha};
+
+                *pixel_ptr= ei_map_rgba(surface, final_color);
             }
         }
     }
@@ -675,7 +707,7 @@ int	ei_copy_surface	(ei_surface_t	destination,    const ei_rect_t*	dst_rect,
                 int dst_blue = pixel_dst_8[ib];
                 int dst_green = pixel_dst_8[ig];
 
-                ei_color_t color = {(src_red*src_alpha + dst_red*(255 - src_alpha))/255,(src_green*src_alpha + dst_green*(255 - src_alpha))/255, src_blue*src_alpha + dst_blue*(255 - src_alpha)/255, 255};
+                ei_color_t color = {(src_red*src_alpha + dst_red*(255 - src_alpha))/255,(src_green*src_alpha + dst_green*(255 - src_alpha))/255, (src_blue*src_alpha + dst_blue*(255 - src_alpha))/255, 255};
                 *pixel_dst = ei_map_rgba(destination, color);
             }
         }
