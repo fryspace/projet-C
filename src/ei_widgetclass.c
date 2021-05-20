@@ -1,12 +1,7 @@
-//
-// Created by bossu on 06/05/2021.
-//
-
 #include "ei_widgetclass.h"
 #include <string.h>
 #include <malloc.h>
 #include "ei_frame.h"
-#include <string.h>
 
 ei_widgetclass_t* list_widgetclass = NULL; //liste de nos classes de widgets
 ei_widgetclass_t frame;

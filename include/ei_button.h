@@ -22,13 +22,9 @@ typedef struct ei_button_t {
 
 void button_drawfunc(struct ei_widget_t* widget, ei_surface_t surface, ei_surface_t pick_surface, ei_rect_t* clipper);
 
-
 void* button_allocfunc();
 
-
-
 void button_release_func();
-
 
 void button_setdefaultsfunc();
 

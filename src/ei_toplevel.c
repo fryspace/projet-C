@@ -124,19 +124,20 @@ void toplevel_drawfunc(struct ei_widget_t* widget, ei_surface_t surface, ei_surf
         ei_fill(pick_surface, widget->pick_color, &resizable_rect);
     }
 
-    if(toplevel->closable == EI_TRUE){
-        // Creating the close button
+    // Creating the close button
 
-        toplevel->close_button->widget.screen_location.top_left.x = widget->screen_location.top_left.x + 3;
-        toplevel->close_button->widget.screen_location.top_left.y = widget->screen_location.top_left.y - top_size + 5;
-        toplevel->close_button->widget.screen_location.size.width = ((ei_widget_t *)toplevel->close_button)->requested_size.width;
-        toplevel->close_button->widget.screen_location.size.height = ((ei_widget_t *)toplevel->close_button)->requested_size.height;
-        ei_widget_t *button_widget = (ei_widget_t *)toplevel->close_button;
-        button_drawfunc(button_widget, surface, pick_surface, clipper);
+    toplevel->close_button->widget.screen_location.top_left.x = widget->screen_location.top_left.x + 3;
+    toplevel->close_button->widget.screen_location.top_left.y = widget->screen_location.top_left.y - top_size + 5;
+    toplevel->close_button->widget.screen_location.size.width = ((ei_widget_t *)toplevel->close_button)->requested_size.width;
+    toplevel->close_button->widget.screen_location.size.height = ((ei_widget_t *)toplevel->close_button)->requested_size.height;
+    ei_widget_t *button_widget = (ei_widget_t *)toplevel->close_button;
+    button_drawfunc(button_widget, surface, pick_surface, clipper);
+
+    if(toplevel->closable == EI_FALSE){
+        toplevel->close_button->callback = NULL;
     }
 
     // Drawing text
-
     if (toplevel->title != NULL){
 
         ei_point_t text_position;
@@ -197,10 +198,21 @@ void toplevel_handlefunc(ei_widget_t* widget, ei_event_t* event){
 
         if(event_type == 1){
             // Resize
+
             int new_width = event->param.mouse.where.x - widget->screen_location.top_left.x;
             int new_height = event->param.mouse.where.y - widget->screen_location.top_left.y;
 
-            ei_place(widget, NULL, NULL, NULL, &new_width, &new_height, NULL, NULL, NULL, NULL);
+            switch(((ei_toplevel_t *)widget)->resizable){
+                case ei_axis_y:
+                    ei_place(widget, NULL, NULL, NULL, NULL, &new_height, NULL, NULL, NULL, NULL);
+                    break;
+                case ei_axis_x:
+                    ei_place(widget, NULL, NULL, NULL, &new_width, NULL, NULL, NULL, NULL, NULL);
+                    break;
+                case ei_axis_both:
+                    ei_place(widget, NULL, NULL, NULL, &new_width, &new_height, NULL, NULL, NULL, NULL);
+                    break;
+            }
 
         }else if(event_type == 2){
             // Move

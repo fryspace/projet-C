@@ -1,13 +1,7 @@
-//
-// Created by Cassim on 09/05/2021.
-//
-
 #include "bg_utils.h"
 #include "ei_types.h"
 #include "ei_widget.h"
 #include "ei_widgetclass.h"
-
-
 
 ei_color_t *modify_color(ei_color_t *color, ei_color_t *new_color ,float coef){
     int red = (int)color->red*coef;

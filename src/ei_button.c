@@ -45,6 +45,8 @@ void button_drawfunc(struct ei_widget_t* widget, ei_surface_t surface, ei_surfac
         ei_size_t image_size;
         ei_rect_t image_rect;
 
+        //hw_surface_lock(button->img);
+
         if (button->img_rect)
         {
             image_rect = *(button->img_rect);
@@ -55,10 +57,9 @@ void button_drawfunc(struct ei_widget_t* widget, ei_surface_t surface, ei_surfac
             image_rect = hw_surface_get_rect(button->img);
             image_size = image_rect.size;
         }
-        ei_anchor(button->img_anchor, &image_size, clipper, &image_position);
+        ei_anchor(button->img_anchor, &image_size, &widget->screen_location, &image_position);
         ei_rect_t rect_img = {image_position, image_size};
 
-        hw_surface_lock(button->img);
         ei_bool_t alpha_img = hw_surface_has_alpha(button->img);
         ei_rect_t surface_rect = hw_surface_get_rect(ei_app_root_surface());
 
@@ -71,8 +72,10 @@ void button_drawfunc(struct ei_widget_t* widget, ei_surface_t surface, ei_surfac
         rect_img.top_left.x = image_rect.top_left.x + final_clipper.top_left.x - image_position.x;
         rect_img.top_left.y = image_rect.top_left.y;
         rect_img.size = final_clipper.size;
+
         ei_copy_surface(surface, &final_clipper, button->img, &rect_img, alpha_img);
-        hw_surface_unlock(button->img);
+
+        //hw_surface_unlock(button->img);
     }
 
 }
@@ -80,7 +83,6 @@ void button_drawfunc(struct ei_widget_t* widget, ei_surface_t surface, ei_surfac
 void* button_allocfunc(){
     ei_button_t *button = calloc(1, sizeof(ei_button_t));
 
-    button->img = calloc(1, sizeof (ei_surface_t));
     button->img_rect = calloc(1, sizeof (ei_rect_t));
 
     button->callback = calloc(1, sizeof (ei_callback_t));

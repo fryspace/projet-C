@@ -1,7 +1,3 @@
-//
-// Created by bossu on 06/05/2021.
-//
-
 #include <stdio.h>
 #include "ei_application.h"
 #include "ei_types.h"
@@ -20,14 +16,20 @@ ei_bool_t MAIN_LOOP_EXIT = EI_FALSE;
 void ei_app_create(ei_size_t main_window_size, ei_bool_t fullscreen){
     hw_init();
 
+    /* Création de la fenêtre principale */
     main_window = hw_create_window(main_window_size, fullscreen);
 
+    /* Création de la fenêtre offscreen */
     surface_offscreen = hw_surface_create(main_window, main_window_size, EI_FALSE);
+
     hw_surface_lock(surface_offscreen);
+
+    /* On enregistre toutes nos classes de widget */
     frame_register_class();
     button_register_class();
     toplevel_register_class();
 
+    /* Création du widget root */
     root = ei_widget_create("frame", NULL, NULL, NULL);
     if (root!=NULL) {
         root->requested_size = main_window_size;
@@ -38,21 +40,25 @@ void ei_app_create(ei_size_t main_window_size, ei_bool_t fullscreen){
 }
 
 void ei_app_run(){
+
     ei_event_t		event;
+
+    /* Tant qu'on a pas un signal d'arret */
     while(MAIN_LOOP_EXIT != EI_TRUE){
         hw_surface_lock(main_window);
 
         ei_rect_t clipper = hw_surface_get_rect(main_window);
 
+        /* Dessin de tous les widgets */
         draw_widgets(root, main_window, surface_offscreen, &clipper);
 
         hw_surface_unlock(main_window);
         hw_surface_update_rects(main_window, NULL);
 
-        /* Wait for a character on command line. */
+        /* Attente du prochain évenement */
         hw_event_wait_next(&event);
 
-        // We call the default handler
+        /* Appel de la fonction par défauts */
         ei_default_handle_func_t default_handler = ei_event_get_default_handle_func();
         if(default_handler != NULL){
             default_handler(&event);
@@ -64,6 +70,7 @@ void ei_app_run(){
 
         ei_point_t mouse = event.param.mouse.where;
 
+        /* On test en fonction du type d'evenement */
         switch(event.type){
             case ei_ev_exposed:
                 break;
@@ -95,6 +102,7 @@ void ei_app_invalidate_rect(ei_rect_t* rect){
 void ei_app_free(){
     hw_quit();
 }
+
 void ei_app_quit_request(void){
     MAIN_LOOP_EXIT = EI_TRUE;
 }

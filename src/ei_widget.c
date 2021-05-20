@@ -1,18 +1,14 @@
-//
-// Created by bossu on 06/05/2021.
-//
 #include "ei_widget.h"
 #include "ei_widgetclass.h"
 #include <malloc.h>
 #include "bg_utils.h"
+#include "ei_application.h"
 #include "ei_draw.h"
 #include "ei_button.h"
 #include "ei_toplevel.h"
 #include "ei_frame.h"
 #include "ei_types.h"
 #include <assert.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 
 static uint32_t BASE_PICK_ID = 0x00000000;
@@ -55,28 +51,26 @@ void ei_button_configure(ei_widget_t*		widget,
     button->text_font= text_font!=NULL ? *text_font : ei_default_font;
 
     if(text != NULL){
-        if(text != NULL){
-            if(*text){
-                if(button->text != NULL){
-                    button->text = realloc(button->text, strlen(*text) + 1);
-                }else{
-                    button->text = malloc(strlen(*text) + 1);
-                }
-                strcpy(button->text, *text);
-
-                ei_size_t text_size;
-                hw_text_compute_size(button->text, button->text_font, &(text_size.width), &(text_size.height));
-
-                if(button->widget.requested_size.width < text_size.width){
-                    button->widget.requested_size.width = text_size.width + 20;
-                }
-
-                if(button->widget.requested_size.height < text_size.height){
-                    button->widget.requested_size.height = text_size.height + 20;
-                }
+        if(*text){
+            if(button->text != NULL){
+                button->text = realloc(button->text, strlen(*text) + 1);
             }else{
-                button->text = NULL;
+                button->text = malloc(strlen(*text) + 1);
             }
+            strcpy(button->text, *text);
+
+            ei_size_t text_size;
+            hw_text_compute_size(button->text, button->text_font, &(text_size.width), &(text_size.height));
+
+            if(button->widget.requested_size.width < text_size.width){
+                button->widget.requested_size.width = text_size.width + 20;
+            }
+
+            if(button->widget.requested_size.height < text_size.height){
+                button->widget.requested_size.height = text_size.height + 20;
+            }
+        }else{
+            button->text = NULL;
         }
     }
 
@@ -85,7 +79,9 @@ void ei_button_configure(ei_widget_t*		widget,
     button->text_anchor = text_anchor!=NULL ? *text_anchor : ei_anc_center;
 
     if(img != NULL){
-        button->img = *img;
+        ei_size_t image_size = hw_surface_get_size(*img);
+        button->img = hw_surface_create(ei_app_root_surface(), image_size, EI_FALSE);
+        ei_copy_surface(button->img, NULL, *img, NULL, EI_FALSE);
     }
 
 
@@ -112,7 +108,7 @@ void ei_button_configure(ei_widget_t*		widget,
 
 void ei_frame_configure	(ei_widget_t* widget, ei_size_t*	requested_size, const ei_color_t* color,int* border_width, ei_relief_t* relief,
                             char** text, ei_font_t* text_font, ei_color_t*	text_color, ei_anchor_t* text_anchor, ei_surface_t* img, ei_rect_t** img_rect, ei_anchor_t*	img_anchor){
-    ei_frame_t* frame=(ei_frame_t*)widget; //voir page22
+    ei_frame_t* frame=(ei_frame_t*)widget;
     if(requested_size!=NULL){
         frame->widget.requested_size=*requested_size;
     }
@@ -183,7 +179,7 @@ void ei_frame_configure	(ei_widget_t* widget, ei_size_t*	requested_size, const e
         frame->text_anchor= ei_anc_center;
     }
     if(img != NULL){
-        frame->img=img;
+        frame->img=*img;
     }
 
 
@@ -209,7 +205,7 @@ void ei_toplevel_configure(ei_widget_t*		widget,
                                               ei_bool_t*		closable,
                                               ei_axis_set_t*		resizable,
                                               ei_size_t**		min_size){
-    ei_toplevel_t* toplevel=(ei_toplevel_t*)widget; //voir page22
+    ei_toplevel_t* toplevel=(ei_toplevel_t*)widget;
     if(requested_size!=NULL){
         toplevel->widget.requested_size=*requested_size;
     }
@@ -250,17 +246,17 @@ void ei_toplevel_configure(ei_widget_t*		widget,
 }
 
 ei_widget_t* ei_widget_create (ei_widgetclass_name_t class_name, ei_widget_t* parent, void* user_data, ei_widget_destructor_t destructor){
-    ei_widgetclass_t* wclasse= ei_widgetclass_from_name(class_name);
-    if (wclasse) {
-        ei_widget_t *widget = wclasse->allocfunc();
-        widget->wclass = wclasse;
+    ei_widgetclass_t* w_class = ei_widgetclass_from_name(class_name);
+    if (w_class) {
+        ei_widget_t *widget = w_class->allocfunc();
+        widget->wclass = w_class;
 
         widget->parent = parent;
         if (parent) {
             widget->screen_location.top_left.y = parent->content_rect->top_left.y;
             widget->screen_location.top_left.x = parent->content_rect->top_left.x;
             if (parent->children_head != NULL) {
-                parent->children_tail->next_sibling = widget; //on rajoute widget à la chaine
+                parent->children_tail->next_sibling = widget;
                 parent->children_tail = widget; //nouveau dernier enfant
             } else { //1er enfant de parent
                 parent->children_head = widget;
@@ -290,7 +286,7 @@ ei_widget_t* ei_widget_create (ei_widgetclass_name_t class_name, ei_widget_t* pa
         widget->content_rect = malloc(sizeof(ei_rect_t));
         widget->screen_location = location;
         widget->content_rect = &widget->screen_location;
-        wclasse->setdefaultsfunc(widget);
+        w_class->setdefaultsfunc(widget);
         return widget;
     }
     return NULL;
@@ -316,9 +312,9 @@ void ei_widget_destroy(ei_widget_t*	widget){
 
             if(current_widget == widget){
                 parent->children_head = widget->next_sibling;
-            }
-            if(parent->children_tail == widget){
-                parent->children_tail = parent->children_head;
+                if(parent->children_tail == widget){
+                    parent->children_tail = parent->children_head;
+                }
             }
             else{
                 while(current_widget->next_sibling != NULL && current_widget->next_sibling != widget){
@@ -333,7 +329,6 @@ void ei_widget_destroy(ei_widget_t*	widget){
             widget->next_sibling = NULL;
         }
         ei_widget_destroy_children(widget);
-        widget = NULL;
     }
 }
 

@@ -33,7 +33,6 @@
 uint32_t		ei_map_rgba		(ei_surface_t surface, ei_color_t color);
 
 
-
 /**
  * \brief	Draws a line that can be made of many line segments.
  *
