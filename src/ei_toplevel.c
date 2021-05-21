@@ -5,6 +5,7 @@
 #include "ei_toplevel.h"
 #include "ei_widgetclass.h"
 #include "ei_types.h"
+#include "ei_application.h"
 #include "ei_widget.h"
 #include "ei_event.h"
 #include "bg_utils.h"
@@ -198,6 +199,9 @@ void toplevel_handlefunc(ei_widget_t* widget, ei_event_t* event){
 
         if(event_type == 1){
             // Resize
+            ei_rect_t begin_rect;
+            ei_intersection(widget->parent->content_rect, &widget->screen_location, &begin_rect);
+            ei_app_invalidate_rect(&begin_rect);
 
             int new_width = event->param.mouse.where.x - widget->screen_location.top_left.x;
             int new_height = event->param.mouse.where.y - widget->screen_location.top_left.y;
@@ -214,13 +218,24 @@ void toplevel_handlefunc(ei_widget_t* widget, ei_event_t* event){
                     break;
             }
 
+            ei_rect_t final_rect;
+            ei_intersection(widget->parent->content_rect, &widget->screen_location, &final_rect);
+            ei_app_invalidate_rect(&final_rect);
+
         }else if(event_type == 2){
             // Move
+            ei_rect_t begin_rect;
+            ei_intersection(widget->parent->content_rect, &widget->screen_location, &begin_rect);
+            ei_app_invalidate_rect(&begin_rect);
+
             int new_x = event->param.mouse.where.x - delta_x;
             int new_y = event->param.mouse.where.y - delta_y;
 
             ei_place(widget, NULL, &new_x, &new_y, NULL, NULL, NULL, NULL, NULL, NULL);
 
+            ei_rect_t final_rect;
+            ei_intersection(widget->parent->content_rect, &widget->screen_location, &final_rect);
+            ei_app_invalidate_rect(&final_rect);
         }
 
     }
