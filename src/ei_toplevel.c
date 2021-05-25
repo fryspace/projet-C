@@ -165,6 +165,7 @@ void* toplevel_allocfunc(){
 }
 
 void toplevel_release_func(struct ei_widget_t* widget){
+    free(((ei_toplevel_t*)widget)->size_min);
     free(((ei_toplevel_t*)widget));
 }
 

@@ -65,8 +65,7 @@ ei_linked_point_t* ei_rounded_frame(ei_rect_t rect, int radius, int part, int n)
     ei_linked_point_t* first = malloc(sizeof(ei_linked_point_t));
 
     ei_point_t mid_right, mid_left;
-    ei_linked_point_t* mid_right_point = malloc(sizeof(ei_linked_point_t));
-    ei_linked_point_t* mid_left_point = malloc(sizeof(ei_linked_point_t));
+    ei_linked_point_t* mid_right_point, *mid_left_point;
     int h;
 
     switch(part){
@@ -111,6 +110,8 @@ ei_linked_point_t* ei_rounded_frame(ei_rect_t rect, int radius, int part, int n)
             // Cas du rectangle du bas
         case 2:
             h = (int)MIN(height/2, width/2);
+            mid_right_point = malloc(sizeof(ei_linked_point_t));
+            mid_left_point = malloc(sizeof(ei_linked_point_t));
 
             bottom_right_arc = ei_arc(bottom_right_center, radius, 0, -90, n);
             top_right_arc = ei_arc(top_right_center, radius, 45, 0, n/2);
@@ -158,6 +159,8 @@ ei_linked_point_t* ei_rounded_frame(ei_rect_t rect, int radius, int part, int n)
             /* Cas du rectangle du haut */
             case 1:
             h = (int)MIN(height/2, width/2);
+            mid_right_point = malloc(sizeof(ei_linked_point_t));
+            mid_left_point = malloc(sizeof(ei_linked_point_t));
 
             top_left_arc = ei_arc(top_left_center, radius, 180, 90, n);
             top_right_arc = ei_arc(top_right_center, radius, 90, 35, n/2);
@@ -250,4 +253,10 @@ void ei_draw_button(ei_rect_t rect, int border, ei_surface_t surface, ei_surface
     ei_draw_polygon(surface, top, top_color, clipper);
     ei_draw_polygon(surface, bottom, bottom_color, clipper);
     ei_draw_polygon(surface, main, color, clipper);
+
+    free_polygon(&main);
+    free_polygon(&top);
+    free_polygon(&bottom);
+    free_polygon(&offscreen_points);
+
 }

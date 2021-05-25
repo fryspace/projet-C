@@ -188,6 +188,11 @@ void frame_drawfunc(struct ei_widget_t* widget, ei_surface_t surface, ei_surface
         ei_draw_polygon(surface, top, top_color, clipper);
         ei_draw_polygon(surface, bottom, bottom_color, clipper);
         ei_draw_polygon(surface, main, frame->bg_color, &rect);
+
+        free_polygon(&main);
+        free_polygon(&top);
+        free_polygon(&bottom);
+        free_polygon(&pick_points);
     }
 
     if(frame->relief == ei_relief_sunken){
@@ -213,6 +218,11 @@ void frame_drawfunc(struct ei_widget_t* widget, ei_surface_t surface, ei_surface
         ei_draw_polygon(surface, top, top_color, clipper);
         ei_draw_polygon(surface, bottom, bottom_color, clipper);
         ei_draw_polygon(surface, main, frame->bg_color, &rect);
+
+        free_polygon(&main);
+        free_polygon(&top);
+        free_polygon(&bottom);
+        free_polygon(&pick_points);
     }
 
     if(frame->relief == ei_relief_none){
@@ -267,21 +277,7 @@ void frame_drawfunc(struct ei_widget_t* widget, ei_surface_t surface, ei_surface
 }
 
 void* frame_allocfunc(){
-    ei_frame_t *frame = calloc(1, sizeof(ei_frame_t));
-    /*
-    frame->border = calloc(1, sizeof(int));
-    frame->bg_color = calloc(1, sizeof (ei_color_t));
-    frame->relief = calloc(1, sizeof (ei_relief_t));
-
-    frame->text_font = calloc(1, sizeof (ei_font_t));
-    frame->text_color = calloc(1, sizeof (ei_color_t));
-    frame->text_anchor = calloc(1, sizeof (ei_anchor_t));
-
-    frame->img = calloc(1, sizeof (ei_surface_t));
-    frame->img_rect = calloc(1, sizeof (ei_rect_t));
-    frame->img_anchor = calloc(1, sizeof (ei_anchor_t));
-*/
-    return frame;
+    return calloc(1, sizeof(ei_frame_t));
 }
 
 void frame_release_func(struct ei_widget_t* widget){

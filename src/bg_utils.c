@@ -15,6 +15,17 @@ ei_color_t *modify_color(ei_color_t *color, ei_color_t *new_color ,float coef){
 
 }
 
+void free_polygon(ei_linked_point_t **polygon){
+    if(polygon != NULL){
+        ei_linked_point_t* to_delete = *polygon;
+        while(*polygon != NULL){
+            *polygon = (*polygon)->next;
+            free(to_delete);
+            to_delete = *polygon;
+        }
+    }
+}
+
 ei_bool_t rect_in_rect(ei_rect_t rect1, ei_rect_t rect2){
     if(rect1.top_left.x >= rect2.top_left.x && rect1.top_left.y >= rect2.top_left.y && rect1.top_left.x + rect1.size.width <= rect2.top_left.x + rect2.size.width && rect1.top_left.y + rect1.size.height <= rect2.top_left.y + rect2.size.height){
         return EI_TRUE;

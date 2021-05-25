@@ -14,6 +14,8 @@ ei_color_t *modify_color(ei_color_t *color, ei_color_t *new_color ,float coef);
 // Return TRUE if rect1 in rect2
 ei_bool_t rect_in_rect(ei_rect_t rect1, ei_rect_t rect2);
 
+void free_polygon(ei_linked_point_t **polygon);
+
 void ei_intersection(ei_rect_t *first, ei_rect_t *second, ei_rect_t *result);
 
 ei_bool_t point_in_rectangle(ei_point_t point, ei_rect_t rect);
