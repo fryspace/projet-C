@@ -20,8 +20,8 @@ ei_bool_t clipper_brute(int x, int y, const ei_rect_t* clipper){
     if (clipper == NULL){
         return EI_TRUE;
     }
-    else if(clipper->top_left.x <= x && clipper->top_left.y<=y &&  clipper->top_left.y+clipper->size.height >=y
-            && clipper->top_left.x + clipper->size.width >=x){
+    else if(clipper->top_left.x <= x && clipper->top_left.y<=y &&  clipper->top_left.y + clipper->size.height >y
+            && clipper->top_left.x + clipper->size.width >x){
         return EI_TRUE;
     }
     return EI_FALSE;
@@ -177,7 +177,7 @@ void ei_fill(ei_surface_t surface, const ei_color_t* color, const ei_rect_t* cli
 
     ei_size_t size = hw_surface_get_size(surface);
 
-    for(int x = 0; x < size.width ; x++){
+    for(int x = 0; x < size.width; x++){
         for(int y = 0; y < size.height; y++){
             if (clipper_brute( x, y, clipper)){
                 int ib=0;

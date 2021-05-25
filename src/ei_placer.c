@@ -1,9 +1,7 @@
-//
-// Created by bossu on 06/05/2021.
-//
-
 #include "ei_placer.h"
 #include "ei_widget.h"
+#include "bg_utils.h"
+#include "ei_application.h"
 #include <stdlib.h>
 
 void ei_place (struct ei_widget_t*	widget, ei_anchor_t* anchor, int* x, int* y, int* width, int* height, float* rel_x, float* rel_y, float* rel_width, float* rel_height){
@@ -69,7 +67,7 @@ void ei_place (struct ei_widget_t*	widget, ei_anchor_t* anchor, int* x, int* y, 
         w = current_placer->w_data;
     }
     else if(rel_width != NULL){
-        w = (int)(*rel_width*(float)widget->parent->screen_location.size.width);
+        w = (int)(*rel_width*(float)widget->parent->content_rect->size.width);
     }else{
         w = widget->requested_size.width;
     }
@@ -80,7 +78,7 @@ void ei_place (struct ei_widget_t*	widget, ei_anchor_t* anchor, int* x, int* y, 
         h = current_placer->h_data;
     }
     else if(rel_height != NULL){
-        h = (int)(*rel_height*(float)widget->parent->screen_location.size.height);
+        h = (int)(*rel_height*(float)widget->parent->content_rect->size.height);
     }else{
         h = widget->requested_size.height;
     }
@@ -96,71 +94,72 @@ void ei_place (struct ei_widget_t*	widget, ei_anchor_t* anchor, int* x, int* y, 
 
 void ei_placer_run(struct ei_widget_t* widget){
     ei_placer_params_t* placer = (ei_placer_params_t*)(widget -> placer_params);
+    int height, width;
 
     if (widget->parent != NULL)
     {
         if (placer->w_data !=0 || placer->rw_data !=0.0){ //au moins un des 2 non nul
             if(placer->w_data != 0){ //gestion des priorités, choix: width avant rel_width
-                widget->screen_location.size.width = placer->w_data;
+                width = placer->w_data;
             }
             else{
-                widget->screen_location.size.width = (int)(placer->rw_data * (float)widget->parent->requested_size.width);
+                width = (int)(placer->rw_data * (float)widget->parent->requested_size.width);
             }
         }
         else{
-            widget->screen_location.size.width = widget->requested_size.width;
+            width = widget->requested_size.width;
         }
 
         if (placer->h_data !=0 || placer->rh_data != 0.0){ //pareil mais pour la hauteur
             if(placer->h_data != 0){
-                widget->screen_location.size.height =placer->h_data;
+                height =placer->h_data;
             }
             else{
-                widget->screen_location.size.height =(int)(placer->rh_data * (float)widget->parent->requested_size.height);
+                height =(int)(placer->rh_data * (float)widget->parent->requested_size.height);
             }
         }
         else{
-            widget->screen_location.size.height = widget->requested_size.height;
+            height = widget->requested_size.height;
         }
 
     }
 
-    int x, y;
+    int x, y, new_x, new_y;
 
     //en fonction d'où est l'ancre on donne position du top_left
     switch (placer->anchor_data)
     {
         case ei_anc_center:
-            x = widget->screen_location.size.width / 2;
-            y = widget->screen_location.size.height / 2;
+            x = width / 2;
+            y = height / 2;
             break;
         case ei_anc_northeast:
-            x = widget->screen_location.size.width;
+            x = width;
             y = 0;
             break;
         case ei_anc_north:
-            x = widget->screen_location.size.width / 2;
+            x = width / 2;
             y = 0;
             break;
         case ei_anc_southeast:
-            x = widget->screen_location.size.width;
-            y = widget->screen_location.size.height;
+            x = width;
+            y = height;
             break;
         case ei_anc_east:
-            x = widget->screen_location.size.width;
-            y = widget->screen_location.size.height / 2;
+            x = width;
+            y = height / 2;
             break;
         case ei_anc_west:
             x = 0;
-            y = widget->screen_location.size.height / 2;
+            y = height / 2;
             break;
         case ei_anc_southwest:
             x = 0;
-            y = widget->screen_location.size.height;
+            y = height;
             break;
         case ei_anc_south:
-            x = widget->screen_location.size.width / 2;
-            y = widget->screen_location.size.height;
+            x = width / 2;
+            y = height;
             break;
         default:
             x = 0;
@@ -169,9 +168,36 @@ void ei_placer_run(struct ei_widget_t* widget){
 
     if (widget->parent != NULL)
     {
-        widget->screen_location.top_left.x = widget->parent->content_rect->top_left.x + placer->rx_data * widget->parent->content_rect->size.width + placer->x_data - x;
-        widget->screen_location.top_left.y = widget->parent->content_rect->top_left.y + placer->ry_data * widget->parent->content_rect->size.height + placer->y_data - y;
+        new_x = widget->parent->content_rect->top_left.x + placer->rx_data * widget->parent->content_rect->size.width + placer->x_data - x;
+        new_y = widget->parent->content_rect->top_left.y + placer->ry_data * widget->parent->content_rect->size.height + placer->y_data - y;
+
+        if((widget->screen_location.size.width != width && widget->screen_location.size.width != 0) || (widget->screen_location.size.height != height && widget->screen_location.size.height != 0) || (widget->screen_location.top_left.x != new_x && widget->screen_location.top_left.x != 0) || (widget->screen_location.top_left.y != y && widget->screen_location.top_left.y != 0)){
+            ei_rect_t begin_rect;
+
+            ei_intersection(widget->parent->content_rect, &widget->screen_location, &begin_rect);
+            if(widget->parent->parent != NULL){
+                ei_intersection(widget->parent->parent->content_rect, &begin_rect, &begin_rect);
+            }
+            ei_app_invalidate_rect(&begin_rect);
+        }
+
+        widget->screen_location.size.width = width;
+        widget->screen_location.size.height = height;
+        widget->screen_location.top_left.x = new_x;
+        widget->screen_location.top_left.y = new_y;
         widget->wclass->geomnotifyfunc(widget, widget->screen_location);
+
+        if((widget->screen_location.size.width != width && widget->screen_location.size.width != 0) || (widget->screen_location.size.height != height && widget->screen_location.size.height != 0) || (widget->screen_location.top_left.x != new_x && widget->screen_location.top_left.x != 0) || (widget->screen_location.top_left.y != y && widget->screen_location.top_left.y != 0)){
+            ei_rect_t final_rect;
+
+            ei_intersection(widget->parent->content_rect, &widget->screen_location, &final_rect);
+
+            if(widget->parent->parent != NULL){
+                ei_intersection(widget->parent->parent->content_rect, &final_rect, &final_rect);
+            }
+
+            ei_app_invalidate_rect(&final_rect);
+        }
     }
 
     ei_widget_t *child = widget->children_head;

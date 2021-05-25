@@ -15,6 +15,14 @@ ei_color_t *modify_color(ei_color_t *color, ei_color_t *new_color ,float coef){
 
 }
 
+ei_bool_t rect_in_rect(ei_rect_t rect1, ei_rect_t rect2){
+    if(rect1.top_left.x >= rect2.top_left.x && rect1.top_left.y >= rect2.top_left.y && rect1.top_left.x + rect1.size.width <= rect2.top_left.x + rect2.size.width && rect1.top_left.y + rect1.size.height <= rect2.top_left.y + rect2.size.height){
+        return EI_TRUE;
+    }else{
+        return EI_FALSE;
+    }
+}
+
 ei_bool_t point_in_rectangle(ei_point_t point, ei_rect_t rect){
     if(point.x >= rect.top_left.x && point.x <= rect.top_left.x + rect.size.width && point.y >= rect.top_left.y && point.y <= rect.top_left.y + rect.size.height){
         return EI_TRUE;

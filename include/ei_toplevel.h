@@ -21,6 +21,8 @@ typedef struct ei_toplevel_t {
 
 } ei_toplevel_t;
 
+static const int k_top_size = 27;
+
 void close_toplevel(ei_widget_t* widget, ei_event_t* event, void* user_param);
 
 void toplevel_drawfunc(struct ei_widget_t* widget, ei_surface_t surface, ei_surface_t pick_surface, ei_rect_t* clipper);

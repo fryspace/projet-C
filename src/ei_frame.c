@@ -306,7 +306,6 @@ void frame_setdefaultsfunc(struct ei_widget_t* widget){
 
 void frame_handlefunc(ei_widget_t* widget, ei_event_t* event){
 
-
 }
 
 void frame_geomnotifyfunc(ei_widget_t*	widget, ei_rect_t rect){

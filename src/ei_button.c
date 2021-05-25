@@ -45,7 +45,6 @@ void button_drawfunc(struct ei_widget_t* widget, ei_surface_t surface, ei_surfac
         ei_size_t image_size;
         ei_rect_t image_rect;
 
-        //hw_surface_lock(button->img);
 
         if (button->img_rect)
         {
@@ -114,17 +113,47 @@ void button_setdefaultsfunc(struct ei_widget_t* widget){
 
 }
 
+ei_bool_t point_in_button(ei_point_t point, ei_widget_t *widget){
+    ei_rect_t rect = widget->screen_location;
+
+    int xmin = rect.top_left.x;
+    int xmax = rect.top_left.x + rect.size.width;
+    int ymin = rect.top_left.y;
+    int ymax = rect.top_left.y + rect.size.height;
+
+    if (xmin <= point.x && point.x <= xmax && ymin <= point.y && point.y <= ymax){
+        return EI_TRUE;
+    }else{
+        return EI_FALSE;
+    }
+
+}
+
 ei_bool_t button_handle_func(ei_widget_t* widget, ei_event_t* event){
     ei_button_t *button = ((ei_button_t*)widget);
 
     if(event->type == ei_ev_mouse_buttondown){
         button->relief = ei_relief_sunken;
         ei_event_set_active_widget(widget);
+        ei_app_invalidate_rect(&widget->screen_location);
+    }
+
+    if(event->type == ei_ev_mouse_move){
+
+        if(point_in_button(event->param.mouse.where, widget) == EI_FALSE){
+            button->relief = ei_relief_raised;
+            ei_app_invalidate_rect(&widget->screen_location);
+        }else if(point_in_button(event->param.mouse.where, widget) == EI_TRUE && widget == ei_event_get_active_widget()){
+            button->relief = ei_relief_sunken;
+            ei_app_invalidate_rect(&widget->screen_location);
+        }
+
     }
 
     if(event->type == ei_ev_mouse_buttonup){
         button->relief = ei_relief_raised;
         ei_event_set_active_widget(NULL);
+        ei_app_invalidate_rect(&widget->screen_location);
         if(point_in_rectangle(event->param.mouse.where, widget->screen_location) == EI_TRUE){
             if(button->callback != NULL) {
                 (button->callback)(widget, event, button->user_param);

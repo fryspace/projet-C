@@ -503,7 +503,6 @@ ei_bool_t global_event_handler(ei_event_t* event)
 	return EI_FALSE;
 }
 
-
 // main --
 
 int main(int argc, char* argv[])

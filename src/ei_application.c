@@ -3,6 +3,7 @@
 #include "ei_application.h"
 #include "ei_types.h"
 #include "ei_widget.h"
+#include "ei_utils.h"
 #include "ei_frame.h"
 #include "ei_toplevel.h"
 #include "ei_button.h"
@@ -52,11 +53,11 @@ void ei_app_run(){
     /* Dessin de tous les widgets */
     draw_widgets(root, main_window, surface_offscreen, &clipper);
 
+    hw_surface_unlock(main_window);
+    hw_surface_update_rects(main_window, NULL);
+
     /* Tant qu'on a pas un signal d'arret */
     while(MAIN_LOOP_EXIT != EI_TRUE){
-
-        hw_surface_unlock(main_window);
-        hw_surface_update_rects(main_window, NULL);
 
         /* Attente du prochain évenement */
         hw_event_wait_next(&event);
@@ -68,15 +69,20 @@ void ei_app_run(){
         }
 
 
-        ei_widget_t *widget;
+        ei_widget_t *widget = NULL;
         ei_rect_t current_widget_location;
-        ei_widget_t *active_widget;
+        ei_widget_t *active_widget = NULL;
 
         ei_point_t mouse = event.param.mouse.where;
 
         /* On test en fonction du type d'evenement */
         switch(event.type){
             case ei_ev_exposed:
+                break;
+            case ei_ev_keydown:
+            case ei_ev_keyup:
+                widget = root;
+                ei_app_invalidate_rect(&root->screen_location);
                 break;
             case ei_ev_mouse_buttondown:
             case ei_ev_mouse_move:
@@ -99,50 +105,65 @@ void ei_app_run(){
 
         if (rect_list != NULL)
         {
-            ei_rect_t new_rect;
-            ei_rect_t *clipper = &(root->screen_location);
+            active_widget = ei_event_get_active_widget();
+            ei_widget_t * current_widget = active_widget != NULL ? active_widget : widget;
 
-            if (widget != NULL)
+            if (current_widget != NULL)
             {
-                if (widget->parent){
-                    clipper = &(widget->parent->screen_location);
-                }
-
-                ei_intersection(clipper, &(widget->screen_location), &new_rect);
-
-                ei_app_invalidate_rect(&new_rect);
-
                 hw_surface_lock(main_window);
                 hw_surface_lock(surface_offscreen);
 
+
                 // On refresh le rectangle du parent
-                if (widget->parent && (current_widget_location.top_left.x != widget->screen_location.top_left.x || \
-                        current_widget_location.top_left.y != widget->screen_location.top_left.y || \
-                        current_widget_location.size.width != widget->screen_location.size.width || \
-                        current_widget_location.size.height != widget->screen_location.size.height))
+                if (current_widget->parent && (current_widget_location.top_left.x != current_widget->screen_location.top_left.x || \
+                        current_widget_location.top_left.y != current_widget->screen_location.top_left.y || \
+                        current_widget_location.size.width != current_widget->screen_location.size.width || \
+                        current_widget_location.size.height != current_widget->screen_location.size.height))
                 {
 
-                    widget = widget->parent;
-                    ei_app_invalidate_rect(&widget->screen_location);
+                    current_widget = current_widget->parent;
+                   // ei_app_invalidate_rect(&current_widget->screen_location);
                 }
 
                 // On redessine le sous arbre du widget
-                draw_widgets(widget, main_window, surface_offscreen, &(widget->screen_location));
-                hw_surface_unlock(main_window);
+                draw_widgets(current_widget, main_window, surface_offscreen, &(current_widget->screen_location));
+
+                /*
+                // On check si y'a des rectangles inclus dans d'autres
+                ei_linked_rect_t sent = {ei_rect_zero(), rect_list};
+                ei_linked_rect_t *queue = &sent;
+
+                while (queue->next != NULL)
+                {
+                    ei_rect_t rect1 = queue->rect;
+                    ei_rect_t rect2 = queue->next->rect;
+                    if(rect_in_rect(rect1, rect2) == EI_TRUE){
+                        queue->rect = queue->next->rect;
+                        queue->next = queue->next->next;
+                    }else if(rect_in_rect(rect2, rect1) == EI_TRUE){
+                        queue->next = queue->next->next;
+                    }
+
+                    queue = queue->next;
+                }
+
+                rect_list = sent.next;
+                 */
+
                 hw_surface_unlock(surface_offscreen);
+                hw_surface_unlock(main_window);
                 hw_surface_update_rects(main_window, rect_list);
             }
 
-            if (rect_list != NULL)
+            ei_linked_rect_t *to_delete = NULL;
+            while (rect_list != NULL)
             {
-                ei_linked_rect_t *to_delete = NULL;
-                while (rect_list != NULL)
-                {
-                    to_delete = rect_list;
-                    rect_list = rect_list->next;
-                    free(to_delete);
-                }
+                to_delete = rect_list;
+                rect_list = rect_list->next;
+                free(to_delete);
             }
+
+
         }
 
 
@@ -153,6 +174,7 @@ void ei_app_invalidate_rect(ei_rect_t* rect){
     ei_linked_rect_t *new = malloc(sizeof(ei_linked_rect_t));
     new->rect = *rect;
     new->next = rect_list;
+
     rect_list = new;
 }
 
