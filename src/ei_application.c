@@ -1,9 +1,7 @@
-#include <stdio.h>
 #include <malloc.h>
 #include "ei_application.h"
 #include "ei_types.h"
 #include "ei_widget.h"
-#include "ei_utils.h"
 #include "ei_frame.h"
 #include "ei_toplevel.h"
 #include "ei_button.h"
@@ -68,9 +66,7 @@ void ei_app_run(){
             default_handler(&event);
         }
 
-
         ei_widget_t *widget = NULL;
-        ei_rect_t current_widget_location;
         ei_widget_t *active_widget = NULL;
 
         ei_point_t mouse = event.param.mouse.where;
@@ -91,10 +87,8 @@ void ei_app_run(){
                 active_widget = ei_event_get_active_widget();
 
                 if(active_widget != NULL){
-                    current_widget_location = active_widget->screen_location;
                     active_widget->wclass->handlefunc(active_widget, &event);
                 }else if(widget != NULL) {
-                    current_widget_location = widget->screen_location;
                     widget->wclass->handlefunc(widget, &event);
                 }
 
@@ -108,15 +102,37 @@ void ei_app_run(){
             active_widget = ei_event_get_active_widget();
             ei_widget_t * current_widget = active_widget != NULL ? active_widget : widget;
 
-            if (current_widget != NULL)
-            {
+            if(get_destroy() == EI_TRUE){
                 hw_surface_lock(main_window);
                 hw_surface_lock(surface_offscreen);
 
-                current_widget = current_widget->parent;
+                draw_widgets(root, main_window, surface_offscreen, &clipper);
+
+                hw_surface_unlock(surface_offscreen);
+                hw_surface_unlock(main_window);
+                hw_surface_update_rects(main_window, NULL);
+
+                set_destroy(EI_FALSE);
+            }else if(current_widget != NULL){
+                hw_surface_lock(main_window);
+                hw_surface_lock(surface_offscreen);
+
+                if(current_widget->parent != NULL){
+                    current_widget = current_widget->parent;
+                }
 
                 // On redessine le sous arbre du widget
                 draw_widgets(current_widget, main_window, surface_offscreen, &(current_widget->screen_location));
+
+                hw_surface_unlock(surface_offscreen);
+                hw_surface_unlock(main_window);
+                hw_surface_update_rects(main_window, rect_list);
+            }else if(current_widget == NULL){
+                hw_surface_lock(main_window);
+                hw_surface_lock(surface_offscreen);
+
+                // On redessine le sous arbre du widget
+                draw_widgets(root, main_window, surface_offscreen, &clipper);
 
                 hw_surface_unlock(surface_offscreen);
                 hw_surface_unlock(main_window);
@@ -138,30 +154,25 @@ void ei_app_run(){
 void ei_app_invalidate_rect(ei_rect_t* rect){
     ei_rect_t new_rect = *rect;
 
-        ei_rect_t null_rect = {NULL, NULL};
-        ei_linked_rect_t sent = {null_rect, rect_list};
-        ei_linked_rect_t *queue = &sent;
+    ei_rect_t null_rect = {NULL, NULL};
+    ei_linked_rect_t sent = {null_rect, rect_list};
+    ei_linked_rect_t *queue = &sent;
 
-        while(queue->next != NULL){
-            if(rect_in_rect(new_rect, queue->next->rect) == EI_TRUE){
-                return;
-            }else if(rect_in_rect(queue->next->rect, new_rect) == EI_TRUE){
-                queue->next = queue->next->next;
-            }else{
-                queue = queue->next;
-            }
-
+    while(queue->next != NULL){
+        if(rect_in_rect(new_rect, queue->next->rect) == EI_TRUE){
+            return;
+        }else if(rect_in_rect(queue->next->rect, new_rect) == EI_TRUE){
+            queue->next = queue->next->next;
+        }else{
+            queue = queue->next;
         }
 
-        queue->next = malloc(sizeof(ei_linked_rect_t));
-        queue->next->rect = new_rect;
-        queue->next->next = NULL;
+    }
+    queue->next = malloc(sizeof(ei_linked_rect_t));
+    queue->next->rect = new_rect;
+    queue->next->next = NULL;
 
-        rect_list = sent.next;
-
-
-
-
+    rect_list = sent.next;
 }
 
 void ei_app_free(){

@@ -3,6 +3,16 @@
 #include "ei_widget.h"
 #include "ei_widgetclass.h"
 
+ei_bool_t DESTROY = EI_FALSE;
+
+void set_destroy(ei_bool_t destroy){
+    DESTROY = destroy;
+}
+
+ei_bool_t get_destroy(void){
+    return DESTROY;
+}
+
 ei_color_t *modify_color(ei_color_t *color, ei_color_t *new_color ,float coef){
     int red = (int)color->red*coef;
     int green = (int)color->green*coef;

@@ -1,18 +1,14 @@
 /*
  * C file allowing to draw each primitive we want.
  */
-
-
 #include "ei_draw.h"
 #include "ei_types.h"
 #include "hw_interface.h"
-#include "bg_utils.h"
 #include <math.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <limits.h>
 #include <string.h>
-
 
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
@@ -79,7 +75,8 @@ void ei_draw_polyline	(ei_surface_t surface, const ei_linked_point_t*	first_poin
         int error = 0;
         ei_size_t size = hw_surface_get_size(surface);
 
-        if(abs(dx) > abs(dy)  && dx >= 0 && dy >= 0){
+        // On check tous les cas possible en fonction de la pente et la direction du segment
+        if(abs(dx) > abs(dy) && dx >= 0 && dy >= 0){
             while (x0<x1){
                 ei_draw_pixel(surface, color, x0, y0, size.width, clipper);
                 x0+=1;
@@ -530,19 +527,6 @@ void increment(struct side **TCA){
     }
     *TCA=sent.next;
 }
-
-/**
- * \brief	Draws a filled polygon.
- *
- * @param	surface 	Where to draw the polygon. The surface must be *locked* by
- *				\ref hw_surface_lock.
- * @param	first_point 	The head of a linked list of the points of the line. It is either
- *				NULL (i.e. draws nothing), or has more than 2 points. The last point
- *				is implicitly connected to the first point, i.e. polygons are
- *				closed, it is not necessary to repeat the first point.
- * @param	color		The color used to draw the polygon. The alpha channel is managed.
- * @param	clipper		If not NULL, the drawing is restricted within this rectangle.
- */
 
 void ei_draw_polygon (ei_surface_t  surface, const ei_linked_point_t*   first_point, ei_color_t  color
                       , const ei_rect_t*    clipper){

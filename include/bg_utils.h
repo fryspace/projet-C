@@ -9,6 +9,10 @@
 #include "ei_widgetclass.h"
 #include "ei_widget.h"
 
+void set_destroy(ei_bool_t destroy);
+
+ei_bool_t get_destroy(void);
+
 /**
  * \brief	Change a color with a coef to get a lower or higher color
  *

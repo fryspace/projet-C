@@ -114,6 +114,7 @@ void toplevel_drawfunc(struct ei_widget_t* widget, ei_surface_t surface, ei_surf
     ei_fill(pick_surface, widget->pick_color, &rect);
     ei_fill(pick_surface, widget->pick_color, &content);
 
+
     if(toplevel->resizable != ei_axis_none){
         ei_point_t resizable_rect_point = {widget->screen_location.top_left.x + widget->screen_location.size.width - resizable_button_size, widget->screen_location.top_left.y + widget->screen_location.size.height - resizable_button_size};
         ei_size_t resizable_rect_size = {resizable_button_size, resizable_button_size};

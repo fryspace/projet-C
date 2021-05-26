@@ -1,6 +1,3 @@
-//
-// Created by bossu on 07/05/2021.
-//
 #include "ei_widgetclass.h"
 #include "ei_types.h"
 #include "ei_application.h"
@@ -140,7 +137,7 @@ ei_linked_point_t* ei_flat_frame(ei_rect_t rect, int part){
 
             break;
         default:
-            exit(1);
+            break;
     }
 
     return result;

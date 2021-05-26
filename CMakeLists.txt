@@ -117,11 +117,6 @@ target_link_libraries(custom_lines		ei ${PLATFORM_LIB_FLAGS})
 add_executable(frame			${TESTS_SRC}/frame.c)
 target_link_libraries(frame		ei ${PLATFORM_LIB_FLAGS})
 
-# target custom_frame
-
-add_executable(custom_frame			${TESTS_SRC}/custom_frame.c)
-target_link_libraries(custom_frame		ei ${PLATFORM_LIB_FLAGS})
-
 # target button
 
 add_executable(button			${TESTS_SRC}/button.c)

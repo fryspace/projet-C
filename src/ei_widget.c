@@ -110,6 +110,7 @@ void ei_button_configure(ei_widget_t*		widget,
         widget->content_rect->size.height = widget->requested_size.height;
     }
 
+    ei_app_invalidate_rect(&widget->screen_location);
 }
 
 void ei_frame_configure	(ei_widget_t* widget, ei_size_t*	requested_size, const ei_color_t* color,int* border_width, ei_relief_t* relief,
@@ -212,7 +213,7 @@ void ei_frame_configure	(ei_widget_t* widget, ei_size_t*	requested_size, const e
         widget->content_rect->size.height = widget->requested_size.height;
     }
 
-
+    ei_app_invalidate_rect(&widget->screen_location);
 }
 
 void ei_toplevel_configure(ei_widget_t*		widget,
@@ -277,6 +278,7 @@ void ei_toplevel_configure(ei_widget_t*		widget,
         widget->content_rect->size.height = widget->requested_size.height;
     }
 
+    ei_app_invalidate_rect(&widget->screen_location);
 }
 
 ei_widget_t* ei_widget_create (ei_widgetclass_name_t class_name, ei_widget_t* parent, void* user_data, ei_widget_destructor_t destructor){
@@ -329,53 +331,47 @@ ei_widget_t* ei_widget_create (ei_widgetclass_name_t class_name, ei_widget_t* pa
     return NULL;
 }
 
-static void ei_widget_destroy_children(ei_widget_t*	widget) {
-    if(widget != NULL){
-        ei_widget_destroy_children(widget->children_head);
-
-        if(widget->next_sibling != NULL){
-            ei_widget_destroy_children(widget->next_sibling);
-        }
-        if(widget->destructor != NULL){
-            (widget->destructor)(widget);
-        }
-
-        widget->wclass->releasefunc(widget);
-    }
-}
-
 void ei_widget_destroy(ei_widget_t*	widget){
     if(widget != NULL){
-        if(widget->parent != NULL){
-            ei_widget_t *grand_father = widget->parent->parent;
-
-            ei_widget_t *parent = widget->parent;
-            ei_widget_t *current_widget = parent->children_head;
-
-            if(current_widget == widget){
-                parent->children_head = widget->next_sibling;
-                if(parent->children_tail == widget){
-                    parent->children_tail = parent->children_head;
+        if(widget->children_head){
+            ei_widget_t *child = widget->children_head;
+            while(child){
+                ei_widget_t * sibling = child->next_sibling;
+                if(child->destructor){
+                    child->destructor(child);
                 }
+
+                ei_widget_destroy(child);
+                child = sibling;
             }
-            else{
-                while(current_widget->next_sibling != NULL && current_widget->next_sibling != widget){
-                    current_widget = current_widget->next_sibling;
-                }
-
-                if(current_widget->next_sibling == widget){
-                    current_widget->next_sibling = widget->next_sibling;
-                }
-            }
-            widget->parent = NULL;
-            widget->next_sibling = NULL;
-
-            ei_event_set_active_widget(parent);
-            ei_app_invalidate_rect(&parent->screen_location);
-
         }
-        ei_widget_destroy_children(widget);
 
+        if(widget->parent){
+            ei_widget_t *parent = widget->parent;
+            ei_widget_t *queue = parent->children_head;
+
+            if(widget == parent->children_tail && widget == parent->children_head){
+                parent->children_head = NULL;
+                parent->children_tail = NULL;
+            }else if(widget == parent->children_head){
+                parent->children_head = widget->next_sibling;
+            }else if(widget == parent->children_tail){
+                while(queue->next_sibling != parent->children_tail){
+                    queue = queue->next_sibling;
+                }
+                parent->children_tail = queue;
+                parent->children_tail->next_sibling = NULL;
+            }else{
+                while(queue->next_sibling != widget){
+                    queue = queue->next_sibling;
+                }
+                queue->next_sibling = widget->next_sibling;
+            }
+        }
+        ei_app_invalidate_rect(&widget->screen_location);
+        widget->wclass->releasefunc(widget);
+        widget = NULL;
+        set_destroy(EI_TRUE);
     }
 }
 
