@@ -12,7 +12,6 @@
 #include "ei_button.h"
 #include <string.h>
 #include <malloc.h>
-#include <stdio.h>
 
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
@@ -24,10 +23,7 @@ static int delta_y;
 static int event_type;
 
 void close_toplevel(ei_widget_t* widget, ei_event_t* event, void* user_param){
-    ei_widget_t *toplevel_parent = widget->parent->parent;
     ei_widget_destroy(widget->parent);
-    ei_event_set_active_widget(toplevel_parent);
-    ei_app_invalidate_rect(&toplevel_parent->screen_location);
 }
 
 ei_bool_t point_in_resizable(ei_point_t point, ei_widget_t *widget){
@@ -119,7 +115,7 @@ void toplevel_drawfunc(struct ei_widget_t* widget, ei_surface_t surface, ei_surf
     ei_fill(pick_surface, widget->pick_color, &content);
 
     if(toplevel->resizable != ei_axis_none){
-        ei_point_t resizable_rect_point = {rect.top_left.x + rect.size.width - resizable_button_size, rect.top_left.y + rect.size.height - resizable_button_size};
+        ei_point_t resizable_rect_point = {widget->screen_location.top_left.x + widget->screen_location.size.width - resizable_button_size, widget->screen_location.top_left.y + widget->screen_location.size.height - resizable_button_size};
         ei_size_t resizable_rect_size = {resizable_button_size, resizable_button_size};
         ei_rect_t resizable_rect = {resizable_rect_point, resizable_rect_size};
 
@@ -165,7 +161,6 @@ void* toplevel_allocfunc(){
 }
 
 void toplevel_release_func(struct ei_widget_t* widget){
-    free(((ei_toplevel_t*)widget)->size_min);
     free(((ei_toplevel_t*)widget));
 }
 

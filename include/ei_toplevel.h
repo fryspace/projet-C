@@ -27,13 +27,9 @@ void close_toplevel(ei_widget_t* widget, ei_event_t* event, void* user_param);
 
 void toplevel_drawfunc(struct ei_widget_t* widget, ei_surface_t surface, ei_surface_t pick_surface, ei_rect_t* clipper);
 
-
 void* toplevel_allocfunc();
 
-
-
 void toplevel_release_func();
-
 
 void toplevel_setdefaultsfunc();
 

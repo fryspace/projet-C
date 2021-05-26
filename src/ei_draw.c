@@ -583,17 +583,7 @@ void ei_draw_text(ei_surface_t surface, const ei_point_t* where, const char* tex
 
         ei_rect_t final_rect = {*where, text_rect.size};
 
-        ei_rect_t new_clipper;
-        if (clipper != NULL){
-            ei_intersection(&surface_rect, clipper, &new_clipper);
-        }else{
-            new_clipper = surface_rect;
-        }
-
-        ei_rect_t final_clipper;
-        ei_intersection(&new_clipper, &final_rect, &final_clipper);
-
-        ei_copy_surface(surface, &final_clipper, text_surface,&final_clipper , alpha);
+        ei_copy_surface(surface, &final_rect, text_surface, &text_rect , alpha);
 
         hw_surface_unlock(text_surface);
         hw_surface_free(text_surface);
@@ -601,27 +591,6 @@ void ei_draw_text(ei_surface_t surface, const ei_point_t* where, const char* tex
 
 }
 
-/**
- * \brief	Copies pixels from a source surface to a destination surface.
- *		The source and destination areas of the copy (either the entire surfaces, or
- *		subparts) must have the same size before considering clipping.
- *		Both surfaces must be *locked* by \ref hw_surface_lock.
- *
- * @param	destination	The surface on which to copy pixels.
- * @param	dst_rect	If NULL, the entire destination surface is used. If not NULL,
- *				defines the rectangle on the destination surface where to copy
- *				the pixels.
- * @param	source		The surface from which to copy pixels.
- * @param	src_rect	If NULL, the entire source surface is used. If not NULL, defines the
- *				rectangle on the source surface from which to copy the pixels.
- * @param	alpha		If true, the final pixels are a combination of source and
- *				destination pixels weighted by the source alpha channel and
- *				the transparency of the final pixels is set to opaque.
- *				If false, the final pixels are an exact copy of the source pixels,
- 				including the alpha channel.
- *
- * @return			Returns 0 on success, 1 on failure (different sizes between source and destination).
- */
 int	ei_copy_surface	(ei_surface_t	destination,    const ei_rect_t*	dst_rect,
                                     ei_surface_t	source, const ei_rect_t*	src_rect,
                                     ei_bool_t	alpha){

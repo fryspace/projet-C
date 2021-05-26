@@ -91,7 +91,6 @@ void* button_allocfunc(){
 
 void button_release_func(struct ei_widget_t* widget){
     free(((ei_button_t*)widget)->img_rect);
-    free(((ei_button_t*)widget)->callback);
     free(((ei_button_t*)widget));
 }
 

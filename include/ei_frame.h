@@ -26,8 +26,6 @@ void frame_drawfunc(struct ei_widget_t* widget, ei_surface_t surface, ei_surface
 
 void* frame_allocfunc();
 
-
-
 void frame_release_func();
 
 

@@ -67,7 +67,7 @@ void ei_place (struct ei_widget_t*	widget, ei_anchor_t* anchor, int* x, int* y, 
         w = current_placer->w_data;
     }
     else if(rel_width != NULL){
-        w = (int)(*rel_width*(float)widget->parent->content_rect->size.width);
+        w = abs((int)(*rel_width*(float)widget->parent->content_rect->size.width));
     }else{
         w = widget->requested_size.width;
     }
@@ -78,7 +78,7 @@ void ei_place (struct ei_widget_t*	widget, ei_anchor_t* anchor, int* x, int* y, 
         h = current_placer->h_data;
     }
     else if(rel_height != NULL){
-        h = (int)(*rel_height*(float)widget->parent->content_rect->size.height);
+        h = abs((int)(*rel_height*(float)widget->parent->content_rect->size.height));
     }else{
         h = widget->requested_size.height;
     }

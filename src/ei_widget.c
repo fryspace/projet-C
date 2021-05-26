@@ -347,6 +347,8 @@ static void ei_widget_destroy_children(ei_widget_t*	widget) {
 void ei_widget_destroy(ei_widget_t*	widget){
     if(widget != NULL){
         if(widget->parent != NULL){
+            ei_widget_t *grand_father = widget->parent->parent;
+
             ei_widget_t *parent = widget->parent;
             ei_widget_t *current_widget = parent->children_head;
 
@@ -367,6 +369,10 @@ void ei_widget_destroy(ei_widget_t*	widget){
             }
             widget->parent = NULL;
             widget->next_sibling = NULL;
+
+            ei_event_set_active_widget(parent);
+            ei_app_invalidate_rect(&parent->screen_location);
+
         }
         ei_widget_destroy_children(widget);
 

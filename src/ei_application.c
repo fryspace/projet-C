@@ -113,42 +113,10 @@ void ei_app_run(){
                 hw_surface_lock(main_window);
                 hw_surface_lock(surface_offscreen);
 
-
-                // On refresh le rectangle du parent
-                if (current_widget->parent && (current_widget_location.top_left.x != current_widget->screen_location.top_left.x || \
-                        current_widget_location.top_left.y != current_widget->screen_location.top_left.y || \
-                        current_widget_location.size.width != current_widget->screen_location.size.width || \
-                        current_widget_location.size.height != current_widget->screen_location.size.height))
-                {
-
-                    current_widget = current_widget->parent;
-                   // ei_app_invalidate_rect(&current_widget->screen_location);
-                }
+                current_widget = current_widget->parent;
 
                 // On redessine le sous arbre du widget
                 draw_widgets(current_widget, main_window, surface_offscreen, &(current_widget->screen_location));
-
-                /*
-                // On check si y'a des rectangles inclus dans d'autres
-                ei_linked_rect_t sent = {ei_rect_zero(), rect_list};
-                ei_linked_rect_t *queue = &sent;
-
-                while (queue->next != NULL)
-                {
-                    ei_rect_t rect1 = queue->rect;
-                    ei_rect_t rect2 = queue->next->rect;
-                    if(rect_in_rect(rect1, rect2) == EI_TRUE){
-                        queue->rect = queue->next->rect;
-                        queue->next = queue->next->next;
-                    }else if(rect_in_rect(rect2, rect1) == EI_TRUE){
-                        queue->next = queue->next->next;
-                    }
-
-                    queue = queue->next;
-                }
-
-                rect_list = sent.next;
-                 */
 
                 hw_surface_unlock(surface_offscreen);
                 hw_surface_unlock(main_window);
@@ -163,19 +131,37 @@ void ei_app_run(){
                 free(to_delete);
             }
 
-
         }
-
-
     }
 }
 
 void ei_app_invalidate_rect(ei_rect_t* rect){
-    ei_linked_rect_t *new = malloc(sizeof(ei_linked_rect_t));
-    new->rect = *rect;
-    new->next = rect_list;
+    ei_rect_t new_rect = *rect;
 
-    rect_list = new;
+        ei_rect_t null_rect = {NULL, NULL};
+        ei_linked_rect_t sent = {null_rect, rect_list};
+        ei_linked_rect_t *queue = &sent;
+
+        while(queue->next != NULL){
+            if(rect_in_rect(new_rect, queue->next->rect) == EI_TRUE){
+                return;
+            }else if(rect_in_rect(queue->next->rect, new_rect) == EI_TRUE){
+                queue->next = queue->next->next;
+            }else{
+                queue = queue->next;
+            }
+
+        }
+
+        queue->next = malloc(sizeof(ei_linked_rect_t));
+        queue->next->rect = new_rect;
+        queue->next->next = NULL;
+
+        rect_list = sent.next;
+
+
+
+
 }
 
 void ei_app_free(){
